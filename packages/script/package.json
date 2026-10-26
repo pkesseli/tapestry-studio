@@ -1,0 +1,16 @@
+{
+  "name": "@tapestry/script",
+  "version": "0.0.0",
+  "private": true,
+  "license": "Apache-2.0",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@tapestry/core": "workspace:*"
+  }
+}

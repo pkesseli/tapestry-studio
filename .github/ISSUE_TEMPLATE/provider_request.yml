@@ -1,0 +1,25 @@
+name: Model or provider request
+description: Suggest a video, image, speech or music model or service to support
+labels: [provider]
+body:
+  - type: input
+    id: name
+    attributes:
+      label: Model or service name and link
+    validations:
+      required: true
+  - type: dropdown
+    id: capability
+    attributes:
+      label: What does it generate?
+      multiple: true
+      options: [Video, Image, Speech, Music, Sound effects, Upscaling]
+  - type: textarea
+    id: terms
+    attributes:
+      label: License or terms of use
+      description: Link the license or API terms. Note any limits on commercial use or regions.
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything else (API docs, pricing, Mac support)

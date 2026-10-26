@@ -8,3 +8,6 @@ target/
 .DS_Store
 Thumbs.db
 /projects-local/
+out/
+test-results/
+playwright-report/

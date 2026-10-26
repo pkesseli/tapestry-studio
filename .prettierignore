@@ -1,0 +1,9 @@
+node_modules
+dist
+out
+LICENSE
+pnpm-lock.yaml
+doc
+playwright-report
+test-results
+*.md

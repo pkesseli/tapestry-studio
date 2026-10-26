@@ -93,3 +93,21 @@ the OS keychain (via Electron `safeStorage`), never in the project folder.
 3. No network call without an Approved job (or an explicit user action such as "test connection").
 4. Every artifact records provider, model + version, seed, inputs hash, and references used — enough to explain it later.
 5. Schema versions are explicit; migrations are tested.
+
+## Repo mechanics (non-obvious facts)
+
+- **Workspace packages are consumed as TypeScript source** (`exports` points at `src/index.ts`; no per-package build).
+  electron-vite bundles them into the app, so `externalizeDepsPlugin` must *exclude* `@tapestry/*` (see
+  `packages/app/electron.vite.config.ts`; add new packages to that list). Vitest and `tsc --noEmit` read them directly.
+- **TypeScript is pinned to 6.0.x** because typescript-eslint did not yet support TypeScript 7 (2026-10). Revisit by
+  running `pnpm peers check` after upgrading either.
+- **Repo rules are enforced by `pnpm check`:** `scripts/check-file-size.mjs` (400-line limit) and
+  `scripts/check-deps.mjs` (dependency direction; `core` and `script` may not import `node:*` or `electron`). A new
+  package must be added to `ALLOWED_INTERNAL` there, or the check fails on purpose.
+- **Packaging tool:** electron-builder (chosen in plan 01, used from plan 19).
+- **Renderer security:** `contextIsolation` and `sandbox` are on, `nodeIntegration` off, strict CSP in `index.html`.
+  The renderer sees only `window.tapestry` from the preload script.
+- **e2e:** Playwright launches the built app (`pnpm test:e2e` builds first); it passes `--no-sandbox` because Linux CI
+  runners lack the setuid sandbox. CI uses `xvfb-run` on Linux.
+- `pnpm verify` = everything CI runs except e2e. pnpm 12 blocks dependency install scripts by default; allowed ones are
+  listed in `pnpm-workspace.yaml` (`electron`, `esbuild`).

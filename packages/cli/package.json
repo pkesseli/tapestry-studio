@@ -1,0 +1,23 @@
+{
+  "name": "@tapestry/cli",
+  "version": "0.0.0",
+  "private": true,
+  "license": "Apache-2.0",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "bin": {
+    "tapestry": "./src/index.ts"
+  },
+  "dependencies": {
+    "@tapestry/core": "workspace:*",
+    "@tapestry/queue": "workspace:*",
+    "@tapestry/providers": "workspace:*",
+    "@tapestry/media": "workspace:*",
+    "@tapestry/script": "workspace:*"
+  }
+}

@@ -1,0 +1,6 @@
+packages:
+  - packages/*
+# Dependencies that are allowed to run install scripts (downloads the Electron binary, esbuild native binary).
+onlyBuiltDependencies:
+  - electron
+  - esbuild
