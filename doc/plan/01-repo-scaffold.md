@@ -2,7 +2,7 @@
 
 ## Needs human
 - Confirm stack (Tauri 2 + TypeScript/React, pnpm monorepo) per `doc/readme/architecture.md`, or amend that file first.
-- Confirm project name (working name Filmloom; check trademark/GitHub/npm availability). Rename = one find/replace.
+- Confirm GitHub repo name `tapestry-studio` is available; check trademark registries before the first public release.
 - Provide the GitHub repo URL when ready (`git remote add origin ...`); do not push without being asked.
 
 ## Goal

@@ -20,10 +20,10 @@ app         React UI + Tauri glue. Depends on all of the above.
 ```
 
 Rule: `core` and `script` have no Node/Tauri imports so they can be tested instantly and reused (CLI, tests).
-A headless **CLI** (`filmloom run <project>`) uses the same packages; it is how agent loops and CI exercise the system
+A headless **CLI** (`tapestry run <project>`) uses the same packages; it is how agent loops and CI exercise the system
 without the UI.
 
-Local model execution is **out of process**: Filmloom talks to ComfyUI (HTTP/WebSocket) or other local servers.
+Local model execution is **out of process**: Tapestry Studio talks to ComfyUI (HTTP/WebSocket) or other local servers.
 If a bespoke local runner is needed for Apple Silicon, it is a separate sidecar process behind the same Provider
 interface (see plan 10).
 

@@ -13,7 +13,7 @@ Remote generation through the same queue, safely.
 3. Model catalogue per provider with license/terms URLs, shown at first use with an "I understand" step.
 4. Estimates from provider pricing (fetched or user-editable table), labelled as estimates; actual spend recorded.
 5. Webhook-free design: polling with backoff; resumable after restart.
-6. Fixture-based contract tests; one opt-in live smoke test per provider guarded by `FILMLOOM_BUDGET_CAP`.
+6. Fixture-based contract tests; one opt-in live smoke test per provider guarded by `TAPESTRY_BUDGET_CAP`.
 7. Plug-in guide for third-party providers (short, in code docs next to the manifest schema).
 
 ## Acceptance

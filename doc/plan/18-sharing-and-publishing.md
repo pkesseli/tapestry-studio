@@ -8,9 +8,9 @@ Decide the sharing story for v1. Constraints: free tool, no hosting costs, and G
 Make it easy to share finished work and to share *projects* (the script, entities and prompts) without us hosting media.
 
 ## Steps
-1. **Project bundle**: export/import a project as a single `.filmloom` archive (zip) with options: with/without media,
+1. **Project bundle**: export/import a project as a single `.tapestry` archive (zip) with options: with/without media,
    with/without rejected artifacts.
-2. **Git-friendly sharing**: `filmloom init-repo` writes `.gitignore`/`.gitattributes` (media ignored or LFS note) so the
+2. **Git-friendly sharing**: `tapestry init-repo` writes `.gitignore`/`.gitattributes` (media ignored or LFS note) so the
    script + assets metadata can live in a normal repo. Documentation says "share the recipe on GitHub; host the video
    elsewhere".
 3. **Publishing helpers**: export presets and guided steps for YouTube/Vimeo (open the upload page with the file and

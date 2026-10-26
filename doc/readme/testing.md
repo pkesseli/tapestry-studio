@@ -16,7 +16,7 @@ restart-resume behaviour. All queue/UI/timeline work is developed against it. It
 
 ## Spend and safety rules for loops
 
-- Any code path that can spend money requires `FILMLOOM_BUDGET_CAP` (currency units) in the environment; if unset the
+- Any code path that can spend money requires `TAPESTRY_BUDGET_CAP` (currency units) in the environment; if unset the
   provider layer refuses to submit to a paid provider. Caps are enforced in the queue, not in adapters.
 - Loops run with the mock provider unless the plan file explicitly says "uses real provider X, budget Y".
 - Live provider keys are never present in CI. Local keys live in the OS keychain or an untracked `.env`.

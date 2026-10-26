@@ -13,7 +13,7 @@ Persistent, restart-safe queue implementing the lifecycle in `doc/readme/archite
    completion. Enforced here, not in adapters (`doc/readme/testing.md`).
 5. Accepted freeze: store content hash; any write attempt to an accepted artifact path throws.
 6. Event stream (typed emitter) for UI/CLI progress.
-7. CLI command `filmloom queue run <project>` using the mock provider.
+7. CLI command `tapestry queue run <project>` using the mock provider.
 
 ## Acceptance
 - Kill-and-restart test: jobs mid-run complete correctly after restart with the mock provider.

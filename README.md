@@ -1,4 +1,4 @@
-# Filmloom (working name)
+# Tapestry Studio
 
 Free and open source (Apache-2.0) studio for making films and music with AI. Write a script, create characters,
 places, voices and instruments as you go, queue generations on your own machine or a provider API, review them when
@@ -12,3 +12,7 @@ they are ready, and assemble the result.
 
 License: [Apache-2.0](LICENSE). Content you create with the tool is yours; generated media is also subject to the terms
 of the model or provider that produced it.
+
+*Die Gedanken sind frei* ("thoughts are free"): the name and the mission are about everyone being able to give their
+ideas a form. Tapestry Studio is not affiliated with the Apache Tapestry web framework or the Apache Software
+Foundation.

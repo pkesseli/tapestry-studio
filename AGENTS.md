@@ -1,8 +1,8 @@
 # AGENTS.md — start here
 
-Working name: **Filmloom** (placeholder; rename is a single find/replace, see `doc/plan/01-repo-scaffold.md`).
+**Tapestry Studio** (repo: `tapestry-studio`; CLI: `tapestry`). Not affiliated with the Apache Tapestry web framework.
 
-Filmloom is a free, Apache-2.0, open-source desktop studio that lets anyone turn an idea into a film or a piece of music:
+Tapestry Studio is a free, Apache-2.0, open-source desktop studio that lets anyone turn an idea into a film or a piece of music:
 write a script, create characters/places/voices/instruments on the fly, queue generations, review and approve them
 later, and assemble the result. Local models and remote provider APIs are interchangeable plug-ins.
 

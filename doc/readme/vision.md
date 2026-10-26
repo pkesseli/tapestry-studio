@@ -2,7 +2,7 @@
 
 ## Mission
 
-Everyone with an idea should be able to make a film or a song. Filmloom removes the tooling barrier: no node graphs, no
+Everyone with an idea should be able to make a film or a song. Tapestry Studio removes the tooling barrier: no node graphs, no
 terminals, no per-clip prompt engineering. The creator writes; the studio does the bookkeeping.
 
 First user: a creative non-technical person on a MacBook Pro (Apple Silicon). If it is not intuitive for them, it is
@@ -45,4 +45,7 @@ wrong.
 
 ## Naming
 
-"Filmloom" is a working name; trademark/availability is unchecked. See plan 01.
+The name evokes weaving many threads (script, characters, voices, footage, music) into one piece, and free expression
+in the spirit of the folk song "Die Gedanken sind frei" ("thoughts are free"). The project is not affiliated with the
+Apache Tapestry web framework or the Apache Software Foundation. Before the first public release, check trademark
+registries (USPTO, EUIPO) for conflicts in software and entertainment classes; renaming gets costlier after release.
