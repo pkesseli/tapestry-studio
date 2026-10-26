@@ -1,0 +1,8 @@
+# Optional: conda users can create the toolchain with `conda env create -f environment.yml`.
+# Everyone else can simply install Node.js 24+ and pnpm 12 (see CONTRIBUTING.md).
+name: tapestry-studio
+channels:
+  - conda-forge
+dependencies:
+  - nodejs=24
+  - pnpm=12

@@ -99,8 +99,9 @@ the OS keychain (via Electron `safeStorage`), never in the project folder.
 - **Workspace packages are consumed as TypeScript source** (`exports` points at `src/index.ts`; no per-package build).
   electron-vite bundles them into the app, so `externalizeDepsPlugin` must *exclude* `@tapestry/*` (see
   `packages/app/electron.vite.config.ts`; add new packages to that list). Vitest and `tsc --noEmit` read them directly.
-- **TypeScript is pinned to 6.0.x** because typescript-eslint did not yet support TypeScript 7 (2026-10). Revisit by
-  running `pnpm peers check` after upgrading either.
+- **TypeScript is pinned to 6.0.x** because TypeScript 7 (native compiler) has no stable programmatic API until 7.1, which
+  typescript-eslint needs (its peer range is `<6.1.0`). TS 7 itself compiles every package: `pnpm typecheck:ts7` runs
+  it, and an informational CI job tracks it. Migrate once typescript-eslint supports TS 7 (check `pnpm peers check`).
 - **Repo rules are enforced by `pnpm check`:** `scripts/check-file-size.mjs` (400-line limit) and
   `scripts/check-deps.mjs` (dependency direction; `core` and `script` may not import `node:*` or `electron`). A new
   package must be added to `ALLOWED_INTERNAL` there, or the check fails on purpose.

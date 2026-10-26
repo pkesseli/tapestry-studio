@@ -14,7 +14,7 @@ Thanks for helping! Tapestry Studio is Apache-2.0 and open to everyone.
 
 ## Development setup
 
-You need Node.js 24 or newer and pnpm 12 (the `packageManager` field in `package.json` pins the version).
+You need Node.js 24 or newer and pnpm 12 (the `packageManager` field in `package.json` pins the version). Conda users can run `conda env create -f environment.yml` instead.
 
 ```sh
 pnpm install
