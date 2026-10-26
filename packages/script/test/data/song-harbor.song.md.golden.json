@@ -1,0 +1,116 @@
+{
+  "title": "Harbor Lights",
+  "sections": [
+    {
+      "name": "Verse 1",
+      "kind": "verse",
+      "bars": 8,
+      "tempoBpm": 92,
+      "key": "Am",
+      "singers": [
+        "Lead singer"
+      ],
+      "lyrics": [
+        {
+          "text": "The fog rolls in",
+          "singer": "Lead singer"
+        },
+        {
+          "text": "The lantern sways",
+          "singer": "Lead singer"
+        }
+      ],
+      "instruments": [
+        {
+          "name": "guitar",
+          "direction": "fingerpicked, sparse",
+          "enabled": true
+        },
+        {
+          "name": "piano",
+          "direction": "soft chords",
+          "enabled": true
+        }
+      ]
+    },
+    {
+      "name": "Chorus",
+      "kind": "chorus",
+      "bars": 8,
+      "tempoBpm": 92,
+      "key": "C",
+      "singers": [],
+      "lyrics": [
+        {
+          "text": "Carry me home"
+        },
+        {
+          "text": "Carry me home"
+        }
+      ],
+      "instruments": [
+        {
+          "name": "guitar",
+          "direction": "strummed, open",
+          "enabled": true
+        },
+        {
+          "name": "piano",
+          "direction": "off",
+          "enabled": false
+        }
+      ]
+    },
+    {
+      "name": "Bridge",
+      "kind": "bridge",
+      "bars": 4,
+      "seconds": 30,
+      "singers": [],
+      "lyrics": [
+        {
+          "text": "Hold the light"
+        }
+      ],
+      "instruments": []
+    }
+  ],
+  "mentions": [
+    {
+      "text": "Lead singer",
+      "covers": "Lead singer",
+      "source": "singer",
+      "kind": "voice",
+      "status": "resolved"
+    },
+    {
+      "text": "guitar",
+      "covers": "guitar",
+      "source": "instrument",
+      "kind": "instrument",
+      "status": "resolved"
+    },
+    {
+      "text": "piano",
+      "covers": "piano",
+      "source": "instrument",
+      "kind": "instrument",
+      "status": "resolved"
+    },
+    {
+      "text": "guitar",
+      "covers": "guitar",
+      "source": "instrument",
+      "kind": "instrument",
+      "status": "resolved"
+    },
+    {
+      "text": "piano",
+      "covers": "piano",
+      "source": "instrument",
+      "kind": "instrument",
+      "status": "resolved"
+    }
+  ],
+  "diagnostics": []
+}

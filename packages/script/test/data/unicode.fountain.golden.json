@@ -1,0 +1,88 @@
+{
+  "elements": [
+    {
+      "type": "scene-heading",
+      "text": "EXT. CAFÉ - MORNING"
+    },
+    {
+      "type": "action",
+      "text": "MARÍA stirs her coffee. The WAITRESS nods."
+    },
+    {
+      "type": "character",
+      "text": "MARÍA"
+    },
+    {
+      "type": "dialogue",
+      "text": "Un café, por favor."
+    },
+    {
+      "type": "character",
+      "text": "WAITRESS"
+    },
+    {
+      "type": "dialogue",
+      "text": "Enseguida, señora."
+    }
+  ],
+  "scenes": [
+    {
+      "heading": "EXT. CAFÉ - MORNING",
+      "location": "CAFÉ",
+      "timeOfDay": "MORNING",
+      "beats": [
+        {
+          "action": "MARÍA stirs her coffee. The WAITRESS nods.",
+          "dialogue": [
+            {
+              "speaker": "MARÍA",
+              "text": "Un café, por favor."
+            },
+            {
+              "speaker": "WAITRESS",
+              "text": "Enseguida, señora."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "mentions": [
+    {
+      "text": "CAFÉ",
+      "covers": "CAFÉ",
+      "source": "scene-heading",
+      "kind": "location",
+      "status": "unresolved"
+    },
+    {
+      "text": "MARÍA",
+      "covers": "MARÍA",
+      "source": "action",
+      "kind": "character",
+      "status": "resolved"
+    },
+    {
+      "text": "WAITRESS",
+      "covers": "WAITRESS",
+      "source": "action",
+      "kind": "character",
+      "status": "unresolved"
+    },
+    {
+      "text": "MARÍA",
+      "covers": "MARÍA",
+      "source": "character-cue",
+      "kind": "character",
+      "status": "resolved"
+    },
+    {
+      "text": "WAITRESS",
+      "covers": "WAITRESS",
+      "source": "character-cue",
+      "kind": "character",
+      "status": "unresolved"
+    }
+  ],
+  "diagnostics": []
+}

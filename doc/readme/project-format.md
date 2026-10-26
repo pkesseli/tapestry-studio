@@ -65,4 +65,25 @@ Kind-specific:
 - `GenerationRequest`, `Capability` and `JobState` are defined in `core` (not `providers`) because jobs persist them.
 - **Fixtures** in `fixtures/` are generated from `@tapestry/core/testing` builders. After changing a schema, run
   `UPDATE_FIXTURES=1 pnpm test` and review the diff; the normal test run fails if fixtures drift from the code.
-- Still open for plan 05: how the script editor keeps scene/shot ids stable when text is re-parsed.
+
+## Script and song text (implemented in plan 05, `packages/script`)
+
+- **Screenplays** are Fountain (`.fountain`, `.txt`, `.spmd`), parsed from the public syntax description; Final Draft
+  `.fdx` is converted to Fountain first (paragraph structure only). Notes and boneyard are blanked, never deleted, so
+  every range stays a valid offset into the editor text.
+- **Songs** (`*.song.md`): `# Title`, `## Section [8 bars, 90 bpm, 30 sec, Am]`, `@Singer` (applies to the lyric lines
+  below it), `[instrument: direction]` or `[instrument off]`, plain lines are lyrics, `//` comments. Unknown settings
+  are warnings, not errors.
+- **Mentions** (names that should become entities) come from dialogue cues (characters), scene headings (places),
+  CAPITALISED words in action (character at a sentence start or a known cue name, otherwise prop; sound words and
+  camera words are stop words), `@` lines (voices) and bracket lines (instruments). Each is resolved, ambiguous or
+  unresolved against the alias index, and only entities of an allowed kind count. The editor offers to create the
+  unresolved ones.
+- **Unit ids are not written into the text.** Scenes and sections are re-matched on every parse by their heading
+  (`alignKeys`: order-preserving exact matches, then moved items, then lightly renamed ones with at least half the
+  words in common). Matched units keep their id, shots, arrangement entries and `scoresSceneId`; text-derived fields
+  are refreshed. A heavily rewritten heading is a new unit: the old one is not carried over.
+- **Beats** (action paragraph plus following dialogue) are exposed per scene for shot planning (plan 08). Deriving
+  scenes does not create shots.
+- Analysing a 120-page screenplay takes about 3 ms (test asserts under 20 ms); golden tests cover 5 screenplays and 2
+  songs (`UPDATE_GOLDEN=1 pnpm test` rewrites them; review the diff).

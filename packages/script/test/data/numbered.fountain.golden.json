@@ -1,0 +1,151 @@
+{
+  "elements": [
+    {
+      "type": "title-page",
+      "text": [
+        {
+          "key": "Title",
+          "value": "_The Long Road_"
+        },
+        {
+          "key": "Credit",
+          "value": "Written by"
+        },
+        {
+          "key": "Author",
+          "value": "Pat Writer"
+        },
+        {
+          "key": "Notes",
+          "value": "First draft\nDo not copy"
+        }
+      ]
+    },
+    {
+      "type": "scene-heading",
+      "text": "INT. KITCHEN - DAY #1A#"
+    },
+    {
+      "type": "action",
+      "text": "A kettle whistles."
+    },
+    {
+      "type": "scene-heading",
+      "text": "EXT. FOREST - DAY - LATER #2#"
+    },
+    {
+      "type": "scene-heading",
+      "text": "INT./EXT. CAR - MOVING - NIGHT"
+    },
+    {
+      "type": "character",
+      "text": "MARIA"
+    },
+    {
+      "type": "dialogue",
+      "text": "Are we there yet?"
+    },
+    {
+      "type": "scene-heading",
+      "text": "I/E TRUCK CAB - DUSK"
+    },
+    {
+      "type": "scene-heading",
+      "text": "EST. SKYLINE - SUNRISE"
+    }
+  ],
+  "scenes": [
+    {
+      "heading": "INT. KITCHEN - DAY #1A#",
+      "sceneNumber": "1A",
+      "location": "KITCHEN",
+      "timeOfDay": "DAY",
+      "beats": [
+        {
+          "action": "A kettle whistles.",
+          "dialogue": []
+        }
+      ]
+    },
+    {
+      "heading": "EXT. FOREST - DAY - LATER #2#",
+      "sceneNumber": "2",
+      "location": "FOREST",
+      "timeOfDay": "DAY - LATER",
+      "beats": []
+    },
+    {
+      "heading": "INT./EXT. CAR - MOVING - NIGHT",
+      "location": "CAR - MOVING",
+      "timeOfDay": "NIGHT",
+      "beats": [
+        {
+          "action": "",
+          "dialogue": [
+            {
+              "speaker": "MARIA",
+              "text": "Are we there yet?"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "I/E TRUCK CAB - DUSK",
+      "location": "TRUCK CAB",
+      "timeOfDay": "DUSK",
+      "beats": []
+    },
+    {
+      "heading": "EST. SKYLINE - SUNRISE",
+      "location": "SKYLINE",
+      "timeOfDay": "SUNRISE",
+      "beats": []
+    }
+  ],
+  "mentions": [
+    {
+      "text": "KITCHEN",
+      "covers": "KITCHEN",
+      "source": "scene-heading",
+      "kind": "location",
+      "status": "unresolved"
+    },
+    {
+      "text": "FOREST",
+      "covers": "FOREST",
+      "source": "scene-heading",
+      "kind": "location",
+      "status": "unresolved"
+    },
+    {
+      "text": "CAR - MOVING",
+      "covers": "CAR - MOVING",
+      "source": "scene-heading",
+      "kind": "location",
+      "status": "unresolved"
+    },
+    {
+      "text": "MARIA",
+      "covers": "MARIA",
+      "source": "character-cue",
+      "kind": "character",
+      "status": "resolved"
+    },
+    {
+      "text": "TRUCK CAB",
+      "covers": "TRUCK CAB",
+      "source": "scene-heading",
+      "kind": "location",
+      "status": "unresolved"
+    },
+    {
+      "text": "SKYLINE",
+      "covers": "SKYLINE",
+      "source": "scene-heading",
+      "kind": "location",
+      "status": "unresolved"
+    }
+  ],
+  "diagnostics": []
+}

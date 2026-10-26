@@ -1,0 +1,98 @@
+{
+  "elements": [
+    {
+      "type": "scene-heading",
+      "text": "INT. WORKSHOP - NIGHT"
+    },
+    {
+      "type": "action",
+      "text": "A KNIFE glints on the bench. The OLD MAN stares at it. SIRENS wail outside."
+    },
+    {
+      "type": "action",
+      "text": "THE DOOR opens. FADE IN a LANTERN swings."
+    },
+    {
+      "type": "character",
+      "text": "OLD MAN"
+    },
+    {
+      "type": "dialogue",
+      "text": "Not again."
+    }
+  ],
+  "scenes": [
+    {
+      "heading": "INT. WORKSHOP - NIGHT",
+      "location": "WORKSHOP",
+      "timeOfDay": "NIGHT",
+      "beats": [
+        {
+          "action": "A KNIFE glints on the bench. The OLD MAN stares at it. SIRENS wail outside.",
+          "dialogue": []
+        },
+        {
+          "action": "THE DOOR opens. FADE IN a LANTERN swings.",
+          "dialogue": [
+            {
+              "speaker": "OLD MAN",
+              "text": "Not again."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "mentions": [
+    {
+      "text": "WORKSHOP",
+      "covers": "WORKSHOP",
+      "source": "scene-heading",
+      "kind": "location",
+      "status": "unresolved"
+    },
+    {
+      "text": "KNIFE",
+      "covers": "KNIFE",
+      "source": "action",
+      "kind": "prop",
+      "status": "unresolved"
+    },
+    {
+      "text": "OLD MAN",
+      "covers": "OLD MAN",
+      "source": "action",
+      "kind": "character",
+      "status": "unresolved"
+    },
+    {
+      "text": "SIRENS",
+      "covers": "SIRENS",
+      "source": "action",
+      "kind": "character",
+      "status": "unresolved"
+    },
+    {
+      "text": "DOOR",
+      "covers": "DOOR",
+      "source": "action",
+      "kind": "prop",
+      "status": "unresolved"
+    },
+    {
+      "text": "LANTERN",
+      "covers": "LANTERN",
+      "source": "action",
+      "kind": "prop",
+      "status": "resolved"
+    },
+    {
+      "text": "OLD MAN",
+      "covers": "OLD MAN",
+      "source": "character-cue",
+      "kind": "character",
+      "status": "unresolved"
+    }
+  ],
+  "diagnostics": []
+}

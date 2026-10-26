@@ -1,7 +1,13 @@
 /**
- * Screenplay and song parsing plus entity detection (plan 05).
- *
- * Placeholder entry point created by plan 01; real exports arrive with the plan files named in
- * doc/plan.
+ * The script engine: parses screenplays (Fountain, Final Draft) and song outlines, finds the names in them (characters,
+ * places, props, singers, instruments), and derives scene and section units that keep their ids across edits.
+ * Pure TypeScript: no Node or Electron imports (see doc/readme/architecture.md).
  */
-export {};
+export * from './align';
+export * from './analyze';
+export * from './derive';
+export * from './detect';
+export * from './fdx';
+export * from './fountain';
+export * from './song';
+export * from './types';

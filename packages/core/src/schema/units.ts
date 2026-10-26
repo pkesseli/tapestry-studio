@@ -86,3 +86,4 @@ export type DialogueLine = z.infer<typeof DialogueLineSchema>;
 export type Shot = z.infer<typeof ShotSchema>;
 export type Scene = z.infer<typeof SceneSchema>;
 export type Section = z.infer<typeof SectionSchema>;
+export type SectionKind = z.infer<typeof SectionKindSchema>;

@@ -1,0 +1,116 @@
+{
+  "elements": [
+    {
+      "type": "scene-heading",
+      "text": "SOMEWHERE ELSE"
+    },
+    {
+      "type": "action",
+      "text": "BANG the door slams."
+    },
+    {
+      "type": "character",
+      "text": "McCLANE"
+    },
+    {
+      "type": "dialogue",
+      "text": "Yippee."
+    },
+    {
+      "type": "transition",
+      "text": "FADE OUT."
+    },
+    {
+      "type": "lyric",
+      "text": "La la la, sings the bard"
+    },
+    {
+      "type": "centered",
+      "text": "THE END"
+    },
+    {
+      "type": "section",
+      "text": "Act One"
+    },
+    {
+      "type": "synopsis",
+      "text": "They meet at last"
+    },
+    {
+      "type": "page-break",
+      "text": "==="
+    },
+    {
+      "type": "character",
+      "text": "BRICK"
+    },
+    {
+      "type": "dialogue",
+      "text": "Dual dialogue"
+    },
+    {
+      "type": "character",
+      "text": "STEEL"
+    },
+    {
+      "type": "dialogue",
+      "text": "I speak too."
+    }
+  ],
+  "scenes": [
+    {
+      "heading": "SOMEWHERE ELSE",
+      "location": "SOMEWHERE ELSE",
+      "beats": [
+        {
+          "action": "BANG the door slams.",
+          "dialogue": [
+            {
+              "speaker": "McCLANE",
+              "text": "Yippee."
+            },
+            {
+              "speaker": "BRICK",
+              "text": "Dual dialogue"
+            },
+            {
+              "speaker": "STEEL",
+              "text": "I speak too."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "mentions": [
+    {
+      "text": "SOMEWHERE ELSE",
+      "covers": "SOMEWHERE ELSE",
+      "source": "scene-heading",
+      "kind": "location",
+      "status": "unresolved"
+    },
+    {
+      "text": "McCLANE",
+      "covers": "McCLANE",
+      "source": "character-cue",
+      "kind": "character",
+      "status": "unresolved"
+    },
+    {
+      "text": "BRICK",
+      "covers": "BRICK",
+      "source": "character-cue",
+      "kind": "character",
+      "status": "unresolved"
+    },
+    {
+      "text": "STEEL",
+      "covers": "STEEL",
+      "source": "character-cue",
+      "kind": "character",
+      "status": "unresolved"
+    }
+  ],
+  "diagnostics": []
+}

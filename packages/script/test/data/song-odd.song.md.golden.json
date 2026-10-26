@@ -1,0 +1,89 @@
+{
+  "sections": [
+    {
+      "name": "Pre-Chorus",
+      "kind": "pre-chorus",
+      "bars": 12,
+      "singers": [
+        "Harmony",
+        "Lead singer"
+      ],
+      "lyrics": [
+        {
+          "text": "Sing it out",
+          "singer": "Lead singer"
+        }
+      ],
+      "instruments": [
+        {
+          "name": "cello",
+          "direction": "bowed",
+          "enabled": true
+        },
+        {
+          "name": "drums",
+          "direction": "mute",
+          "enabled": false
+        }
+      ]
+    },
+    {
+      "name": "Outro",
+      "kind": "outro",
+      "singers": [],
+      "lyrics": [
+        {
+          "text": "Fade away"
+        }
+      ],
+      "instruments": []
+    }
+  ],
+  "mentions": [
+    {
+      "text": "Harmony",
+      "covers": "Harmony",
+      "source": "singer",
+      "kind": "voice",
+      "status": "unresolved"
+    },
+    {
+      "text": "Lead singer",
+      "covers": "Lead singer",
+      "source": "singer",
+      "kind": "voice",
+      "status": "resolved"
+    },
+    {
+      "text": "cello",
+      "covers": "cello",
+      "source": "instrument",
+      "kind": "instrument",
+      "status": "unresolved"
+    },
+    {
+      "text": "drums",
+      "covers": "drums",
+      "source": "instrument",
+      "kind": "instrument",
+      "status": "unresolved"
+    }
+  ],
+  "diagnostics": [
+    {
+      "covers": "This line comes before any section",
+      "severity": "warning",
+      "message": "Text before the first \"## Section\" heading is ignored"
+    },
+    {
+      "covers": "## Pre-Chorus [loud, 12 bars, 7 bpms]",
+      "severity": "warning",
+      "message": "Section setting \"loud\" is not understood (use e.g. 8 bars, 90 bpm, Am)"
+    },
+    {
+      "covers": "## Pre-Chorus [loud, 12 bars, 7 bpms]",
+      "severity": "warning",
+      "message": "Section setting \"7 bpms\" is not understood (use e.g. 8 bars, 90 bpm, Am)"
+    }
+  ]
+}

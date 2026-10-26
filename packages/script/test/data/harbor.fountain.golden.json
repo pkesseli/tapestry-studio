@@ -1,0 +1,174 @@
+{
+  "elements": [
+    {
+      "type": "title-page",
+      "text": [
+        {
+          "key": "Title",
+          "value": "The Last Ferry"
+        },
+        {
+          "key": "Author",
+          "value": "Test Writer"
+        }
+      ]
+    },
+    {
+      "type": "scene-heading",
+      "text": "INT. HARBOR - NIGHT"
+    },
+    {
+      "type": "action",
+      "text": "MARIA lifts a LANTERN and peers into the fog. A distant HORN sounds."
+    },
+    {
+      "type": "character",
+      "text": "MARIA"
+    },
+    {
+      "type": "dialogue",
+      "text": "Is anyone there?"
+    },
+    {
+      "type": "character",
+      "text": "TOM"
+    },
+    {
+      "type": "parenthetical",
+      "text": "(shouting)"
+    },
+    {
+      "type": "dialogue",
+      "text": "Over here, Captain!"
+    },
+    {
+      "type": "dialogue",
+      "text": "Hurry!"
+    },
+    {
+      "type": "transition",
+      "text": "CUT TO:"
+    },
+    {
+      "type": "scene-heading",
+      "text": "EXT. FERRY DECK - DAWN"
+    },
+    {
+      "type": "action",
+      "text": "Tom coils a rope. MARIA joins him."
+    },
+    {
+      "type": "character",
+      "text": "TOM"
+    },
+    {
+      "type": "dialogue",
+      "text": "We missed it."
+    }
+  ],
+  "scenes": [
+    {
+      "heading": "INT. HARBOR - NIGHT",
+      "location": "HARBOR",
+      "timeOfDay": "NIGHT",
+      "beats": [
+        {
+          "action": "MARIA lifts a LANTERN and peers into the fog. A distant HORN sounds.",
+          "dialogue": [
+            {
+              "speaker": "MARIA",
+              "text": "Is anyone there?"
+            },
+            {
+              "speaker": "TOM",
+              "text": "Over here, Captain! Hurry!",
+              "parenthetical": "(shouting)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "EXT. FERRY DECK - DAWN",
+      "location": "FERRY DECK",
+      "timeOfDay": "DAWN",
+      "beats": [
+        {
+          "action": "Tom coils a rope. MARIA joins him.",
+          "dialogue": [
+            {
+              "speaker": "TOM",
+              "text": "We missed it."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "mentions": [
+    {
+      "text": "HARBOR",
+      "covers": "HARBOR",
+      "source": "scene-heading",
+      "kind": "location",
+      "status": "resolved"
+    },
+    {
+      "text": "MARIA",
+      "covers": "MARIA",
+      "source": "action",
+      "kind": "character",
+      "status": "resolved"
+    },
+    {
+      "text": "LANTERN",
+      "covers": "LANTERN",
+      "source": "action",
+      "kind": "prop",
+      "status": "resolved"
+    },
+    {
+      "text": "HORN",
+      "covers": "HORN",
+      "source": "action",
+      "kind": "prop",
+      "status": "unresolved"
+    },
+    {
+      "text": "MARIA",
+      "covers": "MARIA",
+      "source": "character-cue",
+      "kind": "character",
+      "status": "resolved"
+    },
+    {
+      "text": "TOM",
+      "covers": "TOM",
+      "source": "character-cue",
+      "kind": "character",
+      "status": "resolved"
+    },
+    {
+      "text": "FERRY DECK",
+      "covers": "FERRY DECK",
+      "source": "scene-heading",
+      "kind": "location",
+      "status": "unresolved"
+    },
+    {
+      "text": "MARIA",
+      "covers": "MARIA",
+      "source": "action",
+      "kind": "character",
+      "status": "resolved"
+    },
+    {
+      "text": "TOM",
+      "covers": "TOM",
+      "source": "character-cue",
+      "kind": "character",
+      "status": "resolved"
+    }
+  ],
+  "diagnostics": []
+}
