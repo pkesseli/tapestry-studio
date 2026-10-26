@@ -9,7 +9,7 @@ import { fileURLToPath } from 'node:url';
 export const ALLOWED_INTERNAL = {
   core: [],
   script: ['core'],
-  queue: ['core'],
+  queue: ['core', 'providers'],
   providers: ['core'],
   media: ['core'],
   'fs-node': ['core'],

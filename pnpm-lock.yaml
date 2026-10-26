@@ -248,6 +248,9 @@ importers:
       '@tapestry/core':
         specifier: workspace:*
         version: link:../core
+      '@tapestry/fs-node':
+        specifier: workspace:*
+        version: link:../fs-node
       '@tapestry/media':
         specifier: workspace:*
         version: link:../media
@@ -293,6 +296,9 @@ importers:
       '@tapestry/core':
         specifier: workspace:*
         version: link:../core
+      '@tapestry/providers':
+        specifier: workspace:*
+        version: link:../providers
 
   packages/script:
     dependencies:

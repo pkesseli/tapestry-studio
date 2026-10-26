@@ -1,7 +1,10 @@
 /**
- * Job state machine, persistence, budgets and scheduling (plan 04).
- *
- * Placeholder entry point created by plan 01; real exports arrive with the plan files named in
- * doc/plan.
+ * The generation queue: job state machine, persistence, budgets, scheduling and the artifact freeze rule
+ * (see doc/readme/architecture.md, "Job lifecycle").
  */
-export {};
+export * from './artifact-store';
+export * from './budget';
+export * from './hash';
+export * from './job-store';
+export * from './queue';
+export * from './transitions';

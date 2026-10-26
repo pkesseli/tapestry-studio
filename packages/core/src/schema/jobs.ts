@@ -79,6 +79,12 @@ export const JobSchema = z.strictObject({
   budgetCap: z.number().nonnegative().optional(),
   /** Spend recorded after completion. */
   actualCost: z.number().nonnegative().optional(),
+  /** Higher runs first among queued jobs; absent means 0. */
+  priority: z.int().optional(),
+  /** Number of failed attempts so far, for retry back-off. */
+  attempts: z.int().nonnegative().optional(),
+  /** Earliest time the queue may try again after a retryable failure. */
+  retryAt: TimestampSchema.optional(),
   /** Provider's own job reference, used to resume polling after a restart. */
   remoteRef: z.string().optional(),
   artifactIds: z.array(idSchema('art')),

@@ -25,7 +25,7 @@ Monorepo (pnpm workspaces), packages with strict one-way dependencies:
 
 ```
 core        pure TS: project format schemas, load/save, validation, migrations, ids. No I/O libs besides an fs port.
-queue       job state machine, persistence, budgets, scheduling. Depends on core.
+queue       job state machine, persistence, budgets, scheduling. Depends on core and providers.
 providers   Provider interface + built-in adapters (mock, comfyui, fal, replicate, ...). Depends on core.
 media       ffmpeg wrapper (external binary), thumbnails, stitching, waveform. Depends on core.
 fs-node     Node.js FsPort implementation (atomic disk writes). Depends on core.
@@ -113,3 +113,25 @@ the OS keychain (via Electron `safeStorage`), never in the project folder.
   runners lack the setuid sandbox. CI uses `xvfb-run` on Linux.
 - `pnpm verify` = everything CI runs except e2e. pnpm 12 blocks dependency install scripts by default; allowed ones are
   listed in `pnpm-workspace.yaml` (`electron`, `esbuild`).
+
+## Queue behaviour (implemented in plan 04)
+
+- **States** are in `core` (`JobState`); the legal transitions are one table in `queue/src/transitions.ts`, covered by
+  an exhaustive test. `redone` and `cancelled` are final. Redo creates a *new* draft (fresh random seed) and keeps the
+  old files. `enhanced` marks an accepted job that has an enhanced derivative (used from plan 17). Un-accepting is an
+  explicit user action (`accepted -> rendered`) and keeps the files.
+- **Structure:** `JobStore` persists and announces job changes (`jobs/<id>.json`, append-only history per transition);
+  `JobQueue` holds user operations and the scheduler; `ArtifactStore` owns artifact files and the freeze rule.
+- **Scheduler:** `tick()` polls running jobs, then starts queued ones by priority within each provider's concurrency
+  limit (default 1 for `local` providers, 4 otherwise). `runUntilIdle()` loops it. Retryable failures re-queue with
+  doubling back-off (`retryAt`, `attempts`, default 4 attempts); permanent ones fail at once.
+- **Crash safety:** the job id is the provider idempotency key, so a job found `running` without a stored remote
+  reference is simply queued again. Running jobs with a reference resume polling after restart.
+- **Budget:** approving a job that can cost money needs a project budget, must fit the per-approval cap and the
+  remaining project cap; the estimate is reserved until the job finishes or is cancelled. Free providers skip all of it.
+- **Freeze:** `ArtifactStore` refuses to write an accepted artifact and re-checks file hashes before accepting. A
+  property test runs random operation sequences and asserts accepted files never change.
+- **Headless runs** (`tapestry queue run`): the project budget only applies together with `TAPESTRY_BUDGET_CAP`
+  (`headlessBudget`); without it no budget exists, so paid providers are refused. The cap can only lower the project's
+  limits, never raise them.
+- `queue.ts` is close to the 400-line limit: put new scheduler features in their own module.

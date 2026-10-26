@@ -18,6 +18,7 @@
     "@tapestry/queue": "workspace:*",
     "@tapestry/providers": "workspace:*",
     "@tapestry/media": "workspace:*",
-    "@tapestry/script": "workspace:*"
+    "@tapestry/script": "workspace:*",
+    "@tapestry/fs-node": "workspace:*"
   }
 }
