@@ -1,12 +1,25 @@
 # Architecture
 
-Status: **proposed**, not yet implemented. Confirm or amend in plan 01, then keep this file true.
+Status: **decided, not yet implemented**. Keep this file true as plans land.
 
 ## Shape
 
-Desktop app: **Tauri 2** shell + **TypeScript/React** UI. Chosen for: small installers, good macOS support, easy
-packaging for a non-technical user, and agent-friendly mainstream tooling. A pure local web server was rejected because
-install friction is the main enemy. C++ was rejected: the work is UI, files, and network calls.
+Desktop app: **Electron** shell + **TypeScript/React** UI, installable on Windows, macOS and Linux (installers plus
+package managers, see plan 19). Decided 2026-10 after comparing Tauri, Avalonia (C#), Flutter, Qt and Java. Reasons:
+- Bundled Chromium gives identical video/audio/canvas behaviour on all three OSes (Tauri's Linux web view varies).
+- Best accessibility tree of any UI stack; richest ready-made editor/waveform/timeline components.
+- Playwright can drive the real app end to end, which agent loops depend on.
+- One language (TypeScript) for contributors and agents; mature packaging and auto-update tooling.
+Accepted costs: larger installer and somewhat higher idle RAM than native stacks. Avalonia was the runner-up; the
+RAM/size difference was not measured (no reliable public numbers). Revisit only if measurements on the target
+MacBook show memory pressure during local generation.
+
+Vocabulary: the **shell** is the native wrapper (window, menus, file dialogs, keychain, notifications, spawning helper
+programs, installer, updates). In Electron it is the **main process** (Node.js); the React UI runs in a sandboxed
+**renderer** (Chromium) and reaches the machine only through a small, typed IPC surface exposed by the main process.
+
+Python is **not** part of the app. It appears only as an optional, app-managed local engine (ComfyUI in a `uv`-created
+venv, or a ComfyUI the user already runs) for local generation. Remote-only users never install it.
 
 Monorepo (pnpm workspaces), packages with strict one-way dependencies:
 
@@ -16,16 +29,24 @@ queue       job state machine, persistence, budgets, scheduling. Depends on core
 providers   Provider interface + built-in adapters (mock, comfyui, fal, replicate, ...). Depends on core.
 media       ffmpeg wrapper (external binary), thumbnails, stitching, waveform. Depends on core.
 script      screenplay/lyrics parsing, entity detection. Depends on core.
-app         React UI + Tauri glue. Depends on all of the above.
+app         Electron main process + React renderer. Depends on all of the above.
 ```
 
-Rule: `core` and `script` have no Node/Tauri imports so they can be tested instantly and reused (CLI, tests).
+Rule: `core` and `script` have no Node/Electron imports so they can be tested instantly and reused (CLI, tests).
 A headless **CLI** (`tapestry run <project>`) uses the same packages; it is how agent loops and CI exercise the system
 without the UI.
 
 Local model execution is **out of process**: Tapestry Studio talks to ComfyUI (HTTP/WebSocket) or other local servers.
 If a bespoke local runner is needed for Apple Silicon, it is a separate sidecar process behind the same Provider
 interface (see plan 10).
+
+## Client boundary and future mobile client
+
+Business logic (project, queue, providers, composer) lives in UI-free packages, never in React components. Clients talk
+to it through a narrow, typed, versioned API (in-process IPC today; an authenticated HTTP/WebSocket server later for
+remote clients). A mobile client is expected to be a **bespoke, curated companion** (write, review, approve from the
+queue), not a wrapped copy of the desktop UI, and local video generation on phones is out of scope. The API boundary
+must therefore stay strict from the start; see `doc/plan/90-backlog.md`.
 
 ## Core flow
 
@@ -63,7 +84,7 @@ entities into a GenerationRequest". Providers declare capabilities (`video`, `im
 
 Providers are discovered from built-in packages and from a user plugin folder. A plugin = manifest (id, capabilities,
 config schema, license/terms URL, pricing hints) + implementation of the Provider interface. Config and API keys live in
-the OS keychain (via Tauri), never in the project folder.
+the OS keychain (via Electron `safeStorage`), never in the project folder.
 
 ## Invariants (do not break)
 

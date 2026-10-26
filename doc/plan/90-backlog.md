@@ -19,3 +19,7 @@ Items marked (parity) exist in AI Movie Studio 2 — implement from the idea onl
 - Localisation of the UI.
 - Accessibility audit (keyboard, screen reader, colour contrast).
 - Plug-in marketplace/registry (only after the plug-in API stabilises).
+- Remote-control API (authenticated HTTP/WebSocket from the desktop app) and a bespoke mobile companion client for
+  writing, reviewing and approving from the queue. Not a wrapped desktop UI; the client/logic boundary is documented in
+  `doc/readme/architecture.md`. Open questions: secure remote access (LAN vs tunnel), file sync for scripts/metadata,
+  App Store / Play Store policies for AI-generation apps (unchecked).

@@ -8,7 +8,7 @@
 Remote generation through the same queue, safely.
 
 ## Steps
-1. Key storage via Tauri keychain plugin; settings UI to add/test/remove keys; keys never in project folder or logs.
+1. Key storage via Electron `safeStorage` (OS keychain); settings UI to add/test/remove keys; keys never in project folder or logs.
 2. Adapter per provider implementing the contract; map each provider's models to capabilities and `limits`.
 3. Model catalogue per provider with license/terms URLs, shown at first use with an "I understand" step.
 4. Estimates from provider pricing (fetched or user-editable table), labelled as estimates; actual spend recorded.
