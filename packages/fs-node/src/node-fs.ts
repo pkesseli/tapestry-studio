@@ -34,12 +34,31 @@ export class NodeFs implements FsPort {
   }
 
   /** @inheritdoc */
-  async writeText(path: string, text: string): Promise<void> {
+  writeText(path: string, text: string): Promise<void> {
+    return this.writeAtomically(path, text);
+  }
+
+  /** @inheritdoc */
+  async readBytes(path: string): Promise<Uint8Array> {
+    return new Uint8Array(await readFile(this.abs(path)));
+  }
+
+  /** @inheritdoc */
+  writeBytes(path: string, bytes: Uint8Array): Promise<void> {
+    return this.writeAtomically(path, bytes);
+  }
+
+  /**
+   * Writes a file via a temporary sibling and a rename, so readers never see partial contents.
+   * @param path Project-relative file path.
+   * @param data Text (written as UTF-8) or bytes.
+   */
+  private async writeAtomically(path: string, data: string | Uint8Array): Promise<void> {
     const target = this.abs(path);
     await mkdir(dirname(target), { recursive: true });
     const temporary = `${target}.${randomBytes(4).toString('hex')}.tmp`;
     try {
-      await writeFile(temporary, text, 'utf8');
+      await writeFile(temporary, data);
       await rename(temporary, target);
     } catch (error) {
       await rm(temporary, { force: true });

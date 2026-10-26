@@ -122,7 +122,13 @@ export function buildSampleFilm(): ProjectData {
           capability: 'video',
           provider: { providerId: 'mock' },
           prompt: 'Maria lifts a lantern and looks into the fog.',
-          references: [{ path: 'entities/characters/' + maria + '/ref/face.png', role: 'face' }],
+          references: [
+            {
+              path: 'entities/characters/' + maria + '/ref/face.png',
+              mediaType: 'image',
+              role: 'face',
+            },
+          ],
           audioInputs: [],
           durationSeconds: 6,
           seed: 7,

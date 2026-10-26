@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import {
   CapabilitySchema,
+  MediaTypeSchema,
   RelativePathSchema,
   ReferenceRoleSchema,
   TimestampSchema,
@@ -24,6 +25,7 @@ export const JobStateSchema = z.enum([
 /** A reference passed to the provider together with the role it plays. */
 export const RequestReferenceSchema = z.strictObject({
   path: RelativePathSchema,
+  mediaType: MediaTypeSchema,
   role: ReferenceRoleSchema,
 });
 
@@ -90,3 +92,4 @@ export type JobState = z.infer<typeof JobStateSchema>;
 export type GenerationRequest = z.infer<typeof GenerationRequestSchema>;
 export type Estimate = z.infer<typeof EstimateSchema>;
 export type Job = z.infer<typeof JobSchema>;
+export type RequestReference = z.infer<typeof RequestReferenceSchema>;

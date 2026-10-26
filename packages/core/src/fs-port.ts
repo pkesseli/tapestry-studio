@@ -23,6 +23,17 @@ export interface FsPort {
    */
   writeText(path: string, text: string): Promise<void>;
   /**
+   * Reads a binary file; rejects when it does not exist.
+   * @param path Project-relative file path.
+   */
+  readBytes(path: string): Promise<Uint8Array>;
+  /**
+   * Writes a binary file atomically, creating parent directories.
+   * @param path Project-relative file path.
+   * @param bytes Complete new contents.
+   */
+  writeBytes(path: string, bytes: Uint8Array): Promise<void>;
+  /**
    * Tells whether a file or directory exists.
    * @param path Project-relative path.
    */
@@ -39,27 +50,48 @@ export interface FsPort {
   remove(path: string): Promise<void>;
 }
 
+/** Minimal view of the platform text encoder (available in Node, Electron and browsers). */
+declare const TextEncoder: new () => { encode(text: string): Uint8Array };
+
+/** Minimal view of the platform text decoder. */
+declare const TextDecoder: new () => { decode(bytes: Uint8Array): string };
+
 /** In-memory {@link FsPort} for tests and dry runs. */
 export class MemoryFs implements FsPort {
   /** File contents by project-relative path. */
-  private readonly store = new Map<string, string>();
+  private readonly store = new Map<string, Uint8Array>();
 
-  /** Snapshot of all files, sorted by path. */
+  /** Snapshot of all files decoded as UTF-8 text, sorted by path. */
   files(): Record<string, string> {
-    return Object.fromEntries([...this.store].sort(([a], [b]) => (a < b ? -1 : 1)));
+    const decoder = new TextDecoder();
+    return Object.fromEntries(
+      [...this.store]
+        .sort(([a], [b]) => (a < b ? -1 : 1))
+        .map(([path, bytes]) => [path, decoder.decode(bytes)]),
+    );
   }
 
   /** @inheritdoc */
-  readText(path: string): Promise<string> {
-    const text = this.store.get(path);
-    return text === undefined
-      ? Promise.reject(new Error(`ENOENT: ${path}`))
-      : Promise.resolve(text);
+  async readText(path: string): Promise<string> {
+    return new TextDecoder().decode(await this.readBytes(path));
   }
 
   /** @inheritdoc */
   writeText(path: string, text: string): Promise<void> {
-    this.store.set(path, text);
+    return this.writeBytes(path, new TextEncoder().encode(text));
+  }
+
+  /** @inheritdoc */
+  readBytes(path: string): Promise<Uint8Array> {
+    const bytes = this.store.get(path);
+    return bytes === undefined
+      ? Promise.reject(new Error(`ENOENT: ${path}`))
+      : Promise.resolve(bytes.slice());
+  }
+
+  /** @inheritdoc */
+  writeBytes(path: string, bytes: Uint8Array): Promise<void> {
+    this.store.set(path, bytes.slice());
     return Promise.resolve();
   }
 

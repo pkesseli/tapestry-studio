@@ -35,6 +35,7 @@
     },
     "references": [
       {
+        "mediaType": "image",
         "path": "entities/characters/chr_00000000000000000000000001/ref/face.png",
         "role": "face"
       }

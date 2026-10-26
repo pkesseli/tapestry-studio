@@ -1,7 +1,9 @@
 /**
- * Provider interface and built-in adapters (plan 03 onward).
- *
- * Placeholder entry point created by plan 01; real exports arrive with the plan files named in
- * doc/plan.
+ * The provider plug-in boundary: the `Provider` interface, limits and reference budgeting, the registry and plug-in
+ * loader, and the mock provider used in development and tests (see doc/readme/providers.md).
  */
-export {};
+export * from './limits';
+export * from './mock/mock-provider';
+export * from './plugins';
+export * from './registry';
+export * from './types';
