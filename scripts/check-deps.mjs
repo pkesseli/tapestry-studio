@@ -12,8 +12,9 @@ export const ALLOWED_INTERNAL = {
   queue: ['core'],
   providers: ['core'],
   media: ['core'],
-  cli: ['core', 'queue', 'providers', 'media', 'script'],
-  app: ['core', 'queue', 'providers', 'media', 'script'],
+  'fs-node': ['core'],
+  cli: ['core', 'queue', 'providers', 'media', 'script', 'fs-node'],
+  app: ['core', 'queue', 'providers', 'media', 'script', 'fs-node'],
 };
 
 /** Packages that must stay free of Node.js and Electron imports so they run anywhere and test instantly. */

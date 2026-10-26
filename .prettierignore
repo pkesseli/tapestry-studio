@@ -7,3 +7,4 @@ doc
 playwright-report
 test-results
 *.md
+fixtures

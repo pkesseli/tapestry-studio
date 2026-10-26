@@ -1,0 +1,23 @@
+{
+  "aliases": [
+    "María"
+  ],
+  "appearance": "Weathered face, grey braid, yellow raincoat.",
+  "canonicalSheet": [
+    "entities/characters/chr_00000000000000000000000001/ref/face.png"
+  ],
+  "description": "A ferry captain in her forties.",
+  "id": "chr_00000000000000000000000001",
+  "kind": "character",
+  "name": "Maria",
+  "notes": "",
+  "references": [
+    {
+      "mediaType": "image",
+      "path": "entities/characters/chr_00000000000000000000000001/ref/face.png",
+      "role": "face"
+    }
+  ],
+  "voiceId": "voc_00000000000000000000000001",
+  "wardrobe": []
+}

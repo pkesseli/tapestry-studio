@@ -1,0 +1,24 @@
+{
+  "accepted": true,
+  "acceptedAt": "2026-10-26T09:00:00.000Z",
+  "createdAt": "2026-10-26T09:00:00.000Z",
+  "files": [
+    {
+      "contentHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "mediaType": "video",
+      "path": "artifacts/art_00000000000000000000000001/clip.mp4"
+    }
+  ],
+  "id": "art_00000000000000000000000001",
+  "jobId": "job_00000000000000000000000001",
+  "notes": "",
+  "provenance": {
+    "inputsHash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "model": "mock-video",
+    "providerId": "mock",
+    "referencePaths": [
+      "entities/characters/chr_00000000000000000000000001/ref/face.png"
+    ],
+    "seed": 7
+  }
+}

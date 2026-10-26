@@ -1,0 +1,29 @@
+{
+  "bars": 8,
+  "id": "sec_00000000000000000000000001",
+  "key": "Am",
+  "kind": "verse",
+  "lyrics": [
+    {
+      "text": "The fog rolls in",
+      "voiceId": "voc_00000000000000000000000001"
+    }
+  ],
+  "name": "Verse 1",
+  "number": 1,
+  "tempoBpm": 92,
+  "tracks": [
+    {
+      "direction": "Fingerpicked, sparse",
+      "enabled": true,
+      "instrumentId": "ins_00000000000000000000000001",
+      "role": "rhythm"
+    },
+    {
+      "direction": "Soft chords",
+      "enabled": true,
+      "instrumentId": "ins_00000000000000000000000002",
+      "role": "pad"
+    }
+  ]
+}

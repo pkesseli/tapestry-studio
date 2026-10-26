@@ -28,6 +28,7 @@ core        pure TS: project format schemas, load/save, validation, migrations, 
 queue       job state machine, persistence, budgets, scheduling. Depends on core.
 providers   Provider interface + built-in adapters (mock, comfyui, fal, replicate, ...). Depends on core.
 media       ffmpeg wrapper (external binary), thumbnails, stitching, waveform. Depends on core.
+fs-node     Node.js FsPort implementation (atomic disk writes). Depends on core.
 script      screenplay/lyrics parsing, entity detection. Depends on core.
 app         Electron main process + React renderer. Depends on all of the above.
 ```

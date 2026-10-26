@@ -261,7 +261,17 @@ importers:
         specifier: workspace:*
         version: link:../script
 
-  packages/core: {}
+  packages/core:
+    dependencies:
+      zod:
+        specifier: ^4.6.7
+        version: 4.6.7
+
+  packages/fs-node:
+    dependencies:
+      '@tapestry/core':
+        specifier: workspace:*
+        version: link:../core
 
   packages/media:
     dependencies:

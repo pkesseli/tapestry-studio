@@ -1,0 +1,28 @@
+{
+  "description": "Maria searches the empty pier.",
+  "entityIds": [
+    "chr_00000000000000000000000001",
+    "prp_00000000000000000000000001"
+  ],
+  "heading": "INT. HARBOR - NIGHT",
+  "id": "scn_00000000000000000000000001",
+  "locationId": "loc_00000000000000000000000001",
+  "number": 1,
+  "shots": [
+    {
+      "action": "Maria lifts a lantern and looks into the fog.",
+      "dialogue": [
+        {
+          "id": "lin_00000000000000000000000001",
+          "speakerId": "chr_00000000000000000000000001",
+          "text": "Is anyone there?"
+        }
+      ],
+      "durationSeconds": 6,
+      "id": "sht_00000000000000000000000001",
+      "referenceEntityIds": [
+        "chr_00000000000000000000000001"
+      ]
+    }
+  ]
+}

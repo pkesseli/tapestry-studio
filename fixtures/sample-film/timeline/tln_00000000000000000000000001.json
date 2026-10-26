@@ -1,0 +1,24 @@
+{
+  "fps": 24,
+  "id": "tln_00000000000000000000000001",
+  "name": "Main cut",
+  "tracks": [
+    {
+      "clips": [
+        {
+          "artifactId": "art_00000000000000000000000001",
+          "fadeInSeconds": 0,
+          "fadeOutSeconds": 0.5,
+          "id": "clp_00000000000000000000000001",
+          "inSeconds": 0,
+          "outSeconds": 6,
+          "startSeconds": 0,
+          "volume": 1
+        }
+      ],
+      "id": "trk_00000000000000000000000001",
+      "kind": "video",
+      "name": "Picture"
+    }
+  ]
+}

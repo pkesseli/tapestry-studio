@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react';
 import { defineConfig, externalizeDepsPlugin } from 'electron-vite';
 
 /** Workspace packages ship TypeScript sources, so they are bundled instead of externalized. */
-const WORKSPACE_PACKAGES = ['core', 'queue', 'providers', 'media', 'script'].map(
+const WORKSPACE_PACKAGES = ['core', 'queue', 'providers', 'media', 'script', 'fs-node'].map(
   (name) => `@tapestry/${name}`,
 );
 

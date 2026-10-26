@@ -24,3 +24,7 @@ Add the user-facing state vocabulary to `vision.md` if it changed. Remove this f
 
 ## Milestone
 **M1 reached after this file**: script -> entities -> queued mock shots -> review. Stop and ask the human to try it.
+
+Before the checkpoint, make CI publish **unsigned installer artifacts** (electron-builder: macOS dmg, Windows installer,
+Linux AppImage) so the target user can run M1 on her own Mac without a dev setup. Signing, package managers and
+auto-update stay in plan 19.

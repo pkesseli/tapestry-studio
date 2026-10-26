@@ -1,0 +1,14 @@
+{
+  "createdAt": "2026-10-26T09:00:00.000Z",
+  "id": "prj_00000000000000000000000002",
+  "name": "Harbor Lights",
+  "schemaVersion": 1,
+  "settings": {
+    "aspectRatio": "1:1",
+    "defaultProviders": {
+      "music": "mock"
+    },
+    "fps": 24,
+    "simpleMode": true
+  }
+}

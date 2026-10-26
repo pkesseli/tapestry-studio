@@ -5,8 +5,9 @@ The single plugin boundary for every generator (video, image, speech, music, sfx
 rest of the system developable without GPUs or money.
 
 ## Steps
-1. Define in `packages/providers`: `Capability` union, `GenerationRequest` (provider-neutral; see
-   `doc/readme/providers.md`), `ProviderLimits`, `Estimate`, `Provider` interface (`estimate/submit/poll/cancel`).
+1. Define in `packages/providers`: `ProviderLimits`, `Estimate`, `Provider` interface. (`Capability` and the
+   provider-neutral `GenerationRequest` already exist as schemas in `core`, plan 02; see
+   `doc/readme/providers.md`.) The interface has `estimate/submit/poll/cancel`.
 2. Provider manifest schema (id, name, capabilities, config schema, terms URL, pricing hints) and a registry that loads
    built-ins and a user plugin folder (manifest + JS entry; no remote code execution, no auto-update).
 3. Shared **contract test suite** that any adapter must pass (retry-safe submit, resumable poll, cancel, limits honoured,

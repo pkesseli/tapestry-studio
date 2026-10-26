@@ -1,0 +1,19 @@
+{
+  "budget": {
+    "currency": "USD",
+    "perApprovalCap": 5,
+    "projectCap": 25
+  },
+  "createdAt": "2026-10-26T09:00:00.000Z",
+  "id": "prj_00000000000000000000000001",
+  "name": "The Last Ferry",
+  "schemaVersion": 1,
+  "settings": {
+    "aspectRatio": "16:9",
+    "defaultProviders": {
+      "video": "mock"
+    },
+    "fps": 24,
+    "simpleMode": true
+  }
+}

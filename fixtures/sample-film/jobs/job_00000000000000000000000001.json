@@ -1,0 +1,47 @@
+{
+  "actualCost": 0,
+  "artifactIds": [
+    "art_00000000000000000000000001"
+  ],
+  "createdAt": "2026-10-26T09:00:00.000Z",
+  "estimate": {
+    "cost": 0,
+    "notes": "Mock provider",
+    "seconds": 1
+  },
+  "history": [
+    {
+      "actor": "system",
+      "at": "2026-10-26T09:00:00.000Z",
+      "to": "draft"
+    },
+    {
+      "actor": "user",
+      "at": "2026-10-26T09:00:00.000Z",
+      "from": "draft",
+      "note": "Looks great",
+      "to": "accepted"
+    }
+  ],
+  "id": "job_00000000000000000000000001",
+  "request": {
+    "audioInputs": [],
+    "capability": "video",
+    "durationSeconds": 6,
+    "extras": {},
+    "prompt": "Maria lifts a lantern and looks into the fog.",
+    "provider": {
+      "providerId": "mock"
+    },
+    "references": [
+      {
+        "path": "entities/characters/chr_00000000000000000000000001/ref/face.png",
+        "role": "face"
+      }
+    ],
+    "seed": 7
+  },
+  "state": "accepted",
+  "targetId": "sht_00000000000000000000000001",
+  "updatedAt": "2026-10-26T09:00:00.000Z"
+}
