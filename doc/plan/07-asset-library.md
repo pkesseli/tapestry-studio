@@ -20,5 +20,8 @@ Create, view and refine entities, building each one's **canonical sheet** (the a
   scene side panel.
 - Merging two characters rewrites script references and unit refs without orphaning.
 
+## Section review (blocks deletion of this file)
+The human runs the section in the app and gives feedback; apply it here before removing this file (see `ux.md`).
+
 ## On completion
 Update `project-format.md` if the canonical-sheet rules changed. Remove this file.

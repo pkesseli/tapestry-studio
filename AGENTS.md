@@ -28,6 +28,7 @@ Two folders, two jobs:
 - `doc/readme/architecture.md` — stack, modules, plugin boundaries, job lifecycle.
 - `doc/readme/project-format.md` — on-disk project format (film and music entities).
 - `doc/readme/providers.md` — provider interface, model/hardware facts, model-license cautions.
+- `doc/readme/ux.md` — user-facing vocabulary, interface principles, how UI work is reviewed.
 - `doc/readme/testing.md` — test layers, mock provider, spend caps, how to run agent loops safely.
 
 ### Plan-file rules
@@ -68,6 +69,9 @@ Two folders, two jobs:
   tests. Change a schema -> update its tests and migration in the same commit.
 - **Everything the app stores is plain files in the project folder.** No hidden database as the source of truth.
 - **Frozen clips.** Once a clip is Accepted, no code path may regenerate or overwrite it without an explicit user action.
+- **UI one section at a time.** UI plans build a runnable prototype of one section; the human (and the target user)
+  reviews it in the running app and the feedback is applied before the plan file is deleted or the next section starts.
+  Never build several sections ahead of review. See `doc/readme/ux.md`.
 - **Small commits**, each leaving `main` green. Do not push or open PRs unless asked.
 - **Code style.** TypeScript strict mode; public functions and types carry TSDoc explaining parameters and
   invariants. Any Python (local-model sidecar, if it exists) uses type hints, docstrings on every class and function
