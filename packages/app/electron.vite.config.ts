@@ -3,9 +3,15 @@ import react from '@vitejs/plugin-react';
 import { defineConfig, externalizeDepsPlugin } from 'electron-vite';
 
 /** Workspace packages ship TypeScript sources, so they are bundled instead of externalized. */
-const WORKSPACE_PACKAGES = ['core', 'queue', 'providers', 'media', 'script', 'fs-node'].map(
-  (name) => `@tapestry/${name}`,
-);
+const WORKSPACE_PACKAGES = [
+  'core',
+  'queue',
+  'providers',
+  'media',
+  'script',
+  'fs-node',
+  'service',
+].map((name) => `@tapestry/${name}`);
 
 /** Build configuration for the Electron main process, preload script and React renderer. */
 export default defineConfig({
@@ -15,7 +21,13 @@ export default defineConfig({
   },
   preload: {
     plugins: [externalizeDepsPlugin({ exclude: WORKSPACE_PACKAGES })],
-    build: { rollupOptions: { input: resolve(__dirname, 'src/preload/index.ts') } },
+    // A sandboxed preload cannot load ES modules, so it is built as a single CommonJS file.
+    build: {
+      rollupOptions: {
+        input: resolve(__dirname, 'src/preload/index.ts'),
+        output: { format: 'cjs', entryFileNames: '[name].cjs' },
+      },
+    },
   },
   renderer: {
     root: resolve(__dirname, 'src/renderer'),

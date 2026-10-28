@@ -1,12 +1,13 @@
-import { contextBridge } from 'electron';
+import { contextBridge, ipcRenderer } from 'electron';
+import { IPC_CHANNELS } from '../shared/api';
+import type { TapestryApi } from '../shared/api';
 
-/** Typed surface exposed to the renderer as `window.tapestry`. Grows as features need privileged access. */
-const api = {
-  /** Name of the host platform, for display only. */
+/** Typed surface exposed to the renderer as `window.tapestry`; every method is one IPC round trip. */
+const api: TapestryApi = {
   platform: process.platform,
-} as const;
-
-/** Type of `window.tapestry`, shared with the renderer. */
-export type TapestryApi = typeof api;
+  getState: () => ipcRenderer.invoke(IPC_CHANNELS.getState),
+  saveScript: (path, text) => ipcRenderer.invoke(IPC_CHANNELS.saveScript, path, text),
+  createEntity: (input) => ipcRenderer.invoke(IPC_CHANNELS.createEntity, input),
+};
 
 contextBridge.exposeInMainWorld('tapestry', api);

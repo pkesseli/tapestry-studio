@@ -1,0 +1,34 @@
+/** Path of the screenplay that the Write section edits. */
+export const MAIN_SCRIPT = 'script/main.fountain';
+
+/** Name of the project created on first launch. */
+export const STARTER_PROJECT_NAME = 'My First Film';
+
+/**
+ * A short example screenplay for a new project. Nobody is in the cast yet, so every name is underlined as new and the
+ * user can see how adding characters, places and props works.
+ */
+export const STARTER_SCREENPLAY = `Title: My First Film
+Author: You
+
+INT. HARBOR - NIGHT
+
+MARIA lifts a LANTERN and peers into the fog. A distant HORN sounds.
+
+MARIA
+Is anyone there?
+
+NORA (O.S.)
+(shouting)
+Over here, Captain!
+
+EXT. FERRY DECK - DAWN
+
+Tom coils a rope as the sun comes up. MARIA joins him at the rail.
+
+TOM
+We missed the last crossing.
+
+MARIA
+We didn't miss it. It never came.
+`;

@@ -1,0 +1,96 @@
+import type { Entity, EntityKind } from '@tapestry/core';
+import { normalizeAlias } from '@tapestry/core';
+import type { Analysis, Mention } from '@tapestry/script';
+import { sceneTitle } from './format';
+
+/** A scene as the scene list and the side panel see it. */
+export interface SceneItem {
+  /** Position in the film, starting at 1. */
+  number: number;
+  /** Short title such as "Harbor, night". */
+  title: string;
+  /** Offset of the heading in the text. */
+  start: number;
+  /** Offset where the next scene starts (or the end of the text). */
+  end: number;
+}
+
+/** A known entity that appears in a scene, with how often. */
+export interface PresentEntity {
+  entity: Entity;
+  mentions: number;
+}
+
+/** What the side panel shows for one scene. */
+export interface SceneContents {
+  cast: PresentEntity[];
+  places: PresentEntity[];
+  things: PresentEntity[];
+  /** Names with no entity yet, one per name and kind. */
+  missing: { name: string; kind: EntityKind; count: number }[];
+}
+
+/**
+ * Lists the scenes of the analysed screenplay.
+ * @param analysis Result of analysing a screenplay.
+ */
+export function sceneItems(analysis: Analysis): SceneItem[] {
+  const scenes = analysis.fountain?.scenes ?? [];
+  return scenes.map((scene, index) => ({
+    number: index + 1,
+    title: sceneTitle(scene.heading.text, scene.heading.locationName, scene.heading.timeOfDay),
+    start: scene.heading.range.start,
+    end: scenes[index + 1]?.heading.range.start ?? analysis.text.length + 1,
+  }));
+}
+
+/**
+ * Finds the scene the cursor is in. Before the first heading the first scene counts.
+ * @param scenes Scenes in order.
+ * @param cursor Cursor offset.
+ * @returns Index into `scenes`, or -1 when there are none.
+ */
+export function activeSceneIndex(scenes: readonly SceneItem[], cursor: number): number {
+  if (scenes.length === 0) return -1;
+  const index = scenes.findIndex((scene) => cursor >= scene.start && cursor < scene.end);
+  return index < 0 ? 0 : index;
+}
+
+/**
+ * Works out who and what appears in a scene.
+ * @param scene The scene.
+ * @param mentions All mentions of the screenplay.
+ * @param entities The project's cast.
+ */
+export function contentsOf(
+  scene: SceneItem,
+  mentions: readonly Mention[],
+  entities: readonly Entity[],
+): SceneContents {
+  const byId = new Map(entities.map((entity) => [entity.id, entity]));
+  const present = new Map<string, PresentEntity>();
+  const missing = new Map<string, SceneContents['missing'][number]>();
+  for (const mention of mentions) {
+    if (mention.range.start < scene.start || mention.range.start >= scene.end) continue;
+    if (mention.status === 'unresolved') {
+      const key = `${mention.kind}:${normalizeAlias(mention.text)}`;
+      const entry = missing.get(key);
+      if (entry) entry.count++;
+      else missing.set(key, { name: mention.text, kind: mention.kind, count: 1 });
+      continue;
+    }
+    const id = mention.entityIds[0] as Entity['id'] | undefined;
+    const entity = mention.entityIds.length === 1 && id ? byId.get(id) : undefined;
+    if (!entity) continue;
+    const entry = present.get(entity.id);
+    if (entry) entry.mentions++;
+    else present.set(entity.id, { entity, mentions: 1 });
+  }
+  const of = (kind: EntityKind) => [...present.values()].filter((p) => p.entity.kind === kind);
+  return {
+    cast: of('character'),
+    places: of('location'),
+    things: of('prop'),
+    missing: [...missing.values()],
+  };
+}

@@ -16,7 +16,8 @@ Needs Node.js 24+ and pnpm 12. See [CONTRIBUTING.md](CONTRIBUTING.md) for the fu
 
 ```sh
 pnpm install
-pnpm dev        # run the Electron app with hot reload
+pnpm dev        # run the app with hot reload (opens Documents/Tapestry Studio/My First Film;
+                # set TAPESTRY_PROJECT to use another folder)
 pnpm verify     # format check, repo rules, typecheck, lint, tests, build
 pnpm test:e2e   # launch the built app with Playwright
 ```

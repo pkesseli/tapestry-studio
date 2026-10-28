@@ -1,5 +1,9 @@
 # 06 — App shell and the Write section (first reviewable prototype)
 
+## Status
+Built and tested (unit, service and Playwright tests). **Waiting for the section review below.** Run it with `pnpm dev`
+(set `TAPESTRY_PROJECT` to use another folder).
+
 ## Goal
 A real, runnable first slice: open a project, write a screenplay, see scenes and names recognised, and add characters,
 places and props inline. Nothing else is built yet; the other tabs exist but say what is coming.

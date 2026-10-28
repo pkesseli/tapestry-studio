@@ -137,3 +137,12 @@ the OS keychain (via Electron `safeStorage`), never in the project folder.
   (`headlessBudget`); without it no budget exists, so paid providers are refused. The cap can only lower the project's
   limits, never raise them.
 - `queue.ts` is close to the 400-line limit: put new scheduler features in their own module.
+- **Renderer <-> main API** is `packages/app/src/shared/api.ts` (one IPC channel per use case, inputs validated in
+  `main/ipc.ts`); the main process only delegates to `@tapestry/service`. Text analysis (`@tapestry/script`) runs in
+  the renderer on every keystroke; saving and deriving scenes happens in the service.
+- **A sandboxed preload must be one CommonJS file.** electron-vite emits ES modules for `"type": "module"` packages,
+  which a sandboxed preload cannot load, and the failure is silent (`window.tapestry` is undefined). The config builds
+  it as `out/preload/index.cjs`; the e2e tests catch a regression.
+- The app opens `TAPESTRY_PROJECT` if set, else `Documents/Tapestry Studio/My First Film` (created from an example
+  screenplay on first launch).
+

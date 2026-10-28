@@ -1,17 +1,34 @@
 import { join } from 'node:path';
-import { BrowserWindow, app } from 'electron';
+import { NodeFs } from '@tapestry/fs-node';
+import { ProjectService } from '@tapestry/service';
+import { BrowserWindow, app, dialog } from 'electron';
+import { registerIpc } from './ipc';
 
 /**
- * Opens the main application window. The renderer is sandboxed with context isolation: it reaches the machine
- * only through the typed API that the preload script exposes (see `src/preload`).
+ * Folder of the project to open: `TAPESTRY_PROJECT` when set (tests and development), otherwise the default project
+ * in the user's documents folder.
+ */
+function projectFolder(): string {
+  return (
+    process.env['TAPESTRY_PROJECT'] ??
+    join(app.getPath('documents'), 'Tapestry Studio', 'My First Film')
+  );
+}
+
+/**
+ * Opens the main application window. The renderer is sandboxed with context isolation: it reaches the project only
+ * through the typed API that the preload script exposes (see `src/shared/api.ts`).
  */
 function createWindow(): void {
   const window = new BrowserWindow({
-    width: 1280,
-    height: 800,
+    width: 1360,
+    height: 860,
+    minWidth: 960,
+    minHeight: 600,
     title: 'Tapestry Studio',
+    backgroundColor: '#f5f3ef',
     webPreferences: {
-      preload: join(__dirname, '../preload/index.mjs'),
+      preload: join(__dirname, '../preload/index.cjs'),
       contextIsolation: true,
       sandbox: true,
       nodeIntegration: false,
@@ -25,7 +42,14 @@ function createWindow(): void {
   }
 }
 
-void app.whenReady().then(() => {
+void app.whenReady().then(async () => {
+  try {
+    registerIpc(await ProjectService.open(new NodeFs(projectFolder())));
+  } catch (error) {
+    dialog.showErrorBox('Tapestry Studio cannot open your project', (error as Error).message);
+    app.quit();
+    return;
+  }
   createWindow();
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
