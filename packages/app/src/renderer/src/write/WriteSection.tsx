@@ -10,6 +10,7 @@ import { ScriptEditor } from './ScriptEditor';
 import type { ScriptEditorHandle } from './ScriptEditor';
 import { displayName, modifierLabel } from './format';
 import { footageByScene } from './footage';
+import { savedScenesFor } from './saved-scenes';
 import { newActInsertion, newLineInsertion, newSceneInsertion } from './insertions';
 import { activeSceneIndex, contentsOf, sceneContentEnd, sceneItems } from './scenes';
 import type { SceneItem } from './scenes';
@@ -51,16 +52,20 @@ export function WriteSection({ initial }: { initial: StudioState }) {
   const scenes = useMemo(() => sceneItems(analysis), [analysis]);
   const activeIndex = activeSceneIndex(scenes, cursor);
   const activeScene: SceneItem | undefined = scenes[activeIndex];
+  const savedScenes = useMemo(
+    () => savedScenesFor(scenes, studio.state.scenes),
+    [scenes, studio.state.scenes],
+  );
   const footage = useMemo(
-    () => footageByScene(studio.state.scenes, studio.state.clips),
-    [studio.state.scenes, studio.state.clips],
+    () => footageByScene(savedScenes, studio.state.clips),
+    [savedScenes, studio.state.clips],
   );
   const shotsByScene = useMemo(
     () =>
       (analysis.fountain?.scenes ?? []).map((parsed, index) =>
-        shotViews(parsed, studio.state.scenes[index], studio.state.clips, studio.state.entities),
+        shotViews(parsed, savedScenes[index], studio.state.clips, studio.state.entities),
       ),
-    [analysis, studio.state.scenes, studio.state.clips, studio.state.entities],
+    [analysis, savedScenes, studio.state.clips, studio.state.entities],
   );
   const sceneShots = shotsByScene[activeIndex] ?? [];
   const activeShot = activeShotIndex(sceneShots, cursor);
@@ -125,7 +130,7 @@ export function WriteSection({ initial }: { initial: StudioState }) {
   }, []);
 
   // Remember the cursor and its scene a moment after they stop changing.
-  const activeSceneId = studio.state.scenes[activeIndex]?.id;
+  const activeSceneId = savedScenes[activeIndex]?.id;
   const { saveWorkspace } = studio;
   useEffect(() => {
     const timer = setTimeout(

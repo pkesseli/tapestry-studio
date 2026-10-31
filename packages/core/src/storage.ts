@@ -137,6 +137,13 @@ function parseFile<T>(
 }
 
 /**
+ * Orders scenes or sections by their position in the script.
+ * @param a First item.
+ * @param b Second item.
+ */
+const byNumber = (a: { number: number }, b: { number: number }): number => a.number - b.number;
+
+/**
  * Loads a project folder: reads, migrates to the current format, and validates every managed file.
  * @param fs File system rooted at the project folder.
  * @throws {ProjectFormatError} Naming the file and field of the first problem found.
@@ -184,8 +191,9 @@ export async function loadProject(fs: FsPort): Promise<ProjectData> {
     project: parseFile(raw[PROJECT_FILE], PROJECT_FILE, ProjectSchema, () => PROJECT_FILE),
     scripts,
     entities: collect('entities/', EntitySchema, (e) => entityFile(e.kind, e.id)),
-    scenes: collect(`${SCENES_DIR}/`, SceneSchema, (s) => sceneFile(s.id)),
-    sections: collect(`${SECTIONS_DIR}/`, SectionSchema, (s) => sectionFile(s.id)),
+    // Files are read in file-name (creation) order; scenes and sections belong in script order.
+    scenes: collect(`${SCENES_DIR}/`, SceneSchema, (s) => sceneFile(s.id)).sort(byNumber),
+    sections: collect(`${SECTIONS_DIR}/`, SectionSchema, (s) => sectionFile(s.id)).sort(byNumber),
     jobs: collect(`${JOBS_DIR}/`, JobSchema, (j) => jobFile(j.id)),
     artifacts: collect(`${ARTIFACTS_DIR}/`, ArtifactSchema, (a) => artifactFile(a.id)),
     timelines: collect(`${TIMELINE_DIR}/`, TimelineSchema, (t) => timelineFile(t.id)),

@@ -271,3 +271,30 @@ test('a new line goes after the shot and its direction, so the direction stays w
   if (SHOTS) await window.screenshot({ path: join(SHOTS, 'write-addline.png') });
   await app.close();
 });
+
+test('footage stays on the right scenes after adding a scene in the middle and restarting', async () => {
+  const project = mkdtempSync(join(tmpdir(), 'tapestry-e2e-'));
+  const service = await ProjectService.open(new NodeFs(project));
+  await service.addSampleFootage(
+    [1, 2, 3].map((n) => ({ name: `${n}.mp4`, bytes: placeholderVideo() })),
+  );
+  const summaries = (window: Page) =>
+    window
+      .locator('.scene')
+      .evaluateAll((els) => els.map((e) => (e as HTMLElement).innerText.replace(/\n+/g, ' | ')));
+
+  const first = await launch(project);
+  await first.window.getByRole('button', { name: 'Add scene' }).click();
+  await first.window.keyboard.type('KITCHEN');
+  await expect(first.window.getByText('Saved', { exact: true })).toBeVisible();
+  await first.app.close();
+
+  const second = await launch(project);
+  await expect.poll(() => summaries(second.window).then((rows) => rows.length)).toBe(4);
+  const rows = await summaries(second.window);
+  expect(rows[0]).toContain('Harbor, night | 3 shots · 1 accepted · 2 to review');
+  expect(rows[1]).toContain('Kitchen, day | No shots yet');
+  expect(rows[2]).toContain('Ferry deck, dawn | 3 shots · 1 accepted · 2 to review');
+  expect(rows[3]).toContain('Cabin, day | 3 shots · 1 accepted · 2 to review');
+  await second.app.close();
+});

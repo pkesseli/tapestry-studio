@@ -2,7 +2,7 @@ import { expect, test } from 'vitest';
 import { ProjectFormatError } from './errors';
 import { MemoryFs } from './fs-port';
 import { loadProject, saveProject, serializeProject } from './storage';
-import { buildSampleFilm, buildSampleSong } from './testing';
+import { buildSampleFilm, buildSampleSong, sampleId } from './testing';
 import { validateProject } from './validate';
 
 test.each([
@@ -85,4 +85,15 @@ test('an empty folder is not a project', async () => {
 
 test('serialisation is deterministic', () => {
   expect(serializeProject(buildSampleFilm())).toEqual(serializeProject(buildSampleFilm()));
+});
+
+test('scenes load in script order, not in the order of their file names', async () => {
+  const fs = new MemoryFs();
+  const film = buildSampleFilm();
+  const [scene] = film.scenes;
+  if (!scene) throw new Error('sample data changed');
+  const first = { ...scene, id: sampleId('scn', 5), number: 2 };
+  const second = { ...scene, id: sampleId('scn', 9), number: 1 };
+  await saveProject(fs, { ...film, scenes: [first, second] });
+  expect((await loadProject(fs)).scenes.map((s) => s.number)).toEqual([1, 2]);
 });

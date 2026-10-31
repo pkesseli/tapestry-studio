@@ -11,18 +11,20 @@ export interface SceneFootage {
 
 /**
  * Collects the footage of every scene, in the order of the scene list.
- * @param scenes Scenes derived from the screenplay.
+ * @param scenes The saved scene for each scene of the script, in script order (`undefined` where none matches yet).
  * @param clips All videos of the project.
  */
 export function footageByScene(
-  scenes: readonly Scene[],
+  scenes: readonly (Scene | undefined)[],
   clips: readonly SceneClip[],
 ): SceneFootage[] {
   return scenes.map((scene) => ({
-    shots: scene.shots.length,
-    clips: clips
-      .filter((clip) => clip.sceneId === scene.id)
-      .sort((a, b) => a.shotNumber - b.shotNumber),
+    shots: scene?.shots.length ?? 0,
+    clips: scene
+      ? clips
+          .filter((clip) => clip.sceneId === scene.id)
+          .sort((a, b) => a.shotNumber - b.shotNumber)
+      : [],
   }));
 }
 
