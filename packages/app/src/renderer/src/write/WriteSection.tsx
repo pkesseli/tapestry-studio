@@ -2,8 +2,17 @@ import { normalizeAlias } from '@tapestry/core';
 import type { EntityKind } from '@tapestry/core';
 import { analyze, mentionAt } from '@tapestry/script';
 import type { StudioState } from '@tapestry/service';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { ContextMenu } from '../ContextMenu';
+import type { MenuItem } from '../ContextMenu';
 import { AddEntityCard } from './AddEntityCard';
+import { DeleteConfirm } from './DeleteConfirm';
+import type { PendingDelete } from './DeleteConfirm';
+import { impactOf } from './deletions';
+import type { Removal } from './deletions';
+import { insertionPoint, insertMenuItems } from './insert-menu';
+import { actMenuItems, sceneMenuItems } from './list-menus';
+import type { ListMenuContext } from './list-menus';
 import { InScenePanel } from './InScenePanel';
 import { SceneList } from './SceneList';
 import { ScriptEditor } from './ScriptEditor';
@@ -11,8 +20,13 @@ import type { ScriptEditorHandle } from './ScriptEditor';
 import { displayName, modifierLabel } from './format';
 import { footageByScene } from './footage';
 import { savedScenesFor } from './saved-scenes';
-import { newActInsertion, newLineInsertion, newSceneInsertion } from './insertions';
-import { activeSceneIndex, contentsOf, sceneContentEnd, sceneItems } from './scenes';
+import {
+  newActInsertion,
+  newDirectionInsertion,
+  newLineInsertion,
+  newSceneInsertion,
+} from './insertions';
+import { actItems, activeSceneIndex, contentsOf, sceneContentEnd, sceneItems } from './scenes';
 import type { SceneItem } from './scenes';
 import { activeShotIndex, shotViews } from './shots-view';
 import { useStudio } from './useStudio';
@@ -41,6 +55,14 @@ export function WriteSection({ initial }: { initial: StudioState }) {
     above: boolean;
   } | null>(null);
   const [exported, setExported] = useState<string | null>(null);
+  const [popup, setPopup] = useState<{
+    x: number;
+    y: number;
+    label: string;
+    items: MenuItem[];
+  } | null>(null);
+  const [confirm, setConfirm] = useState<{ removal: Removal; pending: PendingDelete } | null>(null);
+  const closePopup = useCallback(() => setPopup(null), []);
   const editor = useRef<ScriptEditorHandle>(null);
   const menu = useRef<HTMLDetailsElement>(null);
   const column = useRef<HTMLElement>(null);
@@ -50,6 +72,7 @@ export function WriteSection({ initial }: { initial: StudioState }) {
     [studio.text, studio.state.entities],
   );
   const scenes = useMemo(() => sceneItems(analysis), [analysis]);
+  const acts = useMemo(() => actItems(analysis), [analysis]);
   const activeIndex = activeSceneIndex(scenes, cursor);
   const activeScene: SceneItem | undefined = scenes[activeIndex];
   const savedScenes = useMemo(
@@ -67,6 +90,7 @@ export function WriteSection({ initial }: { initial: StudioState }) {
       ),
     [analysis, savedScenes, studio.state.clips, studio.state.entities],
   );
+  const insertContext = { text: studio.text, analysis, scenes, shotsByScene };
   const sceneShots = shotsByScene[activeIndex] ?? [];
   const activeShot = activeShotIndex(sceneShots, cursor);
   const marks = useMemo(
@@ -87,7 +111,11 @@ export function WriteSection({ initial }: { initial: StudioState }) {
     () =>
       activeScene
         ? contentsOf(activeScene, analysis.mentions, studio.state.entities)
-        : contentsOf({ number: 0, title: '', start: 0, end: 0, heading: '', names: [] }, [], []),
+        : contentsOf(
+            { number: 0, title: '', start: 0, headingStart: 0, end: 0, heading: '', names: [] },
+            [],
+            [],
+          ),
     [activeScene, analysis, studio.state.entities],
   );
 
@@ -123,7 +151,7 @@ export function WriteSection({ initial }: { initial: StudioState }) {
   useEffect(() => {
     const saved = initial.workspace;
     const byId = initial.scenes.findIndex((scene) => scene.id === saved.activeSceneId);
-    const offset = saved.cursor ?? (byId >= 0 ? scenes[byId]?.start : undefined);
+    const offset = saved.cursor ?? (byId >= 0 ? scenes[byId]?.headingStart : undefined);
     if (offset !== undefined) editor.current?.focusAt(offset);
     // Runs once, with the state the app started with.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -165,14 +193,36 @@ export function WriteSection({ initial }: { initial: StudioState }) {
 
   /** Adds dialogue or action after the active shot, past any direction written under it. */
   const addLine = (kind: 'dialogue' | 'action') => {
-    const parsed = analysis.fountain?.scenes[activeIndex];
-    const shot = sceneShots[activeShot];
-    const offset = shot?.blockEnd ?? (parsed ? sceneContentEnd(parsed) : studio.text.length);
-    const speakers = (parsed?.beats ?? [])
-      .flatMap((beat) => beat.dialogue)
-      .filter((line) => line.range.end <= offset)
-      .map((line) => line.speaker);
-    editor.current?.insertAt(newLineInsertion(studio.text, offset, kind, speakers));
+    const { blockEnd, speakers } = insertionPoint(insertContext, cursor);
+    editor.current?.insertAt(newLineInsertion(studio.text, blockEnd, kind, speakers));
+  };
+
+  /**
+   * Opens the Insert menu for a cursor position.
+   * @param x Viewport x.
+   * @param y Viewport y.
+   * @param pos Cursor offset the entries refer to.
+   */
+  const openInsertMenu = (x: number, y: number, pos: number) =>
+    setPopup({
+      x,
+      y,
+      label: 'Insert',
+      items: insertMenuItems(insertContext, pos, (insertion) =>
+        editor.current?.insertAt(insertion),
+      ),
+    });
+
+  const listMenu: ListMenuContext = {
+    text: studio.text,
+    analysis,
+    acts,
+    insert: (insertion) => editor.current?.insertAt(insertion),
+    askDelete: (title, removal, extra) =>
+      setConfirm({
+        removal,
+        pending: { title, extra, impact: impactOf(removal, scenes, shotsByScene, footage) },
+      }),
   };
 
   /** Adds a name to the cast and closes the card. */
@@ -188,9 +238,12 @@ export function WriteSection({ initial }: { initial: StudioState }) {
         footage={footage}
         activeIndex={activeIndex}
         collapsedActs={studio.workspace.collapsedActs}
+        acts={acts}
+        sceneMenu={(entry) => sceneMenuItems(listMenu, entry)}
+        actMenu={(group) => actMenuItems(listMenu, group)}
         onAddAct={addAct}
         onAddScene={addScene}
-        onChoose={(scene) => editor.current?.focusAt(scene.start)}
+        onChoose={(scene) => editor.current?.focusAt(scene.headingStart)}
         onSetCollapsed={(acts) => studio.saveWorkspace({ collapsedActs: acts })}
         onToggleAct={(act) => {
           const folded = studio.workspace.collapsedActs;
@@ -220,6 +273,17 @@ export function WriteSection({ initial }: { initial: StudioState }) {
             </span>
           )}
           <div className="grow" />
+          <button
+            type="button"
+            className="btn sm"
+            aria-haspopup="menu"
+            onClick={(event) => {
+              const box = event.currentTarget.getBoundingClientRect();
+              openInsertMenu(box.left, box.bottom + 4, cursor);
+            }}
+          >
+            Insert ▾
+          </button>
           <details className="menu" ref={menu}>
             <summary className="btn sm">Export script ▾</summary>
             <div className="menu-list">
@@ -237,7 +301,16 @@ export function WriteSection({ initial }: { initial: StudioState }) {
             {studio.error}
           </div>
         )}
-        <div className="paper" style={{ padding: '32px 48px' }}>
+        <div
+          className="paper"
+          style={{ padding: '32px 48px' }}
+          onContextMenu={(event) => {
+            event.preventDefault();
+            const at = editor.current?.posAtCoords(event.clientX, event.clientY) ?? cursor;
+            editor.current?.focusAt(at);
+            openInsertMenu(event.clientX, event.clientY, at);
+          }}
+        >
           <ScriptEditor
             ref={editor}
             initialText={initial.scriptText}
@@ -288,7 +361,7 @@ export function WriteSection({ initial }: { initial: StudioState }) {
         }}
         onAddDirection={(index) => {
           const shot = sceneShots[index];
-          if (shot) editor.current?.insertDirection(shot.end);
+          if (shot) editor.current?.insertAt(newDirectionInsertion(shot.blockEnd));
         }}
         onEditDirection={(index) => {
           const shot = sceneShots[index];
@@ -297,6 +370,27 @@ export function WriteSection({ initial }: { initial: StudioState }) {
         onAddLine={addLine}
         onAdd={(kind, name) => add(kind, name)}
       />
+
+      {popup && (
+        <ContextMenu
+          x={popup.x}
+          y={popup.y}
+          label={popup.label}
+          items={popup.items}
+          onClose={closePopup}
+        />
+      )}
+      {confirm && (
+        <DeleteConfirm
+          pending={confirm.pending}
+          undoKeys={`${modifierLabel(window.tapestry.platform)}+Z`}
+          onCancel={() => setConfirm(null)}
+          onConfirm={() => {
+            editor.current?.deleteRange(confirm.removal.from, confirm.removal.to);
+            setConfirm(null);
+          }}
+        />
+      )}
     </div>
   );
 }

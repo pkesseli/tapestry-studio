@@ -108,3 +108,74 @@ export function newLineInsertion(
     select: { from: lead.length, to: lead.length + speaker.length },
   };
 }
+
+/**
+ * A parenthetical under a character cue ("how they say it"), with its words selected.
+ * @param cueLineEnd Offset of the end of the cue line.
+ */
+export function newParentheticalInsertion(cueLineEnd: number): Insertion {
+  const body = 'how they say it';
+  return { offset: cueLineEnd, text: `\n(${body})`, select: { from: 2, to: 2 + body.length } };
+}
+
+/**
+ * A transition line such as CUT TO:, in its own paragraph, with its words selected.
+ * @param text The whole screenplay.
+ * @param offset Where the scene's text ends.
+ */
+export function newTransitionInsertion(text: string, offset: number): Insertion {
+  const lead = paragraphBreak(text.slice(0, offset));
+  const body = 'CUT TO:';
+  return {
+    offset,
+    text: `${lead}${body}\n`,
+    select: { from: lead.length, to: lead.length + body.length },
+  };
+}
+
+/**
+ * An empty private note `[[ ]]` with the cursor inside.
+ * @param offset Where the note goes (after a shot and its direction).
+ */
+export function newNoteInsertion(offset: number): Insertion {
+  return { offset, text: '\n[[]]', select: { from: 3, to: 3 } };
+}
+
+/**
+ * An empty `[[direction: ]]` note with the cursor inside.
+ * @param offset Where the note goes (right after the shot's text).
+ */
+export function newDirectionInsertion(offset: number): Insertion {
+  const text = '\n[[direction: ]]';
+  return { offset, text, select: { from: text.length - 2, to: text.length - 2 } };
+}
+
+/**
+ * A new act heading in front of an existing scene, so that scene (and those after it) start the act.
+ * @param sceneStart Where the scene begins.
+ * @param actsBefore How many acts come before it.
+ */
+export function newActAtSceneInsertion(sceneStart: number, actsBefore: number): Insertion {
+  const name = nextActName(actsBefore);
+  return { offset: sceneStart, text: `# ${name}\n\n`, select: { from: 2, to: 2 + name.length } };
+}
+
+/**
+ * The range to delete when removing a line (or a block) of the script: the text itself, its line break, and one blank
+ * line after it, so no gap is left behind.
+ * @param text The whole screenplay.
+ * @param start Start of the text to remove.
+ * @param end End of the text to remove.
+ */
+export function removalRange(
+  text: string,
+  start: number,
+  end: number,
+): { from: number; to: number } {
+  let to = end;
+  if (text.startsWith('\r\n', to)) to += 2;
+  else if (text.startsWith('\n', to)) to += 1;
+  const blank = /^[ \t]*\r?\n/.exec(text.slice(to));
+  if (blank) to += blank[0].length;
+  return { from: start, to };
+}

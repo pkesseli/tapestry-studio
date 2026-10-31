@@ -1,33 +1,15 @@
 import { existsSync, mkdtempSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { _electron as electron, expect, test } from '@playwright/test';
+import { join } from 'node:path';
+import { expect, test } from '@playwright/test';
 import { NodeFs } from '@tapestry/fs-node';
 import { placeholderVideo } from '@tapestry/providers';
 import { ProjectService } from '@tapestry/service';
-import type { ElectronApplication, Page } from '@playwright/test';
-
-/** Folder of the app package (where the built `out/` lives). */
-const appDir = join(dirname(fileURLToPath(import.meta.url)), '..');
+import type { Page } from '@playwright/test';
+import { launch } from './launch';
 
 /** When set, screenshots of key moments are written there for human review. */
 const SHOTS = process.env['E2E_SCREENSHOT_DIR'];
-
-/**
- * Starts the app on a project folder.
- * @param project Folder to open; created from the example screenplay when empty.
- */
-async function launch(project: string): Promise<{ app: ElectronApplication; window: Page }> {
-  const app = await electron.launch({
-    args: [appDir, '--no-sandbox'],
-    env: { ...process.env, TAPESTRY_PROJECT: project },
-  });
-  const window = await app.firstWindow();
-  await window.setViewportSize({ width: 1360, height: 860 });
-  await expect(window.getByRole('heading', { name: 'Script' })).toBeVisible();
-  return { app, window };
-}
 
 test('opens the example screenplay: scenes, unknown names, and the practice-mode band', async () => {
   const { app, window } = await launch(mkdtempSync(join(tmpdir(), 'tapestry-e2e-')));
@@ -111,9 +93,9 @@ test('scenes are grouped under acts that fold away, and the list can be searched
   const harbor = window.getByRole('button', { name: /Harbor, night/ });
   const ferry = window.getByRole('button', { name: /Ferry deck, dawn/ });
   const cabin = window.getByRole('button', { name: /Cabin, day/ });
-  const actOne = window.getByRole('button', { name: /Act One/ });
+  const actOne = window.locator('.act-head', { hasText: /Act One/ });
   await expect(actOne).toHaveAttribute('aria-expanded', 'true');
-  await expect(window.getByRole('button', { name: /Act Two/ })).toBeVisible();
+  await expect(window.locator('.act-head', { hasText: /Act Two/ })).toBeVisible();
   if (SHOTS) await window.screenshot({ path: join(SHOTS, 'write-acts.png') });
 
   await actOne.click();
@@ -147,7 +129,7 @@ test('the scene you were working on and the folded acts are remembered across re
   const project = mkdtempSync(join(tmpdir(), 'tapestry-e2e-'));
   const first = await launch(project);
   await first.window.getByRole('button', { name: /Cabin, day/ }).click();
-  await first.window.getByRole('button', { name: /Act One/ }).click();
+  await first.window.locator('.act-head', { hasText: /Act One/ }).click();
   const workspace = join(project, '.tapestry', 'workspace.json');
   /** True once the workspace file names the scene and the folded act. */
   const remembered = (): boolean => {
@@ -167,7 +149,7 @@ test('the scene you were working on and the folded acts are remembered across re
     'true',
   );
   await expect(second.window.getByRole('button', { name: /Harbor, night/ })).toBeHidden();
-  await expect(second.window.getByRole('button', { name: /Act One/ })).toHaveAttribute(
+  await expect(second.window.locator('.act-head', { hasText: /Act One/ })).toHaveAttribute(
     'aria-expanded',
     'false',
   );
@@ -259,8 +241,7 @@ test('a new line goes after the shot and its direction, so the direction stays w
   const panel = window.locator('.shot-card');
   await panel.getByRole('button', { name: 'Add direction' }).click();
   await window.keyboard.type('slow push-in');
-  await panel.getByText('Add line').click();
-  await panel.getByRole('button', { name: /Dialogue after this shot/ }).click();
+  await panel.getByRole('button', { name: 'Add line' }).click();
   await window.keyboard.type('TOM');
   await expect(panel).toContainText('of 4');
   await window.locator('.shot-mark').filter({ hasText: /^1$/ }).first().click();

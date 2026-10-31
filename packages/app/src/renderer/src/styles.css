@@ -1006,3 +1006,104 @@ body,
 .strip .frame.empty {
   background: repeating-linear-gradient(135deg, #f0ede6 0 8px, #e8e4db 8px 16px);
 }
+
+/* ---- menus, dialogs, scene actions ---- */
+.context-menu {
+  position: fixed;
+  z-index: 30;
+  padding: 6px;
+  border: 1px solid var(--line-2);
+  border-radius: 12px;
+  background: var(--card);
+  box-shadow: 0 12px 34px rgba(29, 35, 48, 0.22);
+}
+.context-menu button {
+  display: block;
+  width: 100%;
+  min-height: 40px;
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+.context-menu button:hover:not(:disabled),
+.context-menu button:focus-visible {
+  background: var(--gray-wash);
+}
+.context-menu button:disabled {
+  color: var(--ink-3);
+  opacity: 0.6;
+  cursor: default;
+}
+.context-menu button.danger {
+  color: var(--coral);
+}
+.context-menu hr {
+  margin: 4px 0;
+}
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(29, 35, 48, 0.4);
+}
+.modal {
+  width: 460px;
+  max-width: calc(100vw - 32px);
+  padding: 22px;
+  border-radius: 14px;
+  background: var(--card);
+  box-shadow: 0 18px 50px rgba(29, 35, 48, 0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.btn.danger-solid {
+  background: var(--coral);
+  border-color: var(--coral);
+  color: #fff;
+}
+.btn.danger-solid:hover {
+  background: #8f3223;
+}
+.scene-wrap {
+  position: relative;
+}
+.more {
+  position: absolute;
+  right: 6px;
+  top: 6px;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ink-3);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0;
+}
+.scene-wrap:hover .more,
+.more:focus-visible,
+.act-wrap:hover .more {
+  opacity: 1;
+}
+.more:hover {
+  background: var(--gray-wash);
+}
+.act-wrap {
+  position: relative;
+}
+.act-wrap .act-head {
+  padding-right: 70px;
+}
+.act-wrap .more {
+  top: 2px;
+  right: 34px;
+}

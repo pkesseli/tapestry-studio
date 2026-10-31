@@ -17,10 +17,16 @@ three-column rhythm: a list, the work, the details.
   numbered tab in the margin (dashed: not made, teal: ready to review, green with a check: accepted). The right panel
   shows the shot under the cursor: footage in context (previous, next, play the whole scene), what it shows, who is in it,
   and its direction. A storyboard overview across the whole film may come later; editing stays in Write.
-- **Adding structure never needs syntax.** "+ Act" and "+ Scene" in the scene list, and "Add line" (dialogue or action) in
-  the shot panel, write the right text in the right place and select the placeholder to type over: a new scene goes
-  after the current one inside the same act, a new act (with a first scene) at the end, a new line after the shot and
-  any direction written under it (so the direction stays with its shot).
+- **Adding structure never needs syntax.** "+ Act" and "+ Scene" in the scene list, "Add line" (a spoken line) in the
+  shot panel, the "Insert" menu above the script and the right-click menu in the script (scene, act, dialogue line,
+  parenthetical, action, transition, direction, private note) write the right text in the right place and select the
+  placeholder to type over: a new scene goes after the current one inside the same act, a new act (with a first scene)
+  at the end, a new line after the shot and any direction written under it (so the direction stays with its shot). A
+  parenthetical is only offered inside a spoken line. A new act becomes the selected one and scrolls into view.
+- **Scenes and acts have menus** (right-click, or the "⋯" button): add a scene, start an act at a scene, rename or delete.
+  Deleting always asks first, names the scenes, shots and videos affected (the video files stay in the project folder),
+  focuses Cancel, and can be undone with Ctrl or Command and Z. An act can be deleted alone (its scenes stay) or with its
+  scenes. An act with no scene stays in the list.
 - **Direction** is optional writing for how a shot looks: a note `[[direction: slow push-in, thick fog]]` under the shot
   it directs. The app writes the note for you ("Add direction"), shows it in violet, sends it to the video model, and
   leaves it out when you export the script. Plain notes `[[like this]]` are private reminders and go nowhere.

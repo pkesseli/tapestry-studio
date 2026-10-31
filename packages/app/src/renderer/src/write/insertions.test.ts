@@ -1,5 +1,16 @@
 import { expect, test } from 'vitest';
-import { newActInsertion, newLineInsertion, newSceneInsertion, nextActName } from './insertions';
+import {
+  newActAtSceneInsertion,
+  newActInsertion,
+  newDirectionInsertion,
+  newLineInsertion,
+  newNoteInsertion,
+  newParentheticalInsertion,
+  newSceneInsertion,
+  newTransitionInsertion,
+  nextActName,
+  removalRange,
+} from './insertions';
 
 /** Applies an insertion and returns the text and the selected part. */
 function apply(
@@ -58,4 +69,38 @@ test('a new dialogue line is for the other person in the conversation', () => {
   expect(added.result.endsWith('\n\nMARIA\nWhat they say.\n')).toBe(true);
   expect(apply('', newLineInsertion('', 0, 'dialogue', ['tom'])).selected).toBe('TOM');
   expect(apply('', newLineInsertion('', 0, 'dialogue')).selected).toBe('CHARACTER');
+});
+
+test('a parenthetical goes right under the cue with its words selected', () => {
+  const text = 'MARIA\nHello.\n';
+  const { result, selected } = apply(text, newParentheticalInsertion(5));
+  expect(result).toBe('MARIA\n(how they say it)\nHello.\n');
+  expect(selected).toBe('how they say it');
+});
+
+test('a transition gets its own paragraph, and notes and directions put the cursor inside the brackets', () => {
+  const text = 'INT. A - DAY\n\nHello.\n';
+  expect(apply(text, newTransitionInsertion(text, text.length)).result).toBe(
+    'INT. A - DAY\n\nHello.\n\nCUT TO:\n',
+  );
+  const note = apply('Hello.', newNoteInsertion(6));
+  expect(note.result).toBe('Hello.\n[[]]');
+  const direction = newDirectionInsertion(6);
+  expect(direction.text.slice(0, direction.select.from)).toBe('\n[[direction: ');
+});
+
+test('a new act at a scene is written in front of it with its name selected', () => {
+  const text = 'INT. A - DAY\n\nOne.\n\nINT. B - DAY\n';
+  const offset = text.indexOf('INT. B');
+  const { result, selected } = apply(text, newActAtSceneInsertion(offset, 1));
+  expect(result).toContain('One.\n\n# Act Two\n\nINT. B - DAY');
+  expect(selected).toBe('Act Two');
+});
+
+test('removing a line takes its line break and one blank line with it', () => {
+  const text = 'A\n\n# Act Two\n\nINT. B - DAY\n';
+  const start = text.indexOf('# Act Two');
+  const { from, to } = removalRange(text, start, start + '# Act Two'.length);
+  expect(text.slice(0, from) + text.slice(to)).toBe('A\n\nINT. B - DAY\n');
+  expect(removalRange('X', 0, 1)).toEqual({ from: 0, to: 1 });
 });

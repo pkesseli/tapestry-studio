@@ -1,7 +1,6 @@
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
 import { EditorState } from '@codemirror/state';
 import { EditorView, keymap } from '@codemirror/view';
-import { directionNote } from '@tapestry/script';
 import type { Analysis } from '@tapestry/script';
 import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 import { buildDecorations, decorationField, setDecorations } from './editor-decorations';
@@ -24,11 +23,18 @@ export interface ScriptEditorHandle {
    */
   coordsAt(offset: number): { left: number; top: number; bottom: number } | null;
   /**
-   * Writes an empty `[[direction: ]]` note on the line after a position and puts the cursor inside it, so nobody has to
-   * type the syntax.
-   * @param offset Character offset the note should follow (the end of a shot's text).
+   * The text position under a point on screen.
+   * @param x Viewport x.
+   * @param y Viewport y.
+   * @returns A character offset, or `null` when the point is not over the text.
    */
-  insertDirection(offset: number): void;
+  posAtCoords(x: number, y: number): number | null;
+  /**
+   * Deletes a stretch of text. This is a normal edit, so it can be undone with Ctrl or Command and Z.
+   * @param from Start offset.
+   * @param to End offset.
+   */
+  deleteRange(from: number, to: number): void;
   /**
    * Inserts text and selects a part of it, so the user can type over a placeholder.
    * @param insertion What to insert and where.
@@ -158,15 +164,16 @@ export const ScriptEditor = forwardRef<ScriptEditorHandle, ScriptEditorProps>(fu
       });
       editor.focus();
     },
-    insertDirection(offset) {
+    posAtCoords(x, y) {
+      return view.current?.posAtCoords({ x, y }) ?? null;
+    },
+    deleteRange(from, to) {
       const editor = view.current;
       if (!editor) return;
-      const at = Math.min(offset, editor.state.doc.length);
-      const insert = `\n${directionNote()}`;
-      const caret = at + insert.length - 2;
+      const end = Math.min(to, editor.state.doc.length);
       editor.dispatch({
-        changes: { from: at, insert },
-        selection: { anchor: caret },
+        changes: { from, to: end },
+        selection: { anchor: from },
         scrollIntoView: true,
       });
       editor.focus();

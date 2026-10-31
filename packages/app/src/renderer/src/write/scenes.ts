@@ -9,9 +9,11 @@ export interface SceneItem {
   number: number;
   /** Short title such as "Harbor, night". */
   title: string;
-  /** Offset of the heading in the text. */
+  /** Where the scene begins: the act line right above its heading when there is one, otherwise the heading. */
   start: number;
-  /** Offset where the next scene starts (or the end of the text). */
+  /** Where the scene's own heading is. */
+  headingStart: number;
+  /** Offset where the next scene begins (or just past the end of the text). */
   end: number;
   /** The scene heading as written, for searching. */
   heading: string;
@@ -36,15 +38,49 @@ export interface SceneContents {
   missing: { name: string; kind: EntityKind; count: number }[];
 }
 
+/** An act heading (`# Act One`) in the script. */
+export interface ActItem {
+  name: string;
+  /** Start of the act line. */
+  start: number;
+  /** End of the act line (without its line break). */
+  end: number;
+}
+
 /**
- * Lists the scenes of the analysed screenplay.
+ * Lists the act headings of the analysed screenplay, including acts that have no scene yet.
+ * @param analysis Result of analysing a screenplay.
+ */
+export function actItems(analysis: Analysis): ActItem[] {
+  return (analysis.fountain?.elements ?? []).flatMap((element) =>
+    element.type === 'section' && element.depth === 1
+      ? [{ name: element.text, start: element.range.start, end: element.range.end }]
+      : [],
+  );
+}
+
+/**
+ * Lists the scenes of the analysed screenplay. A scene owns the act line right above its heading, so a cursor on that
+ * line counts as being in that scene.
  * @param analysis Result of analysing a screenplay.
  */
 export function sceneItems(analysis: Analysis): SceneItem[] {
   const scenes = analysis.fountain?.scenes ?? [];
+  const leads = new Map<number, number>();
+  let pending: number | undefined;
+  for (const element of analysis.fountain?.elements ?? []) {
+    if (element.type === 'section' || element.type === 'synopsis') pending ??= element.range.start;
+    else if (element.type === 'scene-heading') {
+      leads.set(element.range.start, pending ?? element.range.start);
+      pending = undefined;
+    } else pending = undefined;
+  }
+  const starts = scenes.map(
+    (scene) => leads.get(scene.heading.range.start) ?? scene.heading.range.start,
+  );
   return scenes.map((scene, index) => {
-    const start = scene.heading.range.start;
-    const end = scenes[index + 1]?.heading.range.start ?? analysis.text.length + 1;
+    const start = starts[index] as number;
+    const end = starts[index + 1] ?? analysis.text.length + 1;
     const names = [
       ...new Set(
         analysis.mentions
@@ -56,6 +92,7 @@ export function sceneItems(analysis: Analysis): SceneItem[] {
       number: index + 1,
       title: sceneTitle(scene.heading.text, scene.heading.locationName, scene.heading.timeOfDay),
       start,
+      headingStart: scene.heading.range.start,
       end,
       heading: scene.heading.text,
       ...(scene.act !== undefined && { act: scene.act }),

@@ -1,11 +1,13 @@
 import type { SceneClip } from '@tapestry/service';
-import { useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { mediaUrl } from '../../../shared/media-url';
+import { ContextMenu } from '../ContextMenu';
+import type { MenuItem } from '../ContextMenu';
 import { footageSummary } from './footage';
 import type { SceneFootage } from './footage';
 import { filterGroups, groupScenes } from './scene-groups';
-import type { IndexedScene } from './scene-groups';
-import type { SceneItem } from './scenes';
+import type { IndexedScene, SceneGroup } from './scene-groups';
+import type { ActItem, SceneItem } from './scenes';
 
 /** Properties of {@link SceneList}. */
 interface SceneListProps {
@@ -32,6 +34,18 @@ interface SceneListProps {
   onAddAct(): void;
   /** Called to add a new scene after the one being worked on. */
   onAddScene(): void;
+  /** Act headings of the script, including acts that have no scene yet. */
+  acts: readonly ActItem[];
+  /**
+   * Entries of the menu for a scene (right-click or "⋯").
+   * @param entry The scene.
+   */
+  sceneMenu(entry: IndexedScene): MenuItem[];
+  /**
+   * Entries of the menu for an act heading.
+   * @param group The act and its scenes.
+   */
+  actMenu(group: SceneGroup): MenuItem[];
 }
 
 /**
@@ -83,29 +97,67 @@ function SceneButton({
   footage,
   active,
   onChoose,
+  onMenu,
 }: {
   entry: IndexedScene;
   footage: SceneFootage | undefined;
   active: boolean;
   onChoose(scene: SceneItem): void;
+  onMenu(x: number, y: number): void;
 }) {
   const { item } = entry;
+  const wrap = useRef<HTMLDivElement>(null);
+  // Keep the scene being worked on in view, for example after a new act is added far down the list.
+  useEffect(() => {
+    if (active) wrap.current?.scrollIntoView?.({ block: 'nearest' });
+  }, [active]);
+  return (
+    <div
+      className="scene-wrap"
+      ref={wrap}
+      onContextMenu={(event) => {
+        event.preventDefault();
+        onMenu(event.clientX, event.clientY);
+      }}
+    >
+      <button
+        type="button"
+        className={`scene${active ? ' on' : ''}`}
+        aria-current={active ? 'true' : undefined}
+        onClick={() => onChoose(item)}
+      >
+        <span className="row">
+          <span className="num">{item.number}</span>
+          <span className="bold">{item.title}</span>
+        </span>
+        {footage && footage.shots > 0 && <Filmstrip footage={footage} />}
+        <span className="small muted">{footageSummary(footage)}</span>
+        {footage?.clips.some((clip) => clip.sample) && (
+          <span className="chip amber sample-chip">Sample footage</span>
+        )}
+      </button>
+      <MoreButton label={`Actions for scene ${item.number}`} onMenu={onMenu} />
+    </div>
+  );
+}
+
+/**
+ * The small "⋯" button that opens the same menu as a right-click.
+ * @param props.label Accessible name.
+ * @param props.onMenu Opens the menu at a screen position.
+ */
+function MoreButton({ label, onMenu }: { label: string; onMenu(x: number, y: number): void }) {
   return (
     <button
       type="button"
-      className={`scene${active ? ' on' : ''}`}
-      aria-current={active ? 'true' : undefined}
-      onClick={() => onChoose(item)}
+      className="more"
+      aria-label={label}
+      onClick={(event) => {
+        const box = event.currentTarget.getBoundingClientRect();
+        onMenu(box.left, box.bottom + 4);
+      }}
     >
-      <span className="row">
-        <span className="num">{item.number}</span>
-        <span className="bold">{item.title}</span>
-      </span>
-      {footage && footage.shots > 0 && <Filmstrip footage={footage} />}
-      <span className="small muted">{footageSummary(footage)}</span>
-      {footage?.clips.some((clip) => clip.sample) && (
-        <span className="chip amber sample-chip">Sample footage</span>
-      )}
+      ⋯
     </button>
   );
 }
@@ -124,14 +176,25 @@ export function SceneList({
   onSetCollapsed,
   onAddAct,
   onAddScene,
+  acts: actHeadings,
+  sceneMenu,
+  actMenu,
 }: SceneListProps) {
-  const acts = [
-    ...new Set(scenes.flatMap((scene) => (scene.act === undefined ? [] : [scene.act]))),
-  ];
+  const acts = [...new Set(actHeadings.map((act) => act.name))];
   const allFolded = acts.length > 0 && acts.every((act) => collapsedActs.includes(act));
   const [query, setQuery] = useState('');
+  const [open, setOpen] = useState<{
+    x: number;
+    y: number;
+    label: string;
+    items: MenuItem[];
+  } | null>(null);
+  const closeMenu = useCallback(() => setOpen(null), []);
   const searching = query.trim() !== '';
-  const groups = useMemo(() => filterGroups(groupScenes(scenes), query), [scenes, query]);
+  const groups = useMemo(
+    () => filterGroups(groupScenes(scenes, actHeadings), query),
+    [scenes, actHeadings, query],
+  );
   return (
     <aside className="side" aria-label="Scenes">
       <div className="row" style={{ padding: '4px 6px 0' }}>
@@ -169,23 +232,45 @@ export function SceneList({
         const folded = group.act !== undefined && !searching && collapsedActs.includes(group.act);
         const holdsActive = group.scenes.some((s) => s.index === activeIndex);
         return (
-          <div className="act" key={`${group.act ?? ''}-${group.scenes[0]?.index}`}>
+          <div
+            className="act"
+            key={`${group.actItem?.start ?? ''}-${group.scenes[0]?.index ?? ''}`}
+          >
             {group.act !== undefined && (
-              <button
-                type="button"
-                className="act-head"
-                aria-expanded={!folded}
-                onClick={() => onToggleAct(group.act as string)}
+              <div
+                className="act-wrap"
+                onContextMenu={(event) => {
+                  event.preventDefault();
+                  setOpen({
+                    x: event.clientX,
+                    y: event.clientY,
+                    label: `Actions for ${group.act}`,
+                    items: actMenu(group),
+                  });
+                }}
               >
-                <span className={`chevron${folded ? '' : ' open'}`} aria-hidden="true">
-                  ›
-                </span>
-                <span className="grow">{group.act}</span>
-                {folded && holdsActive && (
-                  <span className="dot teal" title="You are working here" />
-                )}
-                <span className="tiny muted">{group.scenes.length}</span>
-              </button>
+                <button
+                  type="button"
+                  className="act-head"
+                  aria-expanded={!folded}
+                  onClick={() => onToggleAct(group.act as string)}
+                >
+                  <span className={`chevron${folded ? '' : ' open'}`} aria-hidden="true">
+                    ›
+                  </span>
+                  <span className="grow">{group.act}</span>
+                  {folded && holdsActive && (
+                    <span className="dot teal" title="You are working here" />
+                  )}
+                  <span className="tiny muted">{group.scenes.length}</span>
+                </button>
+                <MoreButton
+                  label={`Actions for ${group.act}`}
+                  onMenu={(x, y) =>
+                    setOpen({ x, y, label: `Actions for ${group.act}`, items: actMenu(group) })
+                  }
+                />
+              </div>
             )}
             {!folded &&
               group.scenes.map((entry) => (
@@ -195,17 +280,39 @@ export function SceneList({
                   footage={footage[entry.index]}
                   active={entry.index === activeIndex}
                   onChoose={onChoose}
+                  onMenu={(x, y) =>
+                    setOpen({
+                      x,
+                      y,
+                      label: `Actions for scene ${entry.item.number}`,
+                      items: sceneMenu(entry),
+                    })
+                  }
                 />
               ))}
+            {!folded && group.act !== undefined && group.scenes.length === 0 && !searching && (
+              <p className="tiny muted" style={{ margin: '2px 10px 6px' }}>
+                No scenes in this act yet.
+              </p>
+            )}
           </div>
         );
       })}
-      {scenes.length === 0 && (
+      {open && (
+        <ContextMenu
+          x={open.x}
+          y={open.y}
+          label={open.label}
+          items={open.items}
+          onClose={closeMenu}
+        />
+      )}
+      {scenes.length === 0 && actHeadings.length === 0 && (
         <p className="small muted" style={{ margin: '6px' }}>
           Start your first scene with a line like <span className="bold">INT. KITCHEN - DAY</span>.
         </p>
       )}
-      {scenes.length > 0 && groups.length === 0 && (
+      {(scenes.length > 0 || actHeadings.length > 0) && groups.length === 0 && (
         <p className="small muted" style={{ margin: '6px' }}>
           No scenes match &ldquo;{query.trim()}&rdquo;.
         </p>

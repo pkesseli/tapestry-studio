@@ -12,6 +12,7 @@ const scene = (
   number,
   title,
   start: number * 100,
+  headingStart: number * 100,
   end: number * 100 + 99,
   heading: `INT. ${title.toUpperCase()} - DAY`,
   ...(act !== undefined && { act }),
@@ -56,4 +57,19 @@ test('filtering keeps matching scenes under their act, and a matching act keeps 
   expect(filterGroups(groups, 'act one')[0]?.scenes.map((s) => s.item.number)).toEqual([2, 3]);
   expect(filterGroups(groups, 'zzz')).toEqual([]);
   expect(filterGroups(groups, '')).toHaveLength(3);
+});
+
+test('an act without scenes still gets a group, and a search for its name keeps it', () => {
+  const acts = [
+    { name: 'Act One', start: 150, end: 160 },
+    { name: 'Act Three', start: 400, end: 410 },
+  ];
+  const groups = groupScenes([items[0]!, items[1]!, items[2]!], acts);
+  expect(groups.map((g) => [g.act, g.scenes.length])).toEqual([
+    [undefined, 1],
+    ['Act One', 2],
+    ['Act Three', 0],
+  ]);
+  expect(filterGroups(groups, 'three').map((g) => g.act)).toEqual(['Act Three']);
+  expect(filterGroups(groups, 'maria').map((g) => g.act)).toEqual([undefined, 'Act One']);
 });

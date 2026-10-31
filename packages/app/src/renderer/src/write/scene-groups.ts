@@ -1,5 +1,5 @@
 import { normalizeAlias } from '@tapestry/core';
-import type { SceneItem } from './scenes';
+import type { ActItem, SceneItem } from './scenes';
 
 /** A scene together with its position in the whole list (the list may be filtered). */
 export interface IndexedScene {
@@ -11,20 +11,37 @@ export interface IndexedScene {
 /** A run of scenes under one act heading; scenes before the first act (or in a script without acts) have none. */
 export interface SceneGroup {
   act: string | undefined;
+  /** The act's own line in the script, when it has one. */
+  actItem?: ActItem;
+  /** The scenes under the act; empty for an act that has no scene yet. */
   scenes: IndexedScene[];
 }
 
 /**
- * Groups scenes by the act they sit under, keeping the script's order.
+ * Groups scenes by the act they sit under, keeping the script's order. Acts without any scene still get a group, so
+ * they stay visible (and can be deleted).
  * @param items All scenes.
+ * @param acts All act headings of the script.
  */
-export function groupScenes(items: readonly SceneItem[]): SceneGroup[] {
+export function groupScenes(
+  items: readonly SceneItem[],
+  acts: readonly ActItem[] = [],
+): SceneGroup[] {
+  const events = [
+    ...acts.map((actItem) => ({ pos: actItem.start, actItem })),
+    ...items.map((item, index) => ({ pos: item.start, item, index })),
+  ].sort((x, y) => x.pos - y.pos || Number('item' in x) - Number('item' in y));
   const groups: SceneGroup[] = [];
-  items.forEach((item, index) => {
+  for (const event of events) {
+    if ('actItem' in event) {
+      groups.push({ act: event.actItem.name, actItem: event.actItem, scenes: [] });
+      continue;
+    }
     const last = groups[groups.length - 1];
-    if (last && last.act === item.act) last.scenes.push({ item, index });
-    else groups.push({ act: item.act, scenes: [{ item, index }] });
-  });
+    const entry = { item: event.item, index: event.index };
+    if (last && last.act === event.item.act) last.scenes.push(entry);
+    else groups.push({ act: event.item.act, scenes: [entry] });
+  }
   return groups;
 }
 
@@ -62,6 +79,6 @@ export function filterGroups(groups: readonly SceneGroup[], query: string): Scen
     const scenes = actMatches
       ? group.scenes
       : group.scenes.filter(({ item }) => matchesQuery(item, query));
-    return scenes.length > 0 ? [{ act: group.act, scenes }] : [];
+    return scenes.length > 0 || actMatches ? [{ ...group, scenes }] : [];
   });
 }
