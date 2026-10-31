@@ -1,5 +1,13 @@
-import { createEntity, createProject, loadProject, saveProject } from '@tapestry/core';
-import type { Entity, FsPort, NewEntityInput, ProjectData, Scene } from '@tapestry/core';
+import {
+  WORKSPACE_FILE,
+  WorkspaceSchema,
+  createEntity,
+  createProject,
+  loadProject,
+  saveProject,
+  stableStringify,
+} from '@tapestry/core';
+import type { Entity, FsPort, NewEntityInput, ProjectData, Scene, Workspace } from '@tapestry/core';
 import { analyze, deriveScenes } from '@tapestry/script';
 import { clipsOf, planSampleFootage } from './footage';
 import type { SampleClip, SceneClip } from './footage';
@@ -15,6 +23,8 @@ export interface StudioState {
   scenes: Scene[];
   /** Videos made for the shots of the scenes (none until something has been made). */
   clips: SceneClip[];
+  /** Where the user was working last: the scene, the cursor and which acts are folded. */
+  workspace: Workspace;
 }
 
 /** Options for creating a project that does not exist yet. */
@@ -23,6 +33,20 @@ export interface OpenOptions {
   name?: string;
   /** Text of the first screenplay. */
   screenplay?: string;
+}
+
+/**
+ * Reads the remembered workspace. A missing or damaged file never blocks opening a project: it only means starting fresh.
+ * @param fs Project file system.
+ */
+async function readWorkspace(fs: FsPort): Promise<Workspace> {
+  try {
+    const parsed = WorkspaceSchema.safeParse(JSON.parse(await fs.readText(WORKSPACE_FILE)));
+    if (parsed.success) return parsed.data;
+  } catch {
+    // No workspace yet, or unreadable: start fresh.
+  }
+  return { collapsedActs: [] };
 }
 
 /** Script files live in `script/` and have simple names; anything else is refused. */
@@ -41,6 +65,7 @@ export class ProjectService {
   private constructor(
     private readonly fs: FsPort,
     private data: ProjectData,
+    private workspace: Workspace,
   ) {}
 
   /**
@@ -53,7 +78,7 @@ export class ProjectService {
     if (await fs.exists('project.json')) {
       const data = await loadProject(fs);
       data.scripts[MAIN_SCRIPT] ??= '';
-      return new ProjectService(fs, data);
+      return new ProjectService(fs, data, await readWorkspace(fs));
     }
     const data: ProjectData = {
       project: createProject(options.name ?? STARTER_PROJECT_NAME),
@@ -65,7 +90,7 @@ export class ProjectService {
       artifacts: [],
       timelines: [],
     };
-    const service = new ProjectService(fs, data);
+    const service = new ProjectService(fs, data, { collapsedActs: [] });
     service.rederive();
     await saveProject(fs, service.data);
     return service;
@@ -80,7 +105,23 @@ export class ProjectService {
       entities: this.data.entities,
       scenes: this.data.scenes,
       clips: clipsOf(this.data),
+      workspace: this.workspace,
     };
+  }
+
+  /**
+   * Remembers where the user is working (scene, cursor, folded acts). Only the given fields change.
+   * @param update Fields to change.
+   * @throws {Error} When the result is not a valid workspace.
+   */
+  saveWorkspace(update: Partial<Workspace>): Promise<StudioState> {
+    return this.serialize(async () => {
+      const parsed = WorkspaceSchema.safeParse({ ...this.workspace, ...update });
+      if (!parsed.success) throw new Error('Invalid workspace state');
+      this.workspace = parsed.data;
+      await this.fs.writeText(WORKSPACE_FILE, stableStringify(parsed.data));
+      return this.state();
+    });
   }
 
   /**

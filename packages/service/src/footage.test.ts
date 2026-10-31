@@ -14,7 +14,7 @@ test('scenes without shots get shots, jobs, artifacts and video files', async ()
   const service = await ProjectService.open(fs);
   const state = await service.addSampleFootage(clips);
 
-  expect(state.scenes.map((scene) => scene.shots.length)).toEqual([3, 3]);
+  expect(state.scenes.map((scene) => scene.shots.length)).toEqual([3, 3, 3]);
   expect(state.scenes[0]?.shots[1]?.action).toBe('MARIA: Is anyone there?');
   expect(state.clips.length).toBe(state.scenes.reduce((n, s) => n + s.shots.length, 0));
   for (const clip of state.clips) expect(await fs.readBytes(clip.path)).toHaveLength(3);

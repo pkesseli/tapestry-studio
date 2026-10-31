@@ -1,5 +1,5 @@
-import { ENTITY_FOLDERS } from '@tapestry/core';
-import type { EntityKind } from '@tapestry/core';
+import { ENTITY_FOLDERS, WorkspaceSchema } from '@tapestry/core';
+import type { EntityKind, Workspace } from '@tapestry/core';
 import type { ProjectService } from '@tapestry/service';
 import { ipcMain } from 'electron';
 import { IPC_CHANNELS } from '../shared/api';
@@ -30,6 +30,12 @@ export function registerIpc(service: ProjectService): void {
   ipcMain.handle(IPC_CHANNELS.saveScript, (_event, path: unknown, text: unknown) => {
     if (typeof path !== 'string' || typeof text !== 'string') throw new Error('Invalid script');
     return service.saveScript(path, text);
+  });
+  ipcMain.handle(IPC_CHANNELS.saveWorkspace, (_event, update: unknown) => {
+    const parsed = WorkspaceSchema.partial().safeParse(update);
+    if (!parsed.success) throw new Error('Invalid workspace');
+    const defined = Object.entries(parsed.data).filter(([, value]) => value !== undefined);
+    return service.saveWorkspace(Object.fromEntries(defined) as Partial<Workspace>);
   });
   ipcMain.handle(IPC_CHANNELS.createEntity, (_event, input: unknown) => {
     if (!isEntityInput(input)) throw new Error('Invalid entity');

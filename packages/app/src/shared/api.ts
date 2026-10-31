@@ -1,4 +1,4 @@
-import type { NewEntityInput } from '@tapestry/core';
+import type { NewEntityInput, Workspace } from '@tapestry/core';
 import type { StudioState } from '@tapestry/service';
 
 /** Names of the IPC channels between the renderer and the main process. One per use case. */
@@ -6,6 +6,7 @@ export const IPC_CHANNELS = {
   getState: 'studio:get-state',
   saveScript: 'studio:save-script',
   createEntity: 'studio:create-entity',
+  saveWorkspace: 'studio:save-workspace',
 } as const;
 
 /**
@@ -29,4 +30,9 @@ export interface TapestryApi {
    * @param input Kind, name and optional description.
    */
   createEntity(input: NewEntityInput): Promise<StudioState>;
+  /**
+   * Remembers where the user is working (scene, cursor, folded acts). Only the given fields change.
+   * @param update Fields to change.
+   */
+  saveWorkspace(update: Partial<Workspace>): Promise<StudioState>;
 }

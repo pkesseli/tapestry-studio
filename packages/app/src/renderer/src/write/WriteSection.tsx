@@ -17,6 +17,9 @@ import { useStudio } from './useStudio';
 /** Approximate height of the add card, used to decide whether it fits below the name. */
 const CARD_HEIGHT = 360;
 
+/** How long the cursor must rest before the position is remembered. */
+const WORKSPACE_DELAY_MS = 800;
+
 /** How long the cursor must rest on an unknown name before the add card appears. */
 const CARD_DELAY_MS = 600;
 
@@ -52,7 +55,7 @@ export function WriteSection({ initial }: { initial: StudioState }) {
     () =>
       activeScene
         ? contentsOf(activeScene, analysis.mentions, studio.state.entities)
-        : contentsOf({ number: 0, title: '', start: 0, end: 0 }, [], []),
+        : contentsOf({ number: 0, title: '', start: 0, end: 0, heading: '', names: [] }, [], []),
     [activeScene, analysis, studio.state.entities],
   );
 
@@ -84,6 +87,27 @@ export function WriteSection({ initial }: { initial: StudioState }) {
     };
   }, [wanted, candidateKey]);
 
+  // Put the user back where they left off: the saved cursor, or the start of the saved scene.
+  useEffect(() => {
+    const saved = initial.workspace;
+    const byId = initial.scenes.findIndex((scene) => scene.id === saved.activeSceneId);
+    const offset = saved.cursor ?? (byId >= 0 ? scenes[byId]?.start : undefined);
+    if (offset !== undefined) editor.current?.focusAt(offset);
+    // Runs once, with the state the app started with.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Remember the cursor and its scene a moment after they stop changing.
+  const activeSceneId = studio.state.scenes[activeIndex]?.id;
+  const { saveWorkspace } = studio;
+  useEffect(() => {
+    const timer = setTimeout(
+      () => saveWorkspace({ cursor, ...(activeSceneId !== undefined && { activeSceneId }) }),
+      WORKSPACE_DELAY_MS,
+    );
+    return () => clearTimeout(timer);
+  }, [cursor, activeSceneId, saveWorkspace]);
+
   /** Adds a name to the cast and closes the card. */
   const add = (kind: EntityKind, name: string, description = '') => {
     setCardFor(null);
@@ -96,7 +120,16 @@ export function WriteSection({ initial }: { initial: StudioState }) {
         scenes={scenes}
         footage={footage}
         activeIndex={activeIndex}
+        collapsedActs={studio.workspace.collapsedActs}
         onChoose={(scene) => editor.current?.focusAt(scene.start)}
+        onToggleAct={(act) => {
+          const folded = studio.workspace.collapsedActs;
+          studio.saveWorkspace({
+            collapsedActs: folded.includes(act)
+              ? folded.filter((a) => a !== act)
+              : [...folded, act],
+          });
+        }}
       />
 
       <main className="main writing" ref={column} style={{ position: 'relative' }}>

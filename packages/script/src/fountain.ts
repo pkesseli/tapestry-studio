@@ -21,7 +21,8 @@ export type FountainElement =
   | { type: 'transition'; text: string; range: Range }
   | { type: 'lyric'; text: string; range: Range }
   | { type: 'centered'; text: string; range: Range }
-  | { type: 'section' | 'synopsis' | 'page-break'; text: string; range: Range };
+  | { type: 'section'; text: string; depth: number; range: Range }
+  | { type: 'synopsis' | 'page-break'; text: string; range: Range };
 
 /** One spoken line of a beat. */
 export interface BeatDialogue {
@@ -41,6 +42,8 @@ export interface Beat {
 /** A scene: its heading, everything up to the next heading, and the beats within. */
 export interface ParsedScene {
   heading: Extract<FountainElement, { type: 'scene-heading' }>;
+  /** The act (or part, chapter...) the scene belongs to: the latest `# Heading` above it, if any. */
+  act?: string;
   elements: FountainElement[];
   beats: Beat[];
 }
@@ -129,7 +132,12 @@ export function parseFountain(source: string): FountainDocument {
 
     if (trimmed === '===') elements.push({ type: 'page-break', text: trimmed, range: range(line) });
     else if (trimmed.startsWith('#'))
-      elements.push({ type: 'section', text: trimmed.replace(/^#+\s*/, ''), range: range(line) });
+      elements.push({
+        type: 'section',
+        text: trimmed.replace(/^#+\s*/, ''),
+        depth: /^#+/.exec(trimmed)?.[0].length ?? 1,
+        range: range(line),
+      });
     else if (trimmed.startsWith('='))
       elements.push({ type: 'synopsis', text: trimmed.replace(/^=\s*/, ''), range: range(line) });
     else if (/^>.*<$/.test(trimmed))
@@ -265,10 +273,12 @@ function readDialogue(lines: SourceLine[], index: number, elements: FountainElem
 function group(elements: FountainElement[]): FountainDocument {
   const preamble: FountainElement[] = [];
   const scenes: ParsedScene[] = [];
+  let act: string | undefined;
   for (const element of elements) {
-    if (element.type === 'scene-heading')
-      scenes.push({ heading: element, elements: [], beats: [] });
-    else (scenes[scenes.length - 1]?.elements ?? preamble).push(element);
+    if (element.type === 'section' && element.depth === 1) act = element.text;
+    if (element.type === 'scene-heading') {
+      scenes.push({ heading: element, ...(act !== undefined && { act }), elements: [], beats: [] });
+    } else (scenes[scenes.length - 1]?.elements ?? preamble).push(element);
   }
   for (const scene of scenes) scene.beats = beatsOf(scene.elements);
   return { elements, preamble, scenes };

@@ -23,3 +23,7 @@ Items marked (parity) exist in AI Movie Studio 2 — implement from the idea onl
   writing, reviewing and approving from the queue. Not a wrapped desktop UI; the client/logic boundary is documented in
   `doc/readme/architecture.md`. Open questions: secure remote access (LAN vs tunnel), file sync for scripts/metadata,
   App Store / Play Store policies for AI-generation apps (unchecked).
+- **Guided in-app tutorial** on the Demo Film project (install creates it, see plan 19): walks a new user through writing
+  scenes and acts, adding characters, places and props from the text, how shots are planned, approving work, reviewing
+  in context, and accepting. Interactive steps with highlights, skippable, restartable from a Help menu. Wait until the
+  interface has settled; the Write section and its acts, search and position memory are the first lessons.

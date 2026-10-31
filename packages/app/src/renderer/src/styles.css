@@ -832,3 +832,67 @@ body,
   opacity: 0.45;
   cursor: default;
 }
+
+/* ---- acts, search and folding in the scene list ---- */
+.scene-search {
+  margin: 8px 0 6px;
+  min-height: 38px;
+  font-size: 14px;
+}
+.act {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.act-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  min-height: 36px;
+  padding: 4px 8px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ink-2);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-align: left;
+  cursor: pointer;
+  margin-top: 6px;
+}
+.act-head:hover {
+  background: var(--gray-wash);
+}
+.chevron {
+  display: inline-block;
+  width: 14px;
+  transition: transform 0.12s;
+  font-size: 18px;
+  line-height: 1;
+}
+.chevron.open {
+  transform: rotate(90deg);
+}
+.script-editor .cm-line.sp-section {
+  font-family: 'Figtree', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--teal-ink);
+  background: var(--teal-wash);
+  border-radius: 6px;
+  padding: 4px 10px;
+  /* A border, not a margin: CodeMirror cannot map clicks to text correctly when its lines have margins. */
+  border-top: 22px solid transparent;
+  background-clip: padding-box;
+}
+.script-editor .cm-line.sp-synopsis {
+  font-family: 'Figtree', system-ui, sans-serif;
+  font-size: 13px;
+  color: var(--ink-3);
+  font-style: italic;
+}

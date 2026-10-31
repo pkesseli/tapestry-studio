@@ -18,5 +18,6 @@ export * from './schema/jobs';
 export * from './schema/project';
 export * from './schema/timeline';
 export * from './schema/units';
+export * from './schema/workspace';
 export * from './storage';
 export * from './validate';

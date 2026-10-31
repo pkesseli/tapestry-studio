@@ -143,8 +143,9 @@ the OS keychain (via Electron `safeStorage`), never in the project folder.
 - **A sandboxed preload must be one CommonJS file.** electron-vite emits ES modules for `"type": "module"` packages,
   which a sandboxed preload cannot load, and the failure is silent (`window.tapestry` is undefined). The config builds
   it as `out/preload/index.cjs`; the e2e tests catch a regression.
-- The app opens `TAPESTRY_PROJECT` if set, else `Documents/Tapestry Studio/My First Film` (created from an example
-  screenplay on first launch).
+- The app opens `TAPESTRY_PROJECT` if set, else `<documents folder>/Tapestry Studio/Demo Film` (created from an example
+  screenplay on first launch; the documents folder comes from Electron, so Windows redirects such as OneDrive, macOS and
+  Linux XDG folders are respected).
 - **Media reaches the renderer through a read-only custom protocol**, `tapestry-media://project/artifacts/<art id>/<file>`
   (`main/media-protocol.ts`): only that path shape is served, with range support for video, and the CSP allows it
   as `media-src`. The renderer never gets file paths.

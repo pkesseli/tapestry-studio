@@ -117,3 +117,17 @@ test('empty and heading-less text parse without error', () => {
   expect(parseFountain('').scenes).toEqual([]);
   expect(parseFountain('Just some action.\n').preamble).toHaveLength(1);
 });
+
+test('scenes remember the act (a level-one section) they sit under', () => {
+  const doc = parseFountain(
+    'INT. A - DAY\n\nBefore any act.\n\n# Act One\n\nINT. B - DAY\n\nOne.\n\n## Sequence\n\nINT. C - DAY\n\nTwo.\n\n# Act Two\n\nINT. D - DAY\n\nThree.\n',
+  );
+  expect(doc.scenes.map((s) => [s.heading.locationName, s.act])).toEqual([
+    ['A', undefined],
+    ['B', 'Act One'],
+    ['C', 'Act One'],
+    ['D', 'Act Two'],
+  ]);
+  const section = doc.elements.find((e) => e.type === 'section');
+  expect(section?.type === 'section' && section.depth).toBe(1);
+});

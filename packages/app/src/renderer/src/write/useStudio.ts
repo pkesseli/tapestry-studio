@@ -1,4 +1,4 @@
-import type { NewEntityInput } from '@tapestry/core';
+import type { NewEntityInput, Workspace } from '@tapestry/core';
 import type { StudioState } from '@tapestry/service';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -27,6 +27,13 @@ export interface Studio {
    * @param input Kind, name and optional description.
    */
   addEntity(input: NewEntityInput): Promise<void>;
+  /** Where the user was working last, kept up to date as it changes. */
+  workspace: Workspace;
+  /**
+   * Remembers where the user is working (shown at once, stored in the background).
+   * @param update Fields to change.
+   */
+  saveWorkspace(update: Partial<Workspace>): void;
 }
 
 /**
@@ -38,6 +45,7 @@ export function useStudio(initial: StudioState): Studio {
   const [text, setText] = useState(initial.scriptText);
   const [saveStatus, setSaveStatus] = useState<SaveStatus>('saved');
   const [error, setError] = useState<string | null>(null);
+  const [workspace, setWorkspace] = useState(initial.workspace);
   const latest = useRef(initial.scriptText);
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
@@ -86,6 +94,11 @@ export function useStudio(initial: StudioState): Studio {
     [adopt],
   );
 
+  const saveWorkspace = useCallback((update: Partial<Workspace>) => {
+    setWorkspace((current) => ({ ...current, ...update }));
+    window.tapestry.saveWorkspace(update).catch(() => undefined);
+  }, []);
+
   useEffect(
     () => () => {
       if (timer.current) {
@@ -96,5 +109,5 @@ export function useStudio(initial: StudioState): Studio {
     [initial.scriptPath],
   );
 
-  return { state, text, saveStatus, error, edit, addEntity };
+  return { state, text, saveStatus, error, edit, addEntity, workspace, saveWorkspace };
 }

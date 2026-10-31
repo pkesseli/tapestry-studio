@@ -13,6 +13,12 @@ export interface SceneItem {
   start: number;
   /** Offset where the next scene starts (or the end of the text). */
   end: number;
+  /** The scene heading as written, for searching. */
+  heading: string;
+  /** The act (or part, chapter...) the scene sits under, if the script groups its scenes. */
+  act?: string;
+  /** Names written in the scene (characters, places, props), for searching. */
+  names: string[];
 }
 
 /** A known entity that appears in a scene, with how often. */
@@ -36,12 +42,26 @@ export interface SceneContents {
  */
 export function sceneItems(analysis: Analysis): SceneItem[] {
   const scenes = analysis.fountain?.scenes ?? [];
-  return scenes.map((scene, index) => ({
-    number: index + 1,
-    title: sceneTitle(scene.heading.text, scene.heading.locationName, scene.heading.timeOfDay),
-    start: scene.heading.range.start,
-    end: scenes[index + 1]?.heading.range.start ?? analysis.text.length + 1,
-  }));
+  return scenes.map((scene, index) => {
+    const start = scene.heading.range.start;
+    const end = scenes[index + 1]?.heading.range.start ?? analysis.text.length + 1;
+    const names = [
+      ...new Set(
+        analysis.mentions
+          .filter((m) => m.range.start >= start && m.range.start < end)
+          .map((m) => m.text),
+      ),
+    ];
+    return {
+      number: index + 1,
+      title: sceneTitle(scene.heading.text, scene.heading.locationName, scene.heading.timeOfDay),
+      start,
+      end,
+      heading: scene.heading.text,
+      ...(scene.act !== undefined && { act: scene.act }),
+      names,
+    };
+  });
 }
 
 /**

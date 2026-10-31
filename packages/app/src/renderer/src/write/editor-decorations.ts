@@ -12,6 +12,8 @@ const LINE_CLASS: Partial<Record<string, string>> = {
   parenthetical: 'sp-paren',
   transition: 'sp-transition',
   'title-page': 'sp-title',
+  section: 'sp-section',
+  synopsis: 'sp-synopsis',
 };
 
 /** Mark class by how well a name is known. */

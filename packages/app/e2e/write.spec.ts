@@ -1,4 +1,4 @@
-import { mkdtempSync } from 'node:fs';
+import { existsSync, mkdtempSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -34,7 +34,7 @@ test('opens the example screenplay: scenes, unknown names, and the practice-mode
   await expect(window.getByRole('status')).toContainText('PRACTICE MODE');
   await expect(window.getByRole('button', { name: /Harbor, night/ })).toBeVisible();
   await expect(window.getByRole('button', { name: /Ferry deck, dawn/ })).toBeVisible();
-  await expect(window.locator('.m-new', { hasText: 'NORA' })).toBeVisible();
+  await expect(window.locator('.m-new', { hasText: 'NORA' }).first()).toBeVisible();
   await expect(window.getByTestId('missing')).toContainText('Nora');
   if (SHOTS) await window.screenshot({ path: join(SHOTS, 'write-start.png') });
   await app.close();
@@ -42,14 +42,14 @@ test('opens the example screenplay: scenes, unknown names, and the practice-mode
 
 test('adding a character from the card turns her mark known and lists her in the cast', async () => {
   const { app, window } = await launch(mkdtempSync(join(tmpdir(), 'tapestry-e2e-')));
-  await window.locator('.m-new', { hasText: 'NORA' }).click();
+  await window.locator('.m-new', { hasText: 'NORA' }).first().click();
   const card = window.getByRole('dialog', { name: 'Add Nora' });
   await expect(card).toBeVisible();
   await card.getByLabel(/A few words about/).fill('Harbor master’s daughter');
   if (SHOTS) await window.screenshot({ path: join(SHOTS, 'write-card.png') });
   await card.getByRole('button', { name: 'Add Nora' }).click();
   await expect(card).toBeHidden();
-  await expect(window.locator('.m-ok', { hasText: 'NORA' })).toBeVisible();
+  await expect(window.locator('.m-ok', { hasText: 'NORA' }).first()).toBeVisible();
   await expect(window.getByRole('complementary', { name: 'In this scene' })).toContainText('Nora');
   if (SHOTS) await window.screenshot({ path: join(SHOTS, 'write-added.png') });
   await app.close();
@@ -60,13 +60,13 @@ test('what you type is saved and is still there after a restart', async () => {
   const first = await launch(project);
   await first.window.locator('.cm-content').click();
   await first.window.keyboard.press('ControlOrMeta+End');
-  await first.window.keyboard.type('\n\nINT. CABIN - DAY\n\nTom warms his hands.\n');
-  await expect(first.window.getByRole('button', { name: /Cabin, day/ })).toBeVisible();
+  await first.window.keyboard.type('\n\nINT. LIGHTHOUSE - DAY\n\nTom warms his hands.\n');
+  await expect(first.window.getByRole('button', { name: /Lighthouse, day/ })).toBeVisible();
   await expect(first.window.getByText('Saved', { exact: true })).toBeVisible();
   await first.app.close();
 
   const second = await launch(project);
-  await expect(second.window.getByRole('button', { name: /Cabin, day/ })).toBeVisible();
+  await expect(second.window.getByRole('button', { name: /Lighthouse, day/ })).toBeVisible();
   await second.app.close();
 });
 
@@ -104,4 +104,63 @@ test('scenes with footage show a filmstrip, and the player steps through the sho
   await expect(player).toContainText('Shot 3 of 3', { timeout: 10_000 });
   if (SHOTS) await window.screenshot({ path: join(SHOTS, 'write-footage.png') });
   await app.close();
+});
+
+test('scenes are grouped under acts that fold away, and the list can be searched', async () => {
+  const { app, window } = await launch(mkdtempSync(join(tmpdir(), 'tapestry-e2e-')));
+  const harbor = window.getByRole('button', { name: /Harbor, night/ });
+  const ferry = window.getByRole('button', { name: /Ferry deck, dawn/ });
+  const cabin = window.getByRole('button', { name: /Cabin, day/ });
+  const actOne = window.getByRole('button', { name: /Act One/ });
+  await expect(actOne).toHaveAttribute('aria-expanded', 'true');
+  await expect(window.getByRole('button', { name: /Act Two/ })).toBeVisible();
+  if (SHOTS) await window.screenshot({ path: join(SHOTS, 'write-acts.png') });
+
+  await actOne.click();
+  await expect(actOne).toHaveAttribute('aria-expanded', 'false');
+  await expect(harbor).toBeHidden();
+  await expect(ferry).toBeHidden();
+  await expect(cabin).toBeVisible();
+
+  const search = window.getByRole('searchbox', { name: 'Search scenes' });
+  await search.fill('nora');
+  await expect(harbor).toBeVisible();
+  await expect(cabin).toBeVisible();
+  await expect(ferry).toBeHidden();
+  await search.fill('zzz');
+  await expect(window.getByText(/No scenes match/)).toBeVisible();
+  await search.fill('');
+  await expect(harbor).toBeHidden();
+  await app.close();
+});
+
+test('the scene you were working on and the folded acts are remembered across restarts', async () => {
+  const project = mkdtempSync(join(tmpdir(), 'tapestry-e2e-'));
+  const first = await launch(project);
+  await first.window.getByRole('button', { name: /Cabin, day/ }).click();
+  await first.window.getByRole('button', { name: /Act One/ }).click();
+  const workspace = join(project, '.tapestry', 'workspace.json');
+  /** True once the workspace file names the scene and the folded act. */
+  const remembered = (): boolean => {
+    if (!existsSync(workspace)) return false;
+    const saved = JSON.parse(readFileSync(workspace, 'utf8')) as {
+      activeSceneId?: string;
+      collapsedActs?: string[];
+    };
+    return Boolean(saved.activeSceneId) && Boolean(saved.collapsedActs?.includes('Act One'));
+  };
+  await expect.poll(remembered, { timeout: 8000 }).toBe(true);
+  await first.app.close();
+
+  const second = await launch(project);
+  await expect(second.window.getByRole('button', { name: /Cabin, day/ })).toHaveAttribute(
+    'aria-current',
+    'true',
+  );
+  await expect(second.window.getByRole('button', { name: /Harbor, night/ })).toBeHidden();
+  await expect(second.window.getByRole('button', { name: /Act One/ })).toHaveAttribute(
+    'aria-expanded',
+    'false',
+  );
+  await second.app.close();
 });

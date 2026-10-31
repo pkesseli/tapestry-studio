@@ -1,6 +1,6 @@
 import { join } from 'node:path';
 import { NodeFs } from '@tapestry/fs-node';
-import { ProjectService } from '@tapestry/service';
+import { ProjectService, STARTER_PROJECT_NAME } from '@tapestry/service';
 import { BrowserWindow, app, dialog, protocol } from 'electron';
 import { MEDIA_SCHEME } from '../shared/media-url';
 import { registerIpc } from './ipc';
@@ -16,12 +16,13 @@ protocol.registerSchemesAsPrivileged([
 
 /**
  * Folder of the project to open: `TAPESTRY_PROJECT` when set (tests and development), otherwise the default project
- * in the user's documents folder.
+ * in the user's documents folder (`Documents` on Windows and macOS, the XDG documents folder on Linux), under a
+ * `Tapestry Studio` subfolder.
  */
 function projectFolder(): string {
   return (
     process.env['TAPESTRY_PROJECT'] ??
-    join(app.getPath('documents'), 'Tapestry Studio', 'My First Film')
+    join(app.getPath('documents'), 'Tapestry Studio', STARTER_PROJECT_NAME)
   );
 }
 

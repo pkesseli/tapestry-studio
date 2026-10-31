@@ -8,6 +8,7 @@ const api: TapestryApi = {
   getState: () => ipcRenderer.invoke(IPC_CHANNELS.getState),
   saveScript: (path, text) => ipcRenderer.invoke(IPC_CHANNELS.saveScript, path, text),
   createEntity: (input) => ipcRenderer.invoke(IPC_CHANNELS.createEntity, input),
+  saveWorkspace: (update) => ipcRenderer.invoke(IPC_CHANNELS.saveWorkspace, update),
 };
 
 contextBridge.exposeInMainWorld('tapestry', api);

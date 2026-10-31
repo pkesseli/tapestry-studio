@@ -87,3 +87,8 @@ Kind-specific:
   scenes does not create shots.
 - Analysing a 120-page screenplay takes about 3 ms (test asserts under 20 ms); golden tests cover 5 screenplays and 2
   songs (`UPDATE_GOLDEN=1 pnpm test` rewrites them; review the diff).
+- **Acts** are Fountain level-one sections (`# Act One`); a scene belongs to the latest one above it, and the scene list
+  groups, searches and folds by act. Deeper sections (`## ...`) are parsed but not used yet.
+- **`.tapestry/workspace.json`** remembers where a person was working (active scene id, cursor, folded acts). It is local
+  to one person on one computer and not part of the film: leave `.tapestry/` out of version control and sharing. A
+  missing or damaged file just means starting fresh.

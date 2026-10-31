@@ -9,7 +9,8 @@ Top tabs, in plain words: **Write, Library, Shots, Queue, Music**. Write has a s
 left, the text in the middle, and an "In this scene" panel on the right. Other sections follow the same
 three-column rhythm: a list, the work, the details.
 
-- **Scene list** items show a small filmstrip of that scene's shots. Shots that do not exist yet are dashed empty frames,
+- **Scene list** is grouped under acts (`# Act One` lines in the script), can be folded and searched (by title, heading,
+  act or any name in the scene), and the app reopens on the scene and place you left. Items show a small filmstrip of that scene's shots. Shots that do not exist yet are dashed empty frames,
   so the list is useful before any footage exists and fills in as the film does.
 - Names in the text are marked: known ones with a teal underline, unknown ones with a dashed amber underline. A small
   card offers to add an unknown one on the spot; nothing else interrupts writing.
