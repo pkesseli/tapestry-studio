@@ -43,7 +43,12 @@ export function useStudio(initial: StudioState): Studio {
 
   /** Takes the cast and scenes from a confirmed state; the text stays whatever the user has typed. */
   const adopt = useCallback((next: StudioState) => {
-    setState((current) => ({ ...current, entities: next.entities, scenes: next.scenes }));
+    setState((current) => ({
+      ...current,
+      entities: next.entities,
+      scenes: next.scenes,
+      clips: next.clips,
+    }));
   }, []);
 
   const save = useCallback(async () => {

@@ -145,4 +145,10 @@ the OS keychain (via Electron `safeStorage`), never in the project folder.
   it as `out/preload/index.cjs`; the e2e tests catch a regression.
 - The app opens `TAPESTRY_PROJECT` if set, else `Documents/Tapestry Studio/My First Film` (created from an example
   screenplay on first launch).
+- **Media reaches the renderer through a read-only custom protocol**, `tapestry-media://project/artifacts/<art id>/<file>`
+  (`main/media-protocol.ts`): only that path shape is served, with range support for video, and the CSP allows it
+  as `media-src`. The renderer never gets file paths.
+- **Sample footage** (`ProjectService.addSampleFootage`, CLI `demo-footage`) creates real shots, jobs and artifacts from
+  your own clips (provider id `demo`: first shot of each scene accepted, the rest ready to review). Clips from
+  providers in `SAMPLE_PROVIDER_IDS` (`mock`, `demo`) always carry the Sample tag in the interface.
 

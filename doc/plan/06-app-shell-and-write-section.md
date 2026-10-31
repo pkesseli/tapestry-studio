@@ -2,7 +2,8 @@
 
 ## Status
 Built and tested (unit, service and Playwright tests). **Waiting for the section review below.** Run it with `pnpm dev`
-(set `TAPESTRY_PROJECT` to use another folder).
+(set `TAPESTRY_PROJECT` to use another folder). To see scenes with footage, use `pnpm tapestry demo-footage` (README);
+the scene list then shows a filmstrip and the right panel a player that steps through the scene's shots.
 
 ## Goal
 A real, runnable first slice: open a project, write a screenplay, see scenes and names recognised, and add characters,

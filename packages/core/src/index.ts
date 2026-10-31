@@ -6,6 +6,7 @@ export * from './aliases';
 export * from './errors';
 export * from './factories';
 export * from './fs-port';
+export * from './hash';
 export * from './ids';
 export * from './json';
 export * from './layout';

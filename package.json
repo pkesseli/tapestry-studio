@@ -18,7 +18,8 @@
     "test": "vitest run",
     "test:e2e": "pnpm --filter @tapestry/app test:e2e",
     "check": "node scripts/check-file-size.mjs && node scripts/check-deps.mjs",
-    "verify": "pnpm format:check && pnpm check && pnpm typecheck && pnpm lint && pnpm test && pnpm build"
+    "verify": "pnpm format:check && pnpm check && pnpm typecheck && pnpm lint && pnpm test && pnpm build",
+    "tapestry": "tsx packages/cli/src/index.ts"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -27,6 +28,7 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "globals": "^17.13.0",
     "prettier": "^3.9.10",
+    "tsx": "^4.23.15",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.72.0",
     "typescript7": "npm:typescript@7.0.2",

@@ -3,6 +3,9 @@ import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { _electron as electron, expect, test } from '@playwright/test';
+import { NodeFs } from '@tapestry/fs-node';
+import { placeholderVideo } from '@tapestry/providers';
+import { ProjectService } from '@tapestry/service';
 import type { ElectronApplication, Page } from '@playwright/test';
 
 /** Folder of the app package (where the built `out/` lives). */
@@ -65,4 +68,40 @@ test('what you type is saved and is still there after a restart', async () => {
   const second = await launch(project);
   await expect(second.window.getByRole('button', { name: /Cabin, day/ })).toBeVisible();
   await second.app.close();
+});
+
+test('scenes with footage show a filmstrip, and the player steps through the shots in context', async () => {
+  const project = mkdtempSync(join(tmpdir(), 'tapestry-e2e-'));
+  const service = await ProjectService.open(new NodeFs(project));
+  await service.addSampleFootage(
+    [1, 2, 3].map((n) => ({ name: `${n}.mp4`, bytes: placeholderVideo() })),
+  );
+  const { app, window } = await launch(project);
+
+  const scene = window.getByRole('button', { name: /Harbor, night/ });
+  await expect(scene).toContainText('3 shots · 1 accepted · 2 to review');
+  await expect(scene).toContainText('Sample footage');
+  await expect
+    .poll(() =>
+      window.evaluate(() =>
+        [...document.querySelectorAll('.strip video')].every(
+          (v) => (v as HTMLVideoElement).videoWidth > 0,
+        ),
+      ),
+    )
+    .toBe(true);
+
+  const player = window.locator('.player');
+  await expect(player).toContainText('Shot 1 of 3 · Accepted');
+  await expect(player.locator('.sample-tag')).toHaveText('SAMPLE');
+  await expect(player.getByRole('button', { name: 'Previous shot' })).toBeDisabled();
+  await player.getByRole('button', { name: 'Next shot' }).click();
+  await expect(player).toContainText('Shot 2 of 3 · Ready to review');
+  await player.getByRole('button', { name: 'Previous shot' }).click();
+  await expect(player).toContainText('Shot 1 of 3');
+
+  await player.getByRole('button', { name: 'Play whole scene' }).click();
+  await expect(player).toContainText('Shot 3 of 3', { timeout: 10_000 });
+  if (SHOTS) await window.screenshot({ path: join(SHOTS, 'write-footage.png') });
+  await app.close();
 });

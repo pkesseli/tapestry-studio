@@ -9,6 +9,7 @@ import { SceneList } from './SceneList';
 import { ScriptEditor } from './ScriptEditor';
 import type { ScriptEditorHandle } from './ScriptEditor';
 import { displayName, modifierLabel } from './format';
+import { footageByScene } from './footage';
 import { activeSceneIndex, contentsOf, sceneItems } from './scenes';
 import type { SceneItem } from './scenes';
 import { useStudio } from './useStudio';
@@ -43,6 +44,10 @@ export function WriteSection({ initial }: { initial: StudioState }) {
   const scenes = useMemo(() => sceneItems(analysis), [analysis]);
   const activeIndex = activeSceneIndex(scenes, cursor);
   const activeScene: SceneItem | undefined = scenes[activeIndex];
+  const footage = useMemo(
+    () => footageByScene(studio.state.scenes, studio.state.clips),
+    [studio.state.scenes, studio.state.clips],
+  );
   const contents = useMemo(
     () =>
       activeScene
@@ -89,6 +94,7 @@ export function WriteSection({ initial }: { initial: StudioState }) {
     <div className="body">
       <SceneList
         scenes={scenes}
+        footage={footage}
         activeIndex={activeIndex}
         onChoose={(scene) => editor.current?.focusAt(scene.start)}
       />
@@ -143,6 +149,7 @@ export function WriteSection({ initial }: { initial: StudioState }) {
       <InScenePanel
         scene={activeScene}
         contents={contents}
+        clips={footage[activeIndex]?.clips ?? []}
         onAdd={(kind, name) => add(kind, name)}
       />
     </div>

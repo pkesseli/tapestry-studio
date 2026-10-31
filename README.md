@@ -22,6 +22,13 @@ pnpm verify     # format check, repo rules, typecheck, lint, tests, build
 pnpm test:e2e   # launch the built app with Playwright
 ```
 
+To try the interface with footage before real generation exists, give a project sample clips (close the app first, it
+keeps its own copy). Any folder of `.mp4` files works; the project is created if the folder is empty:
+
+```sh
+pnpm tapestry demo-footage <project-folder> <folder-with-mp4-files>
+```
+
 License: [Apache-2.0](LICENSE). Content you create with the tool is yours; generated media is also subject to the terms
 of the model or provider that produced it.
 

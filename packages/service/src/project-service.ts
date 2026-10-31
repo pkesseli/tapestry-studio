@@ -1,6 +1,8 @@
 import { createEntity, createProject, loadProject, saveProject } from '@tapestry/core';
 import type { Entity, FsPort, NewEntityInput, ProjectData, Scene } from '@tapestry/core';
 import { analyze, deriveScenes } from '@tapestry/script';
+import { clipsOf, planSampleFootage } from './footage';
+import type { SampleClip, SceneClip } from './footage';
 import { MAIN_SCRIPT, STARTER_PROJECT_NAME, STARTER_SCREENPLAY } from './starter';
 
 /** What the Write section shows: the screenplay, who is in the cast, and the scenes derived from the text. */
@@ -11,6 +13,8 @@ export interface StudioState {
   scriptText: string;
   entities: Entity[];
   scenes: Scene[];
+  /** Videos made for the shots of the scenes (none until something has been made). */
+  clips: SceneClip[];
 }
 
 /** Options for creating a project that does not exist yet. */
@@ -75,6 +79,7 @@ export class ProjectService {
       scriptText: this.data.scripts[MAIN_SCRIPT] ?? '',
       entities: this.data.entities,
       scenes: this.data.scenes,
+      clips: clipsOf(this.data),
     };
   }
 
@@ -108,6 +113,38 @@ export class ProjectService {
       if (taken) throw new Error(`${entity.name} already exists`);
       this.data = { ...this.data, entities: [...this.data.entities, entity] };
       this.rederive();
+      await saveProject(this.fs, this.data);
+      return this.state();
+    });
+  }
+
+  /**
+   * Gives every scene that has no shots yet one to three shots with finished sample takes, so the interface can be tried
+   * with footage before real generation exists. The first shot of each scene is accepted, the rest are ready to review.
+   * @param clips Videos to hand out in order.
+   */
+  addSampleFootage(clips: SampleClip[]): Promise<StudioState> {
+    return this.serialize(async () => {
+      const analysis = analyze(
+        'fountain',
+        this.data.scripts[MAIN_SCRIPT] ?? '',
+        this.data.entities,
+      );
+      // One shot per action paragraph and per spoken line; real shot planning arrives with the Shots section.
+      const actions = (analysis.fountain?.scenes ?? []).map((scene) =>
+        scene.beats.flatMap((beat) => [
+          beat.action,
+          ...beat.dialogue.map((line) => `${line.speaker}: ${line.text}`),
+        ]),
+      );
+      const plan = await planSampleFootage(this.data, actions, clips);
+      await Promise.all(plan.files.map((file) => this.fs.writeBytes(file.path, file.bytes)));
+      this.data = {
+        ...this.data,
+        scenes: plan.scenes,
+        jobs: [...this.data.jobs, ...plan.jobs],
+        artifacts: [...this.data.artifacts, ...plan.artifacts],
+      };
       await saveProject(this.fs, this.data);
       return this.state();
     });

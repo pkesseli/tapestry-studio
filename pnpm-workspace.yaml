@@ -1,6 +1,8 @@
 packages:
   - packages/*
 # Dependencies that are allowed to run install scripts (downloads the Electron binary, esbuild native binary).
+allowBuilds:
+  esbuild: set this to true or false
 onlyBuiltDependencies:
   - electron
   - esbuild

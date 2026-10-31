@@ -3,24 +3,23 @@ import type { Budget } from '@tapestry/core';
 import { NodeFs } from '@tapestry/fs-node';
 import { ProviderRegistry, mockProviderDefinition } from '@tapestry/providers';
 import { JobQueue, QueueError } from '@tapestry/queue';
+import type { CliIo } from './cli-io';
+import { addDemoFootage } from './demo-footage';
+
+export type { CliIo } from './cli-io';
 
 /** Text printed by `tapestry help`. */
 const USAGE = `Usage: tapestry <command>
 
 Commands:
   queue run <project-folder>   Run every queued job of a project until none is left.
+  demo-footage <project-folder> <clips-folder>
+                               Give a project's scenes sample footage (close the app first).
   help                         Show this text.
 
 Environment:
   TAPESTRY_BUDGET_CAP   Maximum spend (in the project's currency) for this run. Without it, headless runs refuse
                         providers that can cost money.`;
-
-/** Where the CLI reads its environment and writes its output; tests substitute their own. */
-export interface CliIo {
-  out(line: string): void;
-  err(line: string): void;
-  env: Record<string, string | undefined>;
-}
 
 /**
  * Works out the spending limits for a headless run. The project's own budget only applies together with an explicit
@@ -53,6 +52,8 @@ export function headlessBudget(
 export async function main(args: string[], io: CliIo): Promise<number> {
   const [command, subcommand, folder] = args;
   if (command === 'queue' && subcommand === 'run' && folder) return runQueue(folder, io);
+  if (command === 'demo-footage' && subcommand && folder)
+    return addDemoFootage(subcommand, folder, io);
   io.out(USAGE);
   return command === undefined || command === 'help' ? 0 : 2;
 }

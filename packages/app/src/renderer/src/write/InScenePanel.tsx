@@ -1,11 +1,15 @@
 import type { EntityKind } from '@tapestry/core';
+import type { SceneClip } from '@tapestry/service';
 import { KIND_LABEL, displayName } from './format';
+import { ScenePlayer } from './ScenePlayer';
 import type { PresentEntity, SceneContents, SceneItem } from './scenes';
 
 /** Properties of {@link InScenePanel}. */
 interface InScenePanelProps {
   scene: SceneItem | undefined;
   contents: SceneContents;
+  /** Videos of the scene, in shot order (empty when nothing has been made). */
+  clips: readonly SceneClip[];
   /**
    * Adds a name to the cast without further questions.
    * @param kind What the name is.
@@ -42,13 +46,15 @@ function Group({ title, items }: { title: string; items: PresentEntity[] }) {
 }
 
 /** The right-hand panel: who and what is in the scene the cursor is in, and names that still need adding. */
-export function InScenePanel({ scene, contents, onAdd }: InScenePanelProps) {
+export function InScenePanel({ scene, contents, clips, onAdd }: InScenePanelProps) {
   return (
     <aside className="aside" aria-label="In this scene">
       <div className="col" style={{ gap: 4 }}>
         <span className="label">{scene ? `In scene ${scene.number}` : 'In this scene'}</span>
         <h2 className="h2">{scene ? scene.title : 'Nothing yet'}</h2>
       </div>
+
+      {clips.length > 0 && <ScenePlayer key={scene?.number} clips={clips} />}
 
       <Group title="Cast" items={contents.cast} />
       <Group title="Places" items={contents.places} />

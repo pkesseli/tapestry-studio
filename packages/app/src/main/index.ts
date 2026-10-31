@@ -1,8 +1,18 @@
 import { join } from 'node:path';
 import { NodeFs } from '@tapestry/fs-node';
 import { ProjectService } from '@tapestry/service';
-import { BrowserWindow, app, dialog } from 'electron';
+import { BrowserWindow, app, dialog, protocol } from 'electron';
+import { MEDIA_SCHEME } from '../shared/media-url';
 import { registerIpc } from './ipc';
+import { serveMedia } from './media-protocol';
+
+// The media scheme must be declared before the app is ready; its handler is added once the project is open.
+protocol.registerSchemesAsPrivileged([
+  {
+    scheme: MEDIA_SCHEME,
+    privileges: { standard: true, secure: true, supportFetchAPI: true, stream: true },
+  },
+]);
 
 /**
  * Folder of the project to open: `TAPESTRY_PROJECT` when set (tests and development), otherwise the default project
@@ -44,7 +54,9 @@ function createWindow(): void {
 
 void app.whenReady().then(async () => {
   try {
-    registerIpc(await ProjectService.open(new NodeFs(projectFolder())));
+    const folder = projectFolder();
+    registerIpc(await ProjectService.open(new NodeFs(folder)));
+    protocol.handle(MEDIA_SCHEME, (request) => serveMedia(folder, request));
   } catch (error) {
     dialog.showErrorBox('Tapestry Studio cannot open your project', (error as Error).message);
     app.quit();
