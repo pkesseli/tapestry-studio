@@ -23,6 +23,11 @@ interface SceneListProps {
    * @param act Name of the act.
    */
   onToggleAct(act: string): void;
+  /**
+   * Called to fold or unfold every act at once.
+   * @param acts The acts that should end up folded (none to unfold everything).
+   */
+  onSetCollapsed(acts: string[]): void;
 }
 
 /**
@@ -112,7 +117,12 @@ export function SceneList({
   collapsedActs,
   onChoose,
   onToggleAct,
+  onSetCollapsed,
 }: SceneListProps) {
+  const acts = [
+    ...new Set(scenes.flatMap((scene) => (scene.act === undefined ? [] : [scene.act]))),
+  ];
+  const allFolded = acts.length > 0 && acts.every((act) => collapsedActs.includes(act));
   const [query, setQuery] = useState('');
   const searching = query.trim() !== '';
   const groups = useMemo(() => filterGroups(groupScenes(scenes), query), [scenes, query]);
@@ -121,6 +131,16 @@ export function SceneList({
       <div className="row" style={{ padding: '4px 6px 0' }}>
         <span className="label grow">Scenes</span>
         <span className="tiny muted">{scenes.length}</span>
+        {acts.length > 0 && (
+          <button
+            type="button"
+            className="btn quiet sm"
+            style={{ minHeight: 28, padding: '0 8px' }}
+            onClick={() => onSetCollapsed(allFolded ? [] : acts)}
+          >
+            {allFolded ? 'Expand all' : 'Collapse all'}
+          </button>
+        )}
       </div>
       <input
         type="search"

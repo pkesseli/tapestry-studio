@@ -122,6 +122,7 @@ export function WriteSection({ initial }: { initial: StudioState }) {
         activeIndex={activeIndex}
         collapsedActs={studio.workspace.collapsedActs}
         onChoose={(scene) => editor.current?.focusAt(scene.start)}
+        onSetCollapsed={(acts) => studio.saveWorkspace({ collapsedActs: acts })}
         onToggleAct={(act) => {
           const folded = studio.workspace.collapsedActs;
           studio.saveWorkspace({

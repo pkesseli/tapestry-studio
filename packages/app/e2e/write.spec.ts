@@ -122,6 +122,15 @@ test('scenes are grouped under acts that fold away, and the list can be searched
   await expect(ferry).toBeHidden();
   await expect(cabin).toBeVisible();
 
+  await window.getByRole('button', { name: 'Collapse all' }).click();
+  await expect(cabin).toBeHidden();
+  await expect(window.getByRole('button', { name: 'Expand all' })).toBeVisible();
+  await window.getByRole('button', { name: 'Expand all' }).click();
+  await expect(harbor).toBeVisible();
+  await expect(cabin).toBeVisible();
+  await actOne.click();
+  await expect(harbor).toBeHidden();
+
   const search = window.getByRole('searchbox', { name: 'Search scenes' });
   await search.fill('nora');
   await expect(harbor).toBeVisible();
