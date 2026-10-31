@@ -23,6 +23,11 @@ interface ShotPanelProps {
    * @param index Index into `shots`.
    */
   onEditDirection(index: number): void;
+  /**
+   * Called to add a new line after the active shot.
+   * @param kind A line of dialogue or a paragraph of action.
+   */
+  onAddLine(kind: 'dialogue' | 'action'): void;
 }
 
 /** How each state is worded for the user (doc/readme/ux.md). */
@@ -43,9 +48,11 @@ export function ShotPanel({
   onSelect,
   onAddDirection,
   onEditDirection,
+  onAddLine,
 }: ShotPanelProps) {
   const [continuous, setContinuous] = useState(false);
   const video = useRef<HTMLVideoElement>(null);
+  const lineMenu = useRef<HTMLDetailsElement>(null);
   const position = Math.max(0, Math.min(activeIndex, shots.length - 1));
   const shot = shots[position] as ShotView;
   const firstMade = shots.findIndex((s) => s.clip);
@@ -197,6 +204,29 @@ export function ShotPanel({
           </span>
         </div>
       )}
+
+      <details className="menu" ref={lineMenu}>
+        <summary className="btn sm">Add line ▾</summary>
+        <div className="menu-list" style={{ left: 0, right: 'auto', top: 40 }}>
+          {(
+            [
+              ['dialogue', 'Dialogue after this shot'],
+              ['action', 'Action after this shot'],
+            ] as const
+          ).map(([kind, label]) => (
+            <button
+              key={kind}
+              type="button"
+              onClick={() => {
+                if (lineMenu.current) lineMenu.current.open = false;
+                onAddLine(kind);
+              }}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      </details>
 
       {shot.state === 'not-made' && (
         <div className="tiny muted">

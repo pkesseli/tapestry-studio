@@ -1,6 +1,6 @@
 import type { Entity, EntityKind } from '@tapestry/core';
 import { normalizeAlias } from '@tapestry/core';
-import type { Analysis, Mention } from '@tapestry/script';
+import type { Analysis, Mention, ParsedScene } from '@tapestry/script';
 import { sceneTitle } from './format';
 
 /** A scene as the scene list and the side panel see it. */
@@ -113,4 +113,19 @@ export function contentsOf(
     things: of('prop'),
     missing: [...missing.values()],
   };
+}
+
+/**
+ * Where a scene's own text ends: after its last element and note, but before any act line that follows it. New scenes
+ * and lines go here so they land inside the same act.
+ * @param scene A parsed scene.
+ */
+export function sceneContentEnd(scene: ParsedScene): number {
+  const content = scene.elements.filter((e) => e.type !== 'section' && e.type !== 'synopsis');
+  const ends = [
+    scene.heading.range.end,
+    ...content.map((e) => e.range.end),
+    ...scene.notes.map((n) => n.range.end),
+  ];
+  return Math.max(...ends);
 }

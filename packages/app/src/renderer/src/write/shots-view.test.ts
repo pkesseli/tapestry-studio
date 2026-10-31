@@ -68,3 +68,10 @@ test('the active shot is the last one that starts at or before the cursor', () =
   expect(activeShotIndex(views, TEXT.length)).toBe(1);
   expect(activeShotIndex([], 5)).toBe(-1);
 });
+
+test('new text for after a shot goes past the notes written under it', () => {
+  const { parsed, saved } = setup();
+  const [first, second] = shotViews(parsed, saved, [], [maria]);
+  expect(TEXT.slice(first!.end, first!.blockEnd)).toBe('\n[[direction: slow push-in]]');
+  expect(second!.blockEnd).toBe(second!.end);
+});

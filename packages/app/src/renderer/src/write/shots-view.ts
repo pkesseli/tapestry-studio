@@ -19,6 +19,8 @@ export interface ShotView {
   /** Where the shot's text starts and ends in the screenplay. */
   start: number;
   end: number;
+  /** Where new text for after this shot goes: past the shot and any notes written under it. */
+  blockEnd: number;
   /** Names of the characters, places and props in the shot. */
   people: string[];
   /** The video made for the shot, if any. */
@@ -52,6 +54,7 @@ export function shotViews(
       durationSeconds: planned.durationSeconds,
       start: planned.range.start,
       end: planned.range.end,
+      blockEnd: Math.max(planned.range.end, planned.noteEnd ?? 0),
       people: (match?.referenceEntityIds ?? []).flatMap((id) => byId.get(id) ?? []),
       ...(clip && { clip }),
       state: !clip ? 'not-made' : clip.accepted ? 'accepted' : 'to-review',

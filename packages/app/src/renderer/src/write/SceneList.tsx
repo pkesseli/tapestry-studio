@@ -28,6 +28,10 @@ interface SceneListProps {
    * @param acts The acts that should end up folded (none to unfold everything).
    */
   onSetCollapsed(acts: string[]): void;
+  /** Called to add a new act (with a first scene) at the end of the script. */
+  onAddAct(): void;
+  /** Called to add a new scene after the one being worked on. */
+  onAddScene(): void;
 }
 
 /**
@@ -118,6 +122,8 @@ export function SceneList({
   onChoose,
   onToggleAct,
   onSetCollapsed,
+  onAddAct,
+  onAddScene,
 }: SceneListProps) {
   const acts = [
     ...new Set(scenes.flatMap((scene) => (scene.act === undefined ? [] : [scene.act]))),
@@ -141,6 +147,14 @@ export function SceneList({
             {allFolded ? 'Expand all' : 'Collapse all'}
           </button>
         )}
+      </div>
+      <div className="row" style={{ gap: 6, padding: '0 2px', marginTop: 6 }}>
+        <button type="button" className="btn sm grow" aria-label="Add act" onClick={onAddAct}>
+          + Act
+        </button>
+        <button type="button" className="btn sm grow" aria-label="Add scene" onClick={onAddScene}>
+          + Scene
+        </button>
       </div>
       <input
         type="search"

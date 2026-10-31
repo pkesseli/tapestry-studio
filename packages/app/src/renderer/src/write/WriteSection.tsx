@@ -10,7 +10,8 @@ import { ScriptEditor } from './ScriptEditor';
 import type { ScriptEditorHandle } from './ScriptEditor';
 import { displayName, modifierLabel } from './format';
 import { footageByScene } from './footage';
-import { activeSceneIndex, contentsOf, sceneItems } from './scenes';
+import { newActInsertion, newLineInsertion, newSceneInsertion } from './insertions';
+import { activeSceneIndex, contentsOf, sceneContentEnd, sceneItems } from './scenes';
 import type { SceneItem } from './scenes';
 import { activeShotIndex, shotViews } from './shots-view';
 import { useStudio } from './useStudio';
@@ -142,6 +143,33 @@ export function WriteSection({ initial }: { initial: StudioState }) {
     if (result.saved) setExported(result.path ?? '');
   };
 
+  /** Adds a new act, with a first scene, at the end of the script. */
+  const addAct = () => {
+    const acts = (analysis.fountain?.elements ?? []).filter(
+      (element) => element.type === 'section' && element.depth === 1,
+    ).length;
+    editor.current?.insertAt(newActInsertion(studio.text, acts));
+  };
+
+  /** Adds a new scene after the one being worked on (at the end when there is none). */
+  const addScene = () => {
+    const parsed = analysis.fountain?.scenes[activeIndex];
+    const offset = parsed ? sceneContentEnd(parsed) : studio.text.length;
+    editor.current?.insertAt(newSceneInsertion(studio.text, offset));
+  };
+
+  /** Adds dialogue or action after the active shot, past any direction written under it. */
+  const addLine = (kind: 'dialogue' | 'action') => {
+    const parsed = analysis.fountain?.scenes[activeIndex];
+    const shot = sceneShots[activeShot];
+    const offset = shot?.blockEnd ?? (parsed ? sceneContentEnd(parsed) : studio.text.length);
+    const speakers = (parsed?.beats ?? [])
+      .flatMap((beat) => beat.dialogue)
+      .filter((line) => line.range.end <= offset)
+      .map((line) => line.speaker);
+    editor.current?.insertAt(newLineInsertion(studio.text, offset, kind, speakers));
+  };
+
   /** Adds a name to the cast and closes the card. */
   const add = (kind: EntityKind, name: string, description = '') => {
     setCardFor(null);
@@ -155,6 +183,8 @@ export function WriteSection({ initial }: { initial: StudioState }) {
         footage={footage}
         activeIndex={activeIndex}
         collapsedActs={studio.workspace.collapsedActs}
+        onAddAct={addAct}
+        onAddScene={addScene}
         onChoose={(scene) => editor.current?.focusAt(scene.start)}
         onSetCollapsed={(acts) => studio.saveWorkspace({ collapsedActs: acts })}
         onToggleAct={(act) => {
@@ -259,6 +289,7 @@ export function WriteSection({ initial }: { initial: StudioState }) {
           const shot = sceneShots[index];
           if (shot) editor.current?.focusAt(shot.end + 1);
         }}
+        onAddLine={addLine}
         onAdd={(kind, name) => add(kind, name)}
       />
     </div>

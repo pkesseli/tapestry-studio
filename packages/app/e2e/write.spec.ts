@@ -228,3 +228,46 @@ test('exporting the script leaves directions and notes out unless asked to keep 
   await expect.poll(() => readFileSync(out, 'utf8')).toContain('[[direction: slow push-in]]');
   await app.close();
 });
+
+test('a new scene goes after the current one with its place ready to type over', async () => {
+  const { app, window } = await launch(mkdtempSync(join(tmpdir(), 'tapestry-e2e-')));
+  await window.getByRole('button', { name: 'Add scene' }).click();
+  await window.keyboard.type('KITCHEN');
+  const titles = window.locator('.scene .bold');
+  await expect(titles).toHaveText([
+    'Harbor, night',
+    'Kitchen, day',
+    'Ferry deck, dawn',
+    'Cabin, day',
+  ]);
+  await expect(window.locator('.act-head').first()).toContainText('Act One');
+  await expect(window.locator('.act').first().locator('.scene')).toHaveCount(3);
+  await app.close();
+});
+
+test('a new act comes with a first scene and its name ready to type over', async () => {
+  const { app, window } = await launch(mkdtempSync(join(tmpdir(), 'tapestry-e2e-')));
+  await window.getByRole('button', { name: 'Add act' }).click();
+  await window.keyboard.type('Epilogue');
+  await expect(window.locator('.act-head')).toHaveText([/Act One/, /Act Two/, /Epilogue/]);
+  await expect(window.locator('.scene .bold').last()).toHaveText('Location, day');
+  await app.close();
+});
+
+test('a new line goes after the shot and its direction, so the direction stays with its shot', async () => {
+  const { app, window } = await launch(mkdtempSync(join(tmpdir(), 'tapestry-e2e-')));
+  const panel = window.locator('.shot-card');
+  await panel.getByRole('button', { name: 'Add direction' }).click();
+  await window.keyboard.type('slow push-in');
+  await panel.getByText('Add line').click();
+  await panel.getByRole('button', { name: /Dialogue after this shot/ }).click();
+  await window.keyboard.type('TOM');
+  await expect(panel).toContainText('of 4');
+  await window.locator('.shot-mark').filter({ hasText: /^1$/ }).first().click();
+  await expect(panel.locator('.direction-box')).toContainText('slow push-in');
+  await window.locator('.shot-mark').filter({ hasText: /^2$/ }).first().click();
+  await expect(panel).toContainText('TOM: What they say.');
+  await expect(panel.locator('.direction-box')).toHaveCount(0);
+  if (SHOTS) await window.screenshot({ path: join(SHOTS, 'write-addline.png') });
+  await app.close();
+});

@@ -28,6 +28,11 @@ interface InScenePanelProps {
    */
   onEditDirection(index: number): void;
   /**
+   * Adds a line after the active shot.
+   * @param kind Dialogue or action.
+   */
+  onAddLine(kind: 'dialogue' | 'action'): void;
+  /**
    * Adds a name to the cast without further questions.
    * @param kind What the name is.
    * @param name The name as written in the script.
@@ -71,6 +76,7 @@ export function InScenePanel({
   onSelectShot,
   onAddDirection,
   onEditDirection,
+  onAddLine,
   onAdd,
 }: InScenePanelProps) {
   return (
@@ -88,6 +94,7 @@ export function InScenePanel({
           onSelect={onSelectShot}
           onAddDirection={onAddDirection}
           onEditDirection={onEditDirection}
+          onAddLine={onAddLine}
         />
       )}
 

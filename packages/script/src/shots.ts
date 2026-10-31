@@ -17,6 +17,8 @@ export interface PlannedShot {
   range: Range;
   /** Guidance from `[[direction: ...]]` notes under the shot, joined with a space. */
   direction?: string;
+  /** Where the last note under the shot ends (any kind of note); new text for after the shot goes beyond this. */
+  noteEnd?: number;
   /** Rough length in seconds, from the amount of text. */
   durationSeconds: number;
 }
@@ -67,10 +69,14 @@ export function planShots(scene: ParsedScene): PlannedShot[] {
       });
     }
   }
-  for (const note of scene.notes.filter((n) => n.direction && n.text)) {
+  for (const note of scene.notes) {
     const owner =
       [...shots].reverse().find((shot) => shot.range.start <= note.range.start) ?? shots[0];
-    if (owner) owner.direction = owner.direction ? `${owner.direction} ${note.text}` : note.text;
+    if (!owner) continue;
+    owner.noteEnd = Math.max(owner.noteEnd ?? owner.range.end, note.range.end);
+    if (note.direction && note.text) {
+      owner.direction = owner.direction ? `${owner.direction} ${note.text}` : note.text;
+    }
   }
   return shots;
 }

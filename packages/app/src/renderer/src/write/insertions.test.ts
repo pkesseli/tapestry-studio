@@ -1,0 +1,61 @@
+import { expect, test } from 'vitest';
+import { newActInsertion, newLineInsertion, newSceneInsertion, nextActName } from './insertions';
+
+/** Applies an insertion and returns the text and the selected part. */
+function apply(
+  text: string,
+  insertion: { offset: number; text: string; select: { from: number; to: number } },
+) {
+  const result = text.slice(0, insertion.offset) + insertion.text + text.slice(insertion.offset);
+  return {
+    result,
+    selected: result.slice(
+      insertion.offset + insertion.select.from,
+      insertion.offset + insertion.select.to,
+    ),
+  };
+}
+
+test('act names read like a person would write them', () => {
+  expect([0, 1, 2, 11, 12].map(nextActName)).toEqual([
+    'Act One',
+    'Act Two',
+    'Act Three',
+    'Act Twelve',
+    'Act 13',
+  ]);
+});
+
+test('a new act goes at the end with a first scene, after a blank line, with its name selected', () => {
+  const text = 'INT. A - DAY\n\nHello.\n';
+  const { result, selected } = apply(text, newActInsertion(text, 1));
+  expect(result).toBe('INT. A - DAY\n\nHello.\n\n# Act Two\n\nINT. LOCATION - DAY\n');
+  expect(selected).toBe('Act Two');
+  const bare = apply('Hello.', newActInsertion('Hello.', 0));
+  expect(bare.result).toBe('Hello.\n\n# Act One\n\nINT. LOCATION - DAY\n');
+  expect(apply('', newActInsertion('', 0)).result).toBe('# Act One\n\nINT. LOCATION - DAY\n');
+});
+
+test('a new scene goes after the given offset in its own paragraph with LOCATION selected', () => {
+  const text = 'INT. A - DAY\n\nHello.\n\n# Act Two\n\nINT. B - DAY\n';
+  const offset = text.indexOf('\n\n# Act Two');
+  const { result, selected } = apply(text, newSceneInsertion(text, offset));
+  expect(result).toContain('Hello.\n\nINT. LOCATION - DAY\n\n\n# Act Two');
+  expect(selected).toBe('LOCATION');
+});
+
+test('a new action line starts its own paragraph and selects its placeholder', () => {
+  const text = 'INT. A - DAY\n\nHe waits.\n';
+  const { result, selected } = apply(text, newLineInsertion(text, text.length, 'action'));
+  expect(result).toBe('INT. A - DAY\n\nHe waits.\n\nDescribe what happens.\n');
+  expect(selected).toBe('Describe what happens.');
+});
+
+test('a new dialogue line is for the other person in the conversation', () => {
+  const text = 'MARIA\nHi.\n\nNORA\nHello.\n';
+  const added = apply(text, newLineInsertion(text, text.length, 'dialogue', ['MARIA', 'NORA']));
+  expect(added.selected).toBe('MARIA');
+  expect(added.result.endsWith('\n\nMARIA\nWhat they say.\n')).toBe(true);
+  expect(apply('', newLineInsertion('', 0, 'dialogue', ['tom'])).selected).toBe('TOM');
+  expect(apply('', newLineInsertion('', 0, 'dialogue')).selected).toBe('CHARACTER');
+});

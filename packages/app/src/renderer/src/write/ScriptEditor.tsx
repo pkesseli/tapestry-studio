@@ -5,6 +5,7 @@ import { directionNote } from '@tapestry/script';
 import type { Analysis } from '@tapestry/script';
 import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 import { buildDecorations, decorationField, setDecorations } from './editor-decorations';
+import type { Insertion } from './insertions';
 import { buildShotMarkers, setShotMarkers, shotGutter } from './shot-gutter';
 import type { ShotMarkerData } from './shot-gutter';
 
@@ -28,6 +29,11 @@ export interface ScriptEditorHandle {
    * @param offset Character offset the note should follow (the end of a shot's text).
    */
   insertDirection(offset: number): void;
+  /**
+   * Inserts text and selects a part of it, so the user can type over a placeholder.
+   * @param insertion What to insert and where.
+   */
+  insertAt(insertion: Insertion): void;
 }
 
 /** A margin marker to show next to a shot. */
@@ -140,6 +146,17 @@ export const ScriptEditor = forwardRef<ScriptEditorHandle, ScriptEditorProps>(fu
     coordsAt(offset) {
       const coords = view.current?.coordsAtPos(offset);
       return coords ? { left: coords.left, top: coords.top, bottom: coords.bottom } : null;
+    },
+    insertAt(insertion) {
+      const editor = view.current;
+      if (!editor) return;
+      const at = Math.min(insertion.offset, editor.state.doc.length);
+      editor.dispatch({
+        changes: { from: at, insert: insertion.text },
+        selection: { anchor: at + insertion.select.from, head: at + insertion.select.to },
+        scrollIntoView: true,
+      });
+      editor.focus();
     },
     insertDirection(offset) {
       const editor = view.current;
