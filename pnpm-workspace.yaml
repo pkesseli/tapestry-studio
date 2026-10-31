@@ -1,8 +1,7 @@
 packages:
   - packages/*
-# Dependencies that are allowed to run install scripts (downloads the Electron binary, esbuild native binary).
+# Dependencies that may run install scripts: the Electron binary download and esbuild's native binary check.
+# (pnpm 12 reads this map; a placeholder value, which pnpm writes when a new dependency needs approval, fails installs.)
 allowBuilds:
-  esbuild: set this to true or false
-onlyBuiltDependencies:
-  - electron
-  - esbuild
+  electron: true
+  esbuild: true
