@@ -92,3 +92,10 @@ Kind-specific:
 - **`.tapestry/workspace.json`** remembers where a person was working (active scene id, cursor, folded acts). It is local
   to one person on one computer and not part of the film: leave `.tapestry/` out of version control and sharing. A
   missing or damaged file just means starting fresh.
+- **Shots come from the script, not from markup.** `planShots` makes one shot per action paragraph and one per spoken line,
+  in order. `deriveScenes` matches them to the stored shots by wording (so a shot keeps its id, and the footage made for
+  it, while text around it changes; a reworded shot becomes a new one) and stores them in the scene unit. A shot keeps
+  its own duration across edits.
+- **Directions** are Fountain notes beginning `direction:` (or `dir:`); a direction belongs to the shot above it, or the
+  first shot when it comes first. The text goes into `Shot.direction`. Other `[[notes]]` are private. `exportScreenplay`
+  removes all notes, directions and boneyard (optionally keeping directions for the crew) and closes the gaps.

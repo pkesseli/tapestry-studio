@@ -1,7 +1,9 @@
 import { ENTITY_FOLDERS, WorkspaceSchema } from '@tapestry/core';
 import type { EntityKind, Workspace } from '@tapestry/core';
 import type { ProjectService } from '@tapestry/service';
-import { ipcMain } from 'electron';
+import { writeFile } from 'node:fs/promises';
+import { join } from 'node:path';
+import { app, dialog, ipcMain } from 'electron';
 import { IPC_CHANNELS } from '../shared/api';
 
 /**
@@ -36,6 +38,18 @@ export function registerIpc(service: ProjectService): void {
     if (!parsed.success) throw new Error('Invalid workspace');
     const defined = Object.entries(parsed.data).filter(([, value]) => value !== undefined);
     return service.saveWorkspace(Object.fromEntries(defined) as Partial<Workspace>);
+  });
+  ipcMain.handle(IPC_CHANNELS.exportScript, async (_event, keepDirections: unknown) => {
+    const text = service.exportScript({ keepDirections: keepDirections === true });
+    const name = service.state().projectName.replace(/[^\p{L}\p{N} ._-]/gu, '') || 'Screenplay';
+    const result = await dialog.showSaveDialog({
+      title: 'Export script',
+      defaultPath: join(app.getPath('documents'), `${name}.fountain`),
+      filters: [{ name: 'Fountain screenplay', extensions: ['fountain', 'txt'] }],
+    });
+    if (result.canceled || !result.filePath) return { saved: false };
+    await writeFile(result.filePath, text, 'utf8');
+    return { saved: true, path: result.filePath };
   });
   ipcMain.handle(IPC_CHANNELS.createEntity, (_event, input: unknown) => {
     if (!isEntityInput(input)) throw new Error('Invalid entity');

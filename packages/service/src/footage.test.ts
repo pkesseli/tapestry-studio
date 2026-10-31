@@ -9,7 +9,7 @@ const clips = [
   { name: 'b.mp4', bytes: new Uint8Array([4, 5, 6]) },
 ];
 
-test('scenes without shots get shots, jobs, artifacts and video files', async () => {
+test('the shots planned from the script get jobs, artifacts and video files', async () => {
   const fs = new MemoryFs();
   const service = await ProjectService.open(fs);
   const state = await service.addSampleFootage(clips);

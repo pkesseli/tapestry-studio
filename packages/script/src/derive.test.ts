@@ -9,9 +9,13 @@ import type { IdSource } from './derive';
 function ids(): IdSource {
   let scene = 10;
   let section = 10;
+  let shot = 10;
+  let line = 10;
   return {
     scene: () => sampleId('scn', scene++ % 10) as Id<'scn'>,
     section: () => sampleId('sec', section++ % 10) as Id<'sec'>,
+    shot: () => sampleId('sht', shot++ % 10) as Id<'sht'>,
+    line: () => sampleId('lin', line++ % 10) as Id<'lin'>,
   };
 }
 
@@ -28,6 +32,9 @@ function scenesOf(text: string, previous: Scene[] = []): Scene[] {
   return deriveScenes(analysis.fountain!, analysis.mentions, previous, ids());
 }
 
+/** Ids of the shots of a scene. */
+const shotIds = (scene: Scene | undefined) => scene?.shots.map((shot) => shot.id);
+
 const SCRIPT = `INT. HARBOR - NIGHT
 
 MARIA lifts a LANTERN.
@@ -40,26 +47,30 @@ EXT. FERRY DECK - DAWN
 Tom waits.
 `;
 
-test('derives scenes with place, people, props and description from the text', () => {
+test('derives scenes with place, people, props, description and shots from the text', () => {
   const [first, second] = scenesOf(SCRIPT);
   expect(first).toMatchObject({
     number: 1,
     heading: 'INT. HARBOR - NIGHT',
     locationId: sampleId('loc', 1),
     description: 'MARIA lifts a LANTERN.',
-    shots: [],
   });
   expect(first?.entityIds).toEqual([sampleId('chr', 1), sampleId('prp', 1)]);
+  expect(first?.shots.map((shot) => shot.action)).toEqual([
+    'MARIA lifts a LANTERN.',
+    'MARIA: Hello?',
+  ]);
+  expect(first?.shots[0]?.referenceEntityIds).toEqual([sampleId('chr', 1), sampleId('prp', 1)]);
+  expect(first?.shots[1]?.dialogue).toMatchObject([
+    { speakerId: sampleId('chr', 1), text: 'Hello?' },
+  ]);
   expect(second).toMatchObject({ number: 2, heading: 'EXT. FERRY DECK - DAWN', entityIds: [] });
   expect(second?.locationId).toBeUndefined();
+  expect(second?.shots.map((shot) => shot.action)).toEqual(['Tom waits.']);
 });
 
-test('re-parsing keeps ids and shots when scenes are inserted, reordered or lightly renamed', () => {
-  const before = scenesOf(SCRIPT).map((scene, i) => ({
-    ...scene,
-    id: sampleId('scn', i + 1),
-    shots: [film.scenes[0]!.shots[0]!],
-  }));
+test('re-parsing keeps scene and shot ids when scenes are inserted, reordered or lightly renamed', () => {
+  const before = scenesOf(SCRIPT).map((scene, i) => ({ ...scene, id: sampleId('scn', i + 1) }));
   const [harbor, deck] = before;
 
   const inserted = scenesOf(
@@ -67,18 +78,37 @@ test('re-parsing keeps ids and shots when scenes are inserted, reordered or ligh
     before,
   );
   expect(inserted.map((s) => s.id)).toEqual([harbor!.id, sampleId('scn', 0), deck!.id]);
-  expect(inserted[0]?.shots).toHaveLength(1);
-  expect(inserted[1]?.shots).toEqual([]);
+  expect(shotIds(inserted[0])).toEqual(shotIds(harbor));
+  expect(shotIds(inserted[2])).toEqual(shotIds(deck));
 
   const renamed = scenesOf(SCRIPT.replace('NIGHT', 'DUSK'), before);
   expect(renamed.map((s) => s.id)).toEqual([harbor!.id, deck!.id]);
+  expect(shotIds(renamed[0])).toEqual(shotIds(harbor));
 
   const swapped = scenesOf(
-    'EXT. FERRY DECK - DAWN\n\nTom waits.\n\nINT. HARBOR - NIGHT\n\nMARIA lifts a LANTERN.\n',
+    'EXT. FERRY DECK - DAWN\n\nTom waits.\n\nINT. HARBOR - NIGHT\n\nMARIA lifts a LANTERN.\n\nMARIA\nHello?\n',
     before,
   );
   expect(swapped.map((s) => s.id)).toEqual([deck!.id, harbor!.id]);
   expect(swapped.map((s) => s.number)).toEqual([1, 2]);
+  expect(shotIds(swapped[1])).toEqual(shotIds(harbor));
+});
+
+test('a reworded shot becomes a new shot while its neighbours keep their ids', () => {
+  const before = scenesOf(SCRIPT).map((scene, i) => ({ ...scene, id: sampleId('scn', i + 1) }));
+  const after = scenesOf(SCRIPT.replace('Hello?', 'Anybody out there at all?'), before);
+  const [action, line] = before[0]!.shots;
+  expect(after[0]?.shots[0]?.id).toBe(action?.id);
+  expect(after[0]?.shots[1]?.id).not.toBe(line?.id);
+  expect(after[0]?.shots[1]?.action).toBe('MARIA: Anybody out there at all?');
+});
+
+test('a direction note belongs to the shot above it; plain notes are ignored', () => {
+  const text =
+    'INT. HARBOR - NIGHT\n\nMARIA lifts a LANTERN.\n[[direction: slow push-in, thick fog]]\n[[remember to fix]]\n\nMARIA\nHello?\n';
+  const [scene] = scenesOf(text);
+  expect(scene?.shots[0]?.direction).toBe('slow push-in, thick fog');
+  expect(scene?.shots[1]?.direction).toBeUndefined();
 });
 
 test('unknown people are left out until they exist, then picked up on the next derivation', () => {

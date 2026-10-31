@@ -1,23 +1,40 @@
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
 import { EditorState } from '@codemirror/state';
 import { EditorView, keymap } from '@codemirror/view';
+import { directionNote } from '@tapestry/script';
 import type { Analysis } from '@tapestry/script';
 import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 import { buildDecorations, decorationField, setDecorations } from './editor-decorations';
+import { buildShotMarkers, setShotMarkers, shotGutter } from './shot-gutter';
+import type { ShotMarkerData } from './shot-gutter';
 
 /** What the Write section can ask the editor to do. */
 export interface ScriptEditorHandle {
   /**
    * Moves the cursor to a position and scrolls it into view.
    * @param offset Character offset in the text.
+   * @param focus Whether the editor should also take the keyboard focus (default true).
    */
-  focusAt(offset: number): void;
+  focusAt(offset: number, focus?: boolean): void;
   /**
    * Screen position of a character, for placing cards next to it.
    * @param offset Character offset in the text.
    * @returns Viewport coordinates, or `null` when the position is not rendered.
    */
   coordsAt(offset: number): { left: number; top: number; bottom: number } | null;
+  /**
+   * Writes an empty `[[direction: ]]` note on the line after a position and puts the cursor inside it, so nobody has to
+   * type the syntax.
+   * @param offset Character offset the note should follow (the end of a shot's text).
+   */
+  insertDirection(offset: number): void;
+}
+
+/** A margin marker to show next to a shot. */
+export interface ShotMarkInput {
+  /** Offset where the shot's text starts; the marker goes on that line. */
+  start: number;
+  data: ShotMarkerData;
 }
 
 /** Properties of {@link ScriptEditor}. */
@@ -26,25 +43,33 @@ interface ScriptEditorProps {
   initialText: string;
   /** Analysis of the current text; drives the styling and the underlines. */
   analysis: Analysis;
+  /** Margin markers, one per shot. */
+  shots: readonly ShotMarkInput[];
   /** Called with the complete text after every edit. */
   onChange(text: string): void;
   /** Called with the cursor position after every move or edit. */
   onCursor(offset: number): void;
   /** Called for the add-to-cast shortcut (Ctrl or Command with Enter). */
   onAddShortcut(): void;
+  /**
+   * Called when a margin marker is clicked.
+   * @param lineStart Document offset of the start of the clicked line.
+   */
+  onShotClick(lineStart: number): void;
 }
 
 /**
- * The screenplay editor: a CodeMirror view styled like a script, with underlines for known and unknown names.
+ * The screenplay editor: a CodeMirror view styled like a script, with underlines for known and unknown names, styled
+ * notes, and a margin with one numbered tab per shot.
  */
 export const ScriptEditor = forwardRef<ScriptEditorHandle, ScriptEditorProps>(function ScriptEditor(
-  { initialText, analysis, onChange, onCursor, onAddShortcut },
+  { initialText, analysis, shots, onChange, onCursor, onAddShortcut, onShotClick },
   ref,
 ) {
   const host = useRef<HTMLDivElement>(null);
   const view = useRef<EditorView | null>(null);
-  const callbacks = useRef({ onChange, onCursor, onAddShortcut });
-  callbacks.current = { onChange, onCursor, onAddShortcut };
+  const callbacks = useRef({ onChange, onCursor, onAddShortcut, onShotClick });
+  callbacks.current = { onChange, onCursor, onAddShortcut, onShotClick };
 
   useEffect(() => {
     if (!host.current) return undefined;
@@ -68,6 +93,7 @@ export const ScriptEditor = forwardRef<ScriptEditorHandle, ScriptEditorProps>(fu
           EditorView.lineWrapping,
           EditorView.contentAttributes.of({ 'aria-label': 'Screenplay', spellcheck: 'true' }),
           decorationField,
+          shotGutter((lineStart) => callbacks.current.onShotClick(lineStart)),
           EditorView.updateListener.of((update) => {
             if (update.docChanged) callbacks.current.onChange(update.state.doc.toString());
             if (update.docChanged || update.selectionSet) {
@@ -93,17 +119,40 @@ export const ScriptEditor = forwardRef<ScriptEditorHandle, ScriptEditorProps>(fu
       editor.dispatch({ effects: setDecorations.of(buildDecorations(analysis, editor.state.doc)) });
   }, [analysis]);
 
+  useEffect(() => {
+    const editor = view.current;
+    if (!editor) return;
+    const doc = editor.state.doc;
+    const marks = shots
+      .filter((shot) => shot.start <= doc.length)
+      .map((shot) => ({ from: doc.lineAt(shot.start).from, data: shot.data }));
+    editor.dispatch({ effects: setShotMarkers.of(buildShotMarkers(marks)) });
+  }, [shots]);
+
   useImperativeHandle(ref, () => ({
-    focusAt(offset) {
+    focusAt(offset, focus = true) {
       const editor = view.current;
       if (!editor) return;
       const at = Math.min(offset, editor.state.doc.length);
       editor.dispatch({ selection: { anchor: at }, scrollIntoView: true });
-      editor.focus();
+      if (focus) editor.focus();
     },
     coordsAt(offset) {
       const coords = view.current?.coordsAtPos(offset);
       return coords ? { left: coords.left, top: coords.top, bottom: coords.bottom } : null;
+    },
+    insertDirection(offset) {
+      const editor = view.current;
+      if (!editor) return;
+      const at = Math.min(offset, editor.state.doc.length);
+      const insert = `\n${directionNote()}`;
+      const caret = at + insert.length - 2;
+      editor.dispatch({
+        changes: { from: at, insert },
+        selection: { anchor: caret },
+        scrollIntoView: true,
+      });
+      editor.focus();
     },
   }));
 

@@ -7,6 +7,7 @@ export const IPC_CHANNELS = {
   saveScript: 'studio:save-script',
   createEntity: 'studio:create-entity',
   saveWorkspace: 'studio:save-workspace',
+  exportScript: 'studio:export-script',
 } as const;
 
 /**
@@ -35,4 +36,10 @@ export interface TapestryApi {
    * @param update Fields to change.
    */
   saveWorkspace(update: Partial<Workspace>): Promise<StudioState>;
+  /**
+   * Asks where to save a clean copy of the screenplay and writes it there.
+   * @param keepDirections Keep `[[direction: ...]]` notes (for the crew); otherwise leave them out.
+   * @returns Whether a file was written (false when the user cancelled) and where.
+   */
+  exportScript(keepDirections: boolean): Promise<{ saved: boolean; path?: string }>;
 }

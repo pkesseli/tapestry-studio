@@ -122,3 +122,28 @@ test('workspace saves do not disturb the project files', async () => {
   const after = fs.files();
   for (const [path, text] of Object.entries(before)) expect(after[path]).toBe(text);
 });
+
+test('shots are planned from the script as soon as a project opens', async () => {
+  const service = await ProjectService.open(new MemoryFs());
+  const [harbor] = service.state().scenes;
+  expect(harbor?.shots.map((shot) => shot.action)).toEqual([
+    'MARIA lifts a LANTERN and peers into the fog. A distant HORN sounds.',
+    'MARIA: Is anyone there?',
+    'NORA: Over here, Captain!',
+  ]);
+});
+
+test('a direction note written in the script reaches its shot, and export leaves it out', async () => {
+  const service = await ProjectService.open(new MemoryFs());
+  const text = service
+    .state()
+    .scriptText.replace(
+      'A distant HORN sounds.',
+      'A distant HORN sounds.\n[[direction: slow push-in, thick fog]]\n[[fix this later]]',
+    );
+  const state = await service.saveScript(MAIN_SCRIPT, text);
+  expect(state.scenes[0]?.shots[0]?.direction).toBe('slow push-in, thick fog');
+  expect(service.exportScript()).not.toContain('slow push-in');
+  expect(service.exportScript()).not.toContain('fix this later');
+  expect(service.exportScript({ keepDirections: true })).toContain('slow push-in');
+});

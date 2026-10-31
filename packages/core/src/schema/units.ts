@@ -18,6 +18,8 @@ export const ShotSchema = z.strictObject({
   action: z.string(),
   dialogue: z.array(DialogueLineSchema),
   cameraHint: z.string().optional(),
+  /** Guidance from `[[direction: ...]]` notes in the script (camera, mood, light); sent to the video model. */
+  direction: z.string().optional(),
   /** Target length in seconds; must not exceed the provider's maximum clip length. */
   durationSeconds: z.number().positive(),
   /** Entities to prefer as references for this shot, ahead of the scene's defaults. */

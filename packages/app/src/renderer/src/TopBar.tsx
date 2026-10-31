@@ -1,5 +1,5 @@
 /** The sections of the app. Only Write exists so far; the others say what is coming. */
-const TABS = ['Write', 'Library', 'Shots', 'Queue', 'Music'] as const;
+const TABS = ['Write', 'Library', 'Queue', 'Music'] as const;
 
 /**
  * Practice mode band: shown above everything, in a style used nowhere else, so sample clips can never be mistaken for

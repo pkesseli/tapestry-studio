@@ -173,3 +173,58 @@ test('the scene you were working on and the folded acts are remembered across re
   );
   await second.app.close();
 });
+
+test('every shot gets a numbered margin marker, and clicking one shows that shot in the panel', async () => {
+  const { app, window } = await launch(mkdtempSync(join(tmpdir(), 'tapestry-e2e-')));
+  const marks = window.locator('.shot-mark');
+  await expect(marks.first()).toBeVisible();
+  await expect(marks.filter({ hasText: /^1$/ })).toHaveCount(3);
+  const panel = window.locator('.shot-card');
+  await expect(panel).toContainText('Shot 1 of 3 · Not made yet');
+  await expect(panel).toContainText('MARIA lifts a LANTERN');
+  await marks.filter({ hasText: /^2$/ }).first().click();
+  await expect(panel).toContainText('Shot 2 of 3');
+  await expect(panel).toContainText('MARIA: Is anyone there?');
+  await expect(window.locator('.shot-mark.active')).toHaveText('2');
+  await panel.getByRole('button', { name: 'Next shot' }).click();
+  await expect(panel).toContainText('Shot 3 of 3');
+  if (SHOTS) await window.screenshot({ path: join(SHOTS, 'write-shots.png') });
+  await app.close();
+});
+
+test('adding a direction writes a note into the script that shows in the panel', async () => {
+  const { app, window } = await launch(mkdtempSync(join(tmpdir(), 'tapestry-e2e-')));
+  await window.getByRole('button', { name: 'Add direction' }).click();
+  await window.keyboard.type('slow push-in, thick fog');
+  await expect(window.locator('.note-direction')).toContainText(
+    '[[direction: slow push-in, thick fog]]',
+  );
+  await expect(window.locator('.direction-box')).toContainText('slow push-in, thick fog');
+  await expect(window.getByRole('button', { name: 'Add direction' })).toHaveCount(0);
+  if (SHOTS) await window.screenshot({ path: join(SHOTS, 'write-direction.png') });
+  await app.close();
+});
+
+test('exporting the script leaves directions and notes out unless asked to keep them', async () => {
+  const project = mkdtempSync(join(tmpdir(), 'tapestry-e2e-'));
+  const { app, window } = await launch(project);
+  await window.getByRole('button', { name: 'Add direction' }).click();
+  await window.keyboard.type('slow push-in');
+  await expect(window.locator('.direction-box')).toContainText('slow push-in');
+
+  const out = join(project, 'export.fountain');
+  await app.evaluate(({ dialog }, path) => {
+    dialog.showSaveDialog = () => Promise.resolve({ canceled: false, filePath: path });
+  }, out);
+
+  await window.getByText('Export script').click();
+  await window.getByRole('button', { name: /Clean script/ }).click();
+  await expect(window.getByRole('status').filter({ hasText: 'Exported' })).toBeVisible();
+  expect(readFileSync(out, 'utf8')).not.toContain('slow push-in');
+  expect(readFileSync(out, 'utf8')).toContain('INT. HARBOR - NIGHT');
+
+  await window.getByText('Export script').click();
+  await window.getByRole('button', { name: /With directions/ }).click();
+  await expect.poll(() => readFileSync(out, 'utf8')).toContain('[[direction: slow push-in]]');
+  await app.close();
+});

@@ -1,9 +1,16 @@
-# 08 — Scene composer and the Shots section
+# 08 — Shot planning, prompts and the shot panel (inside Write)
 
 ## Goal
-Turn a scene (or music section) plus its entities into concrete `GenerationRequest`s, with one click, within each
-provider's reference limits. Includes the **Shots** section of the app (see `ux.md`): the scene's shot cards, what goes
-into each, and "Queue this scene".
+Turn the script into shots and shots into concrete `GenerationRequest`s, within each provider's reference limits.
+There is no separate Shots section: shots live in **Write** (decided with the human, 2026-10): a numbered margin marker
+next to each shot's text and a shot panel on the right (footage in context, what the shot shows, who is in it,
+direction, cost, "Make this shot").
+
+## Status
+Built so far: shot planning from the script (`planShots`), shots derived and matched across edits, `[[direction: ...]]`
+notes, margin markers, the shot panel with footage, "Add direction", and script export without directions. **Still to
+build:** prompt assembly, reference selection within provider limits, costs from provider estimates, "Make this shot" and
+"Make this scene" (creating draft jobs through the queue).
 
 ## Steps
 1. Composer function (pure; `Beat`s from the script engine, plan 05, are its input; lives in `core` or `service`): inputs = unit, entities, provider

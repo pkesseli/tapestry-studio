@@ -8,7 +8,8 @@ import {
   stableStringify,
 } from '@tapestry/core';
 import type { Entity, FsPort, NewEntityInput, ProjectData, Scene, Workspace } from '@tapestry/core';
-import { analyze, deriveScenes } from '@tapestry/script';
+import { analyze, deriveScenes, exportScreenplay } from '@tapestry/script';
+import type { ExportOptions } from '@tapestry/script';
 import { clipsOf, planSampleFootage } from './footage';
 import type { SampleClip, SceneClip } from './footage';
 import { MAIN_SCRIPT, STARTER_PROJECT_NAME, STARTER_SCREENPLAY } from './starter';
@@ -160,35 +161,30 @@ export class ProjectService {
   }
 
   /**
-   * Gives every scene that has no shots yet one to three shots with finished sample takes, so the interface can be tried
+   * Gives the first shots of every scene that have no video yet a finished sample take, so the interface can be tried
    * with footage before real generation exists. The first shot of each scene is accepted, the rest are ready to review.
    * @param clips Videos to hand out in order.
    */
   addSampleFootage(clips: SampleClip[]): Promise<StudioState> {
     return this.serialize(async () => {
-      const analysis = analyze(
-        'fountain',
-        this.data.scripts[MAIN_SCRIPT] ?? '',
-        this.data.entities,
-      );
-      // One shot per action paragraph and per spoken line; real shot planning arrives with the Shots section.
-      const actions = (analysis.fountain?.scenes ?? []).map((scene) =>
-        scene.beats.flatMap((beat) => [
-          beat.action,
-          ...beat.dialogue.map((line) => `${line.speaker}: ${line.text}`),
-        ]),
-      );
-      const plan = await planSampleFootage(this.data, actions, clips);
+      const plan = await planSampleFootage(this.data, clips);
       await Promise.all(plan.files.map((file) => this.fs.writeBytes(file.path, file.bytes)));
       this.data = {
         ...this.data,
-        scenes: plan.scenes,
         jobs: [...this.data.jobs, ...plan.jobs],
         artifacts: [...this.data.artifacts, ...plan.artifacts],
       };
       await saveProject(this.fs, this.data);
       return this.state();
     });
+  }
+
+  /**
+   * The screenplay as a clean script for printing or sharing: notes, directions and boneyard are left out.
+   * @param options Set `keepDirections` to keep `[[direction: ...]]` notes (for a copy for the crew).
+   */
+  exportScript(options: ExportOptions = {}): string {
+    return exportScreenplay(this.data.scripts[MAIN_SCRIPT] ?? '', options);
   }
 
   /** Re-derives the scenes from the main screenplay and the current cast. */

@@ -1,15 +1,32 @@
 import type { EntityKind } from '@tapestry/core';
-import type { SceneClip } from '@tapestry/service';
 import { KIND_LABEL, displayName } from './format';
-import { ScenePlayer } from './ScenePlayer';
+import { ShotPanel } from './ShotPanel';
+import type { ShotView } from './shots-view';
 import type { PresentEntity, SceneContents, SceneItem } from './scenes';
 
 /** Properties of {@link InScenePanel}. */
 interface InScenePanelProps {
   scene: SceneItem | undefined;
   contents: SceneContents;
-  /** Videos of the scene, in shot order (empty when nothing has been made). */
-  clips: readonly SceneClip[];
+  /** The shots of the scene, in order (empty when the scene has no text yet). */
+  shots: readonly ShotView[];
+  /** The shot the cursor is in. */
+  activeShot: number;
+  /**
+   * Makes another shot active (the editor moves its cursor to it).
+   * @param index Index into `shots`.
+   */
+  onSelectShot(index: number): void;
+  /**
+   * Writes a direction note under a shot.
+   * @param index Index into `shots`.
+   */
+  onAddDirection(index: number): void;
+  /**
+   * Jumps to a shot's direction in the script.
+   * @param index Index into `shots`.
+   */
+  onEditDirection(index: number): void;
   /**
    * Adds a name to the cast without further questions.
    * @param kind What the name is.
@@ -46,7 +63,16 @@ function Group({ title, items }: { title: string; items: PresentEntity[] }) {
 }
 
 /** The right-hand panel: who and what is in the scene the cursor is in, and names that still need adding. */
-export function InScenePanel({ scene, contents, clips, onAdd }: InScenePanelProps) {
+export function InScenePanel({
+  scene,
+  contents,
+  shots,
+  activeShot,
+  onSelectShot,
+  onAddDirection,
+  onEditDirection,
+  onAdd,
+}: InScenePanelProps) {
   return (
     <aside className="aside" aria-label="In this scene">
       <div className="col" style={{ gap: 4 }}>
@@ -54,7 +80,16 @@ export function InScenePanel({ scene, contents, clips, onAdd }: InScenePanelProp
         <h2 className="h2">{scene ? scene.title : 'Nothing yet'}</h2>
       </div>
 
-      {clips.length > 0 && <ScenePlayer key={scene?.number} clips={clips} />}
+      {shots.length > 0 && (
+        <ShotPanel
+          key={scene?.number}
+          shots={shots}
+          activeIndex={activeShot}
+          onSelect={onSelectShot}
+          onAddDirection={onAddDirection}
+          onEditDirection={onEditDirection}
+        />
+      )}
 
       <Group title="Cast" items={contents.cast} />
       <Group title="Places" items={contents.places} />

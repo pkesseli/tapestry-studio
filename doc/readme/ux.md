@@ -5,13 +5,21 @@ review sections in the app, not in mockups. Design tokens live in `packages/app/
 
 ## Navigation
 
-Top tabs, in plain words: **Write, Library, Shots, Queue, Music**. Write has a scene (or song section) list on the
+Top tabs, in plain words: **Write, Library, Queue, Music**. There is no Shots tab: shots belong to the script they come
+from (see below). Write has a scene (or song section) list on the
 left, the text in the middle, and an "In this scene" panel on the right. Other sections follow the same
 three-column rhythm: a list, the work, the details.
 
 - **Scene list** is grouped under acts (`# Act One` lines in the script), can be folded and searched (by title, heading,
   act or any name in the scene), and the app reopens on the scene and place you left. Items show a small filmstrip of that scene's shots. Shots that do not exist yet are dashed empty frames,
   so the list is useful before any footage exists and fills in as the film does.
+- - **Shots live in Write.** Every action paragraph and every spoken line is a shot, planned automatically, with a small
+  numbered tab in the margin (dashed: not made, teal: ready to review, green with a check: accepted). The right panel
+  shows the shot under the cursor: footage in context (previous, next, play the whole scene), what it shows, who is in it,
+  and its direction. A storyboard overview across the whole film may come later; editing stays in Write.
+- **Direction** is optional writing for how a shot looks: a note `[[direction: slow push-in, thick fog]]` under the shot
+  it directs. The app writes the note for you ("Add direction"), shows it in violet, sends it to the video model, and
+  leaves it out when you export the script. Plain notes `[[like this]]` are private reminders and go nowhere.
 - Names in the text are marked: known ones with a teal underline, unknown ones with a dashed amber underline. A small
   card offers to add an unknown one on the spot; nothing else interrupts writing.
 

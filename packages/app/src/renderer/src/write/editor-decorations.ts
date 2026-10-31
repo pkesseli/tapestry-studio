@@ -60,5 +60,14 @@ export function buildDecorations(analysis: Analysis, doc: Text): DecorationSet {
       }).range(mention.range.start, mention.range.end),
     );
   }
+  for (const note of analysis.fountain?.notes ?? []) {
+    if (note.range.end > doc.length) continue;
+    ranges.push(
+      Decoration.mark({ class: note.direction ? 'note-direction' : 'note-private' }).range(
+        note.range.start,
+        note.range.end,
+      ),
+    );
+  }
   return Decoration.set(ranges, true);
 }

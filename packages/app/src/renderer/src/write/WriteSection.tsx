@@ -12,6 +12,7 @@ import { displayName, modifierLabel } from './format';
 import { footageByScene } from './footage';
 import { activeSceneIndex, contentsOf, sceneItems } from './scenes';
 import type { SceneItem } from './scenes';
+import { activeShotIndex, shotViews } from './shots-view';
 import { useStudio } from './useStudio';
 
 /** Approximate height of the add card, used to decide whether it fits below the name. */
@@ -37,7 +38,9 @@ export function WriteSection({ initial }: { initial: StudioState }) {
     top: number;
     above: boolean;
   } | null>(null);
+  const [exported, setExported] = useState<string | null>(null);
   const editor = useRef<ScriptEditorHandle>(null);
+  const menu = useRef<HTMLDetailsElement>(null);
   const column = useRef<HTMLElement>(null);
 
   const analysis = useMemo(
@@ -50,6 +53,29 @@ export function WriteSection({ initial }: { initial: StudioState }) {
   const footage = useMemo(
     () => footageByScene(studio.state.scenes, studio.state.clips),
     [studio.state.scenes, studio.state.clips],
+  );
+  const shotsByScene = useMemo(
+    () =>
+      (analysis.fountain?.scenes ?? []).map((parsed, index) =>
+        shotViews(parsed, studio.state.scenes[index], studio.state.clips, studio.state.entities),
+      ),
+    [analysis, studio.state.scenes, studio.state.clips, studio.state.entities],
+  );
+  const sceneShots = shotsByScene[activeIndex] ?? [];
+  const activeShot = activeShotIndex(sceneShots, cursor);
+  const marks = useMemo(
+    () =>
+      shotsByScene.flatMap((shots, sceneIndex) =>
+        shots.map((shot, index) => ({
+          start: shot.start,
+          data: {
+            number: shot.number,
+            state: shot.state,
+            active: sceneIndex === activeIndex && index === activeShot,
+          },
+        })),
+      ),
+    [shotsByScene, activeIndex, activeShot],
   );
   const contents = useMemo(
     () =>
@@ -108,6 +134,14 @@ export function WriteSection({ initial }: { initial: StudioState }) {
     return () => clearTimeout(timer);
   }, [cursor, activeSceneId, saveWorkspace]);
 
+  /** Writes the screenplay out as a clean script, after saving what has just been typed. */
+  const exportScript = async (keepDirections: boolean) => {
+    if (menu.current) menu.current.open = false;
+    await window.tapestry.saveScript(initial.scriptPath, studio.text);
+    const result = await window.tapestry.exportScript(keepDirections);
+    if (result.saved) setExported(result.path ?? '');
+  };
+
   /** Adds a name to the cast and closes the card. */
   const add = (kind: EntityKind, name: string, description = '') => {
     setCardFor(null);
@@ -145,6 +179,23 @@ export function WriteSection({ initial }: { initial: StudioState }) {
                 ? 'Saving…'
                 : 'Not saved'}
           </span>
+          {exported !== null && (
+            <span className="chip teal" role="status">
+              Exported {exported.split(/[\\/]/).pop()}
+            </span>
+          )}
+          <div className="grow" />
+          <details className="menu" ref={menu}>
+            <summary className="btn sm">Export script ▾</summary>
+            <div className="menu-list">
+              <button type="button" onClick={() => void exportScript(false)}>
+                Clean script (no notes or directions)
+              </button>
+              <button type="button" onClick={() => void exportScript(true)}>
+                With directions, for the crew
+              </button>
+            </div>
+          </details>
         </div>
         {studio.error && (
           <div className="notice" role="alert">
@@ -156,6 +207,17 @@ export function WriteSection({ initial }: { initial: StudioState }) {
             ref={editor}
             initialText={initial.scriptText}
             analysis={analysis}
+            shots={marks}
+            onShotClick={(lineStart) => {
+              const lineEnd = studio.text.indexOf('\n', lineStart);
+              const hit = shotsByScene
+                .flat()
+                .find(
+                  (shot) =>
+                    shot.start >= lineStart && shot.start <= (lineEnd < 0 ? Infinity : lineEnd),
+                );
+              if (hit) editor.current?.focusAt(hit.start);
+            }}
             onChange={studio.edit}
             onCursor={setCursor}
             onAddShortcut={() => {
@@ -183,7 +245,20 @@ export function WriteSection({ initial }: { initial: StudioState }) {
       <InScenePanel
         scene={activeScene}
         contents={contents}
-        clips={footage[activeIndex]?.clips ?? []}
+        shots={sceneShots}
+        activeShot={activeShot}
+        onSelectShot={(index) => {
+          const shot = sceneShots[index];
+          if (shot) editor.current?.focusAt(shot.start, false);
+        }}
+        onAddDirection={(index) => {
+          const shot = sceneShots[index];
+          if (shot) editor.current?.insertDirection(shot.end);
+        }}
+        onEditDirection={(index) => {
+          const shot = sceneShots[index];
+          if (shot) editor.current?.focusAt(shot.end + 1);
+        }}
         onAdd={(kind, name) => add(kind, name)}
       />
     </div>

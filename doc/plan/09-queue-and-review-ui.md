@@ -1,4 +1,4 @@
-# 09 — Queue and review sections
+# 09 — Queue and review sections (the shot panel in Write is where one shot is reviewed in context)
 
 ## Goal
 The signature experience: approve work, leave, come back, review, accept or redo. Must be understandable at a glance.

@@ -1,5 +1,5 @@
 import { hashJson, newId, sha256Hex } from '@tapestry/core';
-import type { Artifact, Job, ProjectData, Scene } from '@tapestry/core';
+import type { Artifact, Job, ProjectData } from '@tapestry/core';
 
 /** Providers whose output is placeholder footage, not the user's film. Their clips always carry a "Sample" tag. */
 export const SAMPLE_PROVIDER_IDS: readonly string[] = ['mock', 'demo'];
@@ -28,7 +28,6 @@ export interface SampleClip {
 
 /** What adding sample footage changes in a project. */
 export interface FootagePlan {
-  scenes: Scene[];
   jobs: Job[];
   artifacts: Artifact[];
   /** Video files to write, by project-relative path. */
@@ -37,6 +36,9 @@ export interface FootagePlan {
 
 /** States of a job whose result can be watched. */
 const WATCHABLE = ['rendered', 'accepted', 'enhanced'];
+
+/** How many shots of each scene receive sample footage. */
+const SHOTS_PER_SCENE = 3;
 
 /**
  * Finds the video that belongs to each shot of each scene (the newest watchable take).
@@ -67,59 +69,44 @@ export function clipsOf(data: ProjectData): SceneClip[] {
 }
 
 /**
- * Plans sample footage: scenes that have no shots yet get one to three shots (one per beat of the script), each with a
- * finished take. The first shot of every scene is accepted, the others are left ready to review, so the interface can
- * be tried with both states. Nothing is written; the caller stores the result.
- * @param data The project.
- * @param actionsByScene For each scene, the action text of its beats.
+ * Plans sample footage: the first shots of every scene that have no video yet get a finished take. The scene's first
+ * shot is accepted, the others are left ready to review, so the interface can be tried with both states. Nothing is
+ * written; the caller stores the result.
+ * @param data The project, with its shots already derived from the script.
  * @param clips Videos to hand out in order, starting over when they run out.
  * @param now Time to record on the new jobs and artifacts.
  */
 export async function planSampleFootage(
   data: ProjectData,
-  actionsByScene: readonly (readonly string[])[],
   clips: readonly SampleClip[],
   now: Date = new Date(),
 ): Promise<FootagePlan> {
-  const plan: FootagePlan = { scenes: [], jobs: [], artifacts: [], files: [] };
+  const plan: FootagePlan = { jobs: [], artifacts: [], files: [] };
   if (clips.length === 0) return plan;
   const at = now.toISOString();
+  const watched = new Set(clipsOf(data).map((clip) => clip.shotId));
   let next = 0;
-  for (const [sceneIndex, scene] of data.scenes.entries()) {
-    if (scene.shots.length > 0) {
-      plan.scenes.push(scene);
-      continue;
-    }
-    const actions = actionsByScene[sceneIndex]?.filter(Boolean) ?? [];
-    const shots: Scene['shots'] = [];
-    for (const [shotIndex, action] of (actions.length > 0 ? actions : [scene.heading])
-      .slice(0, 3)
-      .entries()) {
+  for (const scene of data.scenes) {
+    for (const shot of scene.shots.slice(0, SHOTS_PER_SCENE)) {
+      if (watched.has(shot.id)) continue;
       const clip = clips[next++ % clips.length] as SampleClip;
-      const shot = {
-        id: newId('sht'),
-        action,
-        dialogue: [],
-        durationSeconds: 5,
-        referenceEntityIds: [],
-      };
-      shots.push(shot);
-      const accepted = shotIndex === 0;
+      const accepted = shot.id === scene.shots[0]?.id;
       const request = {
         capability: 'video' as const,
         provider: { providerId: 'demo', model: 'demo-footage' },
-        prompt: action,
+        prompt: shot.action,
         references: [],
         audioInputs: [],
-        durationSeconds: 5,
+        durationSeconds: shot.durationSeconds,
         extras: {},
       };
       const artifactId = newId('art');
+      const jobId = newId('job');
       const path = `artifacts/${artifactId}/clip.mp4`;
       plan.files.push({ path, bytes: clip.bytes });
       plan.artifacts.push({
         id: artifactId,
-        jobId: newId('job'),
+        jobId,
         files: [{ path, mediaType: 'video', contentHash: await sha256Hex(clip.bytes) }],
         accepted,
         ...(accepted && { acceptedAt: at }),
@@ -132,9 +119,8 @@ export async function planSampleFootage(
         notes: `Sample footage (${clip.name}) for trying the interface`,
         createdAt: at,
       });
-      const artifact = plan.artifacts[plan.artifacts.length - 1] as Artifact;
       plan.jobs.push({
-        id: artifact.jobId,
+        id: jobId,
         state: accepted ? 'accepted' : 'rendered',
         request,
         targetId: shot.id,
@@ -152,7 +138,6 @@ export async function planSampleFootage(
         updatedAt: at,
       });
     }
-    plan.scenes.push({ ...scene, shots });
   }
   return plan;
 }

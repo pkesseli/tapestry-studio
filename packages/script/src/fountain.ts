@@ -1,3 +1,5 @@
+import { extractNotes } from './notes';
+import type { FountainNote } from './notes';
 import { splitLines } from './types';
 import type { Range, SourceLine } from './types';
 
@@ -36,7 +38,10 @@ export interface BeatDialogue {
 export interface Beat {
   action: string;
   dialogue: BeatDialogue[];
+  /** The whole beat: the action paragraph and the dialogue after it. */
   range: Range;
+  /** The action paragraph alone (empty when the beat starts with dialogue). */
+  actionRange: Range;
 }
 
 /** A scene: its heading, everything up to the next heading, and the beats within. */
@@ -46,6 +51,8 @@ export interface ParsedScene {
   act?: string;
   elements: FountainElement[];
   beats: Beat[];
+  /** Notes written inside the scene, in order. */
+  notes: FountainNote[];
 }
 
 /** The result of parsing a screenplay. */
@@ -54,6 +61,8 @@ export interface FountainDocument {
   /** Elements before the first scene heading (title page, opening notes). */
   preamble: FountainElement[];
   scenes: ParsedScene[];
+  /** Every `[[note]]` of the screenplay. */
+  notes: FountainNote[];
 }
 
 /** Words that mark the time of day at the end of a scene heading. */
@@ -173,7 +182,7 @@ export function parseFountain(source: string): FountainDocument {
       i = end;
     }
   }
-  return group(elements);
+  return group(elements, extractNotes(source));
 }
 
 /**
@@ -270,18 +279,30 @@ function readDialogue(lines: SourceLine[], index: number, elements: FountainElem
  * Groups elements into scenes and beats.
  * @param elements All elements in document order.
  */
-function group(elements: FountainElement[]): FountainDocument {
+function group(elements: FountainElement[], notes: FountainNote[]): FountainDocument {
   const preamble: FountainElement[] = [];
   const scenes: ParsedScene[] = [];
   let act: string | undefined;
   for (const element of elements) {
     if (element.type === 'section' && element.depth === 1) act = element.text;
     if (element.type === 'scene-heading') {
-      scenes.push({ heading: element, ...(act !== undefined && { act }), elements: [], beats: [] });
+      scenes.push({
+        heading: element,
+        ...(act !== undefined && { act }),
+        elements: [],
+        beats: [],
+        notes: [],
+      });
     } else (scenes[scenes.length - 1]?.elements ?? preamble).push(element);
   }
   for (const scene of scenes) scene.beats = beatsOf(scene.elements);
-  return { elements, preamble, scenes };
+  for (const note of notes) {
+    const owner = [...scenes]
+      .reverse()
+      .find((scene) => scene.heading.range.start <= note.range.start);
+    owner?.notes.push(note);
+  }
+  return { elements, preamble, scenes, notes };
 }
 
 /**
@@ -294,12 +315,22 @@ function beatsOf(elements: FountainElement[]): Beat[] {
   let open: BeatDialogue | undefined;
   for (const element of elements) {
     if (element.type === 'action') {
-      current = { action: element.text, dialogue: [], range: { ...element.range } };
+      current = {
+        action: element.text,
+        dialogue: [],
+        range: { ...element.range },
+        actionRange: { ...element.range },
+      };
       beats.push(current);
       open = undefined;
     } else if (element.type === 'character') {
       if (!current) {
-        current = { action: '', dialogue: [], range: { ...element.range } };
+        current = {
+          action: '',
+          dialogue: [],
+          range: { ...element.range },
+          actionRange: { start: element.range.start, end: element.range.start },
+        };
         beats.push(current);
       }
       open = { speaker: element.name, text: '', range: { ...element.range } };

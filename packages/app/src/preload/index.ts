@@ -9,6 +9,7 @@ const api: TapestryApi = {
   saveScript: (path, text) => ipcRenderer.invoke(IPC_CHANNELS.saveScript, path, text),
   createEntity: (input) => ipcRenderer.invoke(IPC_CHANNELS.createEntity, input),
   saveWorkspace: (update) => ipcRenderer.invoke(IPC_CHANNELS.saveWorkspace, update),
+  exportScript: (keepDirections) => ipcRenderer.invoke(IPC_CHANNELS.exportScript, keepDirections),
 };
 
 contextBridge.exposeInMainWorld('tapestry', api);
