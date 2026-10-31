@@ -22,6 +22,10 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm verify
+      # Download the Electron binary once, up front: otherwise both test workers download it at the
+      # same moment and the first test can launch a half-written binary.
+      - name: Download the Electron binary
+        run: pnpm --filter @tapestry/app exec node node_modules/electron/install.js
       - name: End-to-end smoke test (Linux needs a virtual display)
         if: runner.os == 'Linux'
         run: xvfb-run -a pnpm test:e2e
