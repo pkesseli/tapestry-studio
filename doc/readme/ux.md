@@ -27,6 +27,9 @@ three-column rhythm: a list, the work, the details.
   Deleting always asks first, names the scenes, shots and videos affected (the video files stay in the project folder),
   focuses Cancel, and can be undone with Ctrl or Command and Z. An act can be deleted alone (its scenes stay) or with its
   scenes. An act with no scene stays in the list.
+- **The script is the only place to write.** The shot panel never edits text: clicking a shot's text or its direction
+  jumps to it in the script, and the panel says so once. This keeps one source of truth and avoids a second editor
+  that could change the wording footage is matched by.
 - **Direction** is optional writing for how a shot looks: a note `[[direction: slow push-in, thick fog]]` under the shot
   it directs. The app writes the note for you ("Add direction"), shows it in violet, sends it to the video model, and
   leaves it out when you export the script. Plain notes `[[like this]]` are private reminders and go nowhere.

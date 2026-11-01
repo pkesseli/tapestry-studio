@@ -91,3 +91,14 @@ test('an act left with no scene stays in the list and can get a new one', async 
   await expect(window.locator('.act').last().locator('.scene .bold')).toHaveText('Garden, day');
   await app.close();
 });
+
+test('the shot panel does not edit: its text jumps to the place in the script', async () => {
+  const { app, window } = await launch(fresh());
+  const panel = window.locator('.shot-card');
+  await expect(panel.getByText('Edit in the script')).toHaveCount(0);
+  const text = (await panel.locator('.shot-quote .text-jump').innerText()).slice(0, 12);
+  await panel.locator('.shot-quote .text-jump').click();
+  await window.keyboard.type('ZZ');
+  await expect(window.locator('.cm-content')).toContainText(`ZZ${text}`);
+  await app.close();
+});

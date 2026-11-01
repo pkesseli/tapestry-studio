@@ -1,7 +1,7 @@
 # 10 — Spike: what actually runs on the target MacBook (human-run)
 
 ## Needs human
-This must be executed on the target MacBook Pro M4 (record RAM). An agent prepares scripts and the report template; the
+This must be executed on the target MacBook Pro (M4 Pro, 20-core GPU, 48 GB; record the exact figures). An agent prepares scripts and the report template; the
 human runs them. Budget: free (local only).
 
 ## Goal
@@ -21,6 +21,8 @@ Replace guesses in `doc/readme/providers.md` with measurements, and decide the l
 ## Acceptance
 - Results table complete for at least 3 video candidates and 1 each of image/speech/music.
 - `providers.md` updated with measured facts, replacing the corresponding UNVERIFIED claims.
+
+Plan 10b (draft and final stages) builds on this table.
 
 ## On completion
 Keep `spikes/mac/` scripts if re-runnable; delete this plan file.

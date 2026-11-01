@@ -29,13 +29,12 @@ import {
 import { actItems, activeSceneIndex, contentsOf, sceneContentEnd, sceneItems } from './scenes';
 import type { SceneItem } from './scenes';
 import { activeShotIndex, shotViews } from './shots-view';
+import type { ShotView } from './shots-view';
+import { useRememberedPlace } from './useRememberedPlace';
 import { useStudio } from './useStudio';
 
 /** Approximate height of the add card, used to decide whether it fits below the name. */
 const CARD_HEIGHT = 360;
-
-/** How long the cursor must rest before the position is remembered. */
-const WORKSPACE_DELAY_MS = 800;
 
 /** How long the cursor must rest on an unknown name before the add card appears. */
 const CARD_DELAY_MS = 600;
@@ -147,26 +146,14 @@ export function WriteSection({ initial }: { initial: StudioState }) {
     };
   }, [wanted, candidateKey]);
 
-  // Put the user back where they left off: the saved cursor, or the start of the saved scene.
-  useEffect(() => {
-    const saved = initial.workspace;
-    const byId = initial.scenes.findIndex((scene) => scene.id === saved.activeSceneId);
-    const offset = saved.cursor ?? (byId >= 0 ? scenes[byId]?.headingStart : undefined);
-    if (offset !== undefined) editor.current?.focusAt(offset);
-    // Runs once, with the state the app started with.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // Remember the cursor and its scene a moment after they stop changing.
-  const activeSceneId = savedScenes[activeIndex]?.id;
-  const { saveWorkspace } = studio;
-  useEffect(() => {
-    const timer = setTimeout(
-      () => saveWorkspace({ cursor, ...(activeSceneId !== undefined && { activeSceneId }) }),
-      WORKSPACE_DELAY_MS,
-    );
-    return () => clearTimeout(timer);
-  }, [cursor, activeSceneId, saveWorkspace]);
+  useRememberedPlace(
+    initial,
+    scenes,
+    editor,
+    cursor,
+    savedScenes[activeIndex]?.id,
+    studio.saveWorkspace,
+  );
 
   /** Writes the screenplay out as a clean script, after saving what has just been typed. */
   const exportScript = async (keepDirections: boolean) => {
@@ -212,6 +199,16 @@ export function WriteSection({ initial }: { initial: StudioState }) {
         editor.current?.insertAt(insertion),
       ),
     });
+
+  /**
+   * Runs an action on a shot of the active scene, if it still exists.
+   * @param index Index into the scene's shots.
+   * @param action What to do with the shot.
+   */
+  const withShot = (index: number, action: (shot: ShotView) => void) => {
+    const shot = sceneShots[index];
+    if (shot) action(shot);
+  };
 
   const listMenu: ListMenuContext = {
     text: studio.text,
@@ -355,18 +352,12 @@ export function WriteSection({ initial }: { initial: StudioState }) {
         contents={contents}
         shots={sceneShots}
         activeShot={activeShot}
-        onSelectShot={(index) => {
-          const shot = sceneShots[index];
-          if (shot) editor.current?.focusAt(shot.start, false);
-        }}
-        onAddDirection={(index) => {
-          const shot = sceneShots[index];
-          if (shot) editor.current?.insertAt(newDirectionInsertion(shot.blockEnd));
-        }}
-        onEditDirection={(index) => {
-          const shot = sceneShots[index];
-          if (shot) editor.current?.focusAt(shot.end + 1);
-        }}
+        onSelectShot={(index) => withShot(index, (s) => editor.current?.focusAt(s.start, false))}
+        onAddDirection={(index) =>
+          withShot(index, (s) => editor.current?.insertAt(newDirectionInsertion(s.blockEnd)))
+        }
+        onShowDirection={(index) => withShot(index, (s) => editor.current?.focusAt(s.end + 1))}
+        onShowShot={(index) => withShot(index, (s) => editor.current?.focusAt(s.start))}
         onAddLine={addLine}
         onAdd={(kind, name) => add(kind, name)}
       />

@@ -26,7 +26,12 @@ interface InScenePanelProps {
    * Jumps to a shot's direction in the script.
    * @param index Index into `shots`.
    */
-  onEditDirection(index: number): void;
+  onShowDirection(index: number): void;
+  /**
+   * Jumps to a shot's own text in the script.
+   * @param index Index into `shots`.
+   */
+  onShowShot(index: number): void;
   /**
    * Adds a line after the active shot.
    * @param kind Dialogue or action.
@@ -75,7 +80,8 @@ export function InScenePanel({
   activeShot,
   onSelectShot,
   onAddDirection,
-  onEditDirection,
+  onShowDirection,
+  onShowShot,
   onAddLine,
   onAdd,
 }: InScenePanelProps) {
@@ -93,7 +99,8 @@ export function InScenePanel({
           activeIndex={activeShot}
           onSelect={onSelectShot}
           onAddDirection={onAddDirection}
-          onEditDirection={onEditDirection}
+          onShowDirection={onShowDirection}
+          onShowShot={onShowShot}
           onAddLine={onAddLine}
         />
       )}

@@ -22,7 +22,12 @@ interface ShotPanelProps {
    * Called to jump to a shot's direction in the script.
    * @param index Index into `shots`.
    */
-  onEditDirection(index: number): void;
+  onShowDirection(index: number): void;
+  /**
+   * Called to jump to a shot's own text in the script.
+   * @param index Index into `shots`.
+   */
+  onShowShot(index: number): void;
   /**
    * Called to add a new line after the active shot.
    * @param kind A line of dialogue or a paragraph of action.
@@ -47,7 +52,8 @@ export function ShotPanel({
   activeIndex,
   onSelect,
   onAddDirection,
-  onEditDirection,
+  onShowDirection,
+  onShowShot,
   onAddLine,
 }: ShotPanelProps) {
   const [continuous, setContinuous] = useState(false);
@@ -161,7 +167,16 @@ export function ShotPanel({
         </button>
       </div>
 
-      <blockquote className="shot-quote">{shot.action}</blockquote>
+      <blockquote className="shot-quote">
+        <button
+          type="button"
+          className="text-jump"
+          title="Find this in the script"
+          onClick={() => onShowShot(position)}
+        >
+          {shot.action}
+        </button>
+      </blockquote>
       {shot.people.length > 0 && (
         <div className="row wrap" style={{ gap: 6 }}>
           <span className="tiny muted">In this shot</span>
@@ -178,14 +193,13 @@ export function ShotPanel({
           <span className="label" style={{ color: 'inherit' }}>
             Direction
           </span>
-          <div>{shot.direction}</div>
           <button
             type="button"
-            className="btn quiet sm"
-            style={{ minHeight: 28, padding: 0 }}
-            onClick={() => onEditDirection(position)}
+            className="text-jump"
+            title="Find this in the script"
+            onClick={() => onShowDirection(position)}
           >
-            Edit in the script
+            {shot.direction}
           </button>
         </div>
       ) : (
@@ -214,7 +228,8 @@ export function ShotPanel({
           Add line
         </button>
         <span className="tiny muted">
-          A line someone speaks. Other things (action, transition, note): right-click the script.
+          Everything is written in the script: click the text above to find it there. Right-click
+          the script to add other things.
         </span>
       </div>
 

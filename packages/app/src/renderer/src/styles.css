@@ -1107,3 +1107,20 @@ body,
   top: 2px;
   right: 34px;
 }
+
+/* ---- text in the shot panel that jumps to the script ---- */
+.text-jump {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.text-jump:hover {
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+}
