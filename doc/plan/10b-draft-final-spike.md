@@ -8,6 +8,11 @@ Runs on the target MacBook Pro (M4 Pro, 20-core GPU, 48 GB). The agent prepares 
 human runs them and rates clips. The non-technical reviewer rates drafts in step 5. Budget: local only. A remote variant
 needs an explicit hard budget cap in config first (spend rule); skip it by default.
 
+## Prepared
+Procedure and fixed inputs are in `spikes/draft-final/` (`README.md`, `shots.json` with the ten test shots). Clips are
+registered with `spikes/bench.mjs`, measured with `spikes/measure.mjs`, rated on a local page (`spikes/rate/serve.mjs`) and
+summarised by `spikes/summarize.mjs`, which applies the decision rule below from the ratings.
+
 ## Why
 `providers.md` currently says "render once, enhance later; not draft locally, re-render remotely", because different models
 produce different films. The idea to test: a **cheap draft** a person can pre-review, then **finals conditioned on the

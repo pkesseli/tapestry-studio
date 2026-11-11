@@ -1,0 +1,201 @@
+{
+  "note": "Starting points found by web search on 2026-11-11. Everything here is UNVERIFIED until measured. If a better or newer option exists, add it as a new entry (never edit the history of an old one) and say why in results/findings.json.",
+  "candidates": [
+    {
+      "id": "ltx23-mlx-q4",
+      "name": "LTX 2.3, 4-bit, on MLX (mlx-video)",
+      "kind": "video",
+      "priority": 1,
+      "runtime": "mlx",
+      "why": "Best fit for 48 GB: the 4-bit build is listed for 32 GB machines; has audio; fast family.",
+      "setup": "Install mlx-video (Python, MLX) in its own virtual environment; download the 4-bit weights from Hugging Face (gajesh/ltx-2.3-mlx-q4). The full fp16 build is about 66 GB and will not fit.",
+      "sources": [
+        "https://github.com/Blaizzy/mlx-video",
+        "https://huggingface.co/gajesh/ltx-2.3-mlx-q4",
+        "https://huggingface.co/gajesh/ltx-2.3-mlx-fp16"
+      ],
+      "licenseCheck": "Read the LTX model licence on the model card before downloading (human).",
+      "tests": "Smoke shots first, then all ten if it works. Record resolution, seconds of video, steps."
+    },
+    {
+      "id": "wan22-5b-comfyui-gguf",
+      "name": "Wan 2.2 TI2V 5B (GGUF) in ComfyUI on PyTorch MPS",
+      "kind": "video",
+      "priority": 2,
+      "runtime": "comfyui",
+      "why": "Most recommended Mac starting point in guides; text-to-video and image-to-video in one small model.",
+      "setup": "ComfyUI plus the city96/ComfyUI-GGUF custom node. FP8 checkpoints FAIL on Apple Silicon (Metal has no Float8_e4m3fn): use GGUF or fp16 builds. The official ComfyUI templates default to FP8, so swap the loader.",
+      "sources": [
+        "https://modelfit.io/video/wan-2-2-5b/",
+        "https://modelfit.io/blog/wan-2-2-on-mac/",
+        "https://lilting.ch/en/articles/ltx2-wan22-mac-local-video-gen",
+        "https://github.com/city96/ComfyUI-GGUF"
+      ],
+      "licenseCheck": "Wan 2.2 is reported Apache-2.0; confirm on the model card.",
+      "tests": "Smoke shots, then all ten if it works."
+    },
+    {
+      "id": "wan22-mlx",
+      "name": "Wan 2.2 on MLX (mlx-video)",
+      "kind": "video",
+      "priority": 3,
+      "runtime": "mlx",
+      "why": "Same family as the candidate above without ComfyUI: compare speed and memory between the two runtimes.",
+      "setup": "Same mlx-video install as the LTX candidate; follow its README for Wan.",
+      "sources": ["https://github.com/Blaizzy/mlx-video"],
+      "licenseCheck": "As above.",
+      "tests": "Smoke shots."
+    },
+    {
+      "id": "hunyuanvideo15-comfyui",
+      "name": "HunyuanVideo 1.5 in ComfyUI",
+      "kind": "video",
+      "priority": 4,
+      "runtime": "comfyui",
+      "why": "Listed in plan 10. Evidence for Apple Silicon is thin (one report on an M2 Ultra 64 GB with the official ComfyUI workflow at 832x480, 73 frames).",
+      "setup": "ComfyUI official HunyuanVideo 1.5 workflow; expect to need GGUF or fp16 loaders instead of FP8.",
+      "sources": [
+        "https://docs.comfy.org/ja/tutorials/video/hunyuan/hunyuan-video-1-5.md",
+        "https://modelfit.io/video/best-model-mac-64gb/"
+      ],
+      "licenseCheck": "Read the Tencent licence on the model card (human); note any region limits.",
+      "tests": "Smoke shots. Giving up after one clean failure with a recorded reason is fine."
+    },
+    {
+      "id": "ltx2-comfyui-mps",
+      "name": "LTX-2 in ComfyUI via a community MPS fork",
+      "kind": "video",
+      "priority": 5,
+      "runtime": "comfyui",
+      "why": "Optional. LTX-2 is officially CUDA-only; a community fork reportedly works on MPS. Only worth it if the MLX route fails.",
+      "setup": "See the issue and article below; torch.compile and some LoRAs are not available on MPS.",
+      "sources": [
+        "https://github.com/Lightricks/ComfyUI-LTXVideo/issues/473",
+        "https://zenn.dev/kemmm/articles/ltx-video-comfyui-mac"
+      ],
+      "licenseCheck": "As for the LTX candidate.",
+      "tests": "Smoke shots."
+    },
+    {
+      "id": "minimax-h3-gguf",
+      "name": "MiniMax H3 (community GGUF) in ComfyUI",
+      "kind": "video",
+      "priority": 6,
+      "runtime": "comfyui",
+      "why": "Named in plan 10. Reportedly runs on a 48 GB Mac with a Q5_K_M GGUF (third-party claim).",
+      "setup": "ComfyUI plus ComfyUI-GGUF; community GGUF files from about 9 GB (Q3) to 22 GB (Q8).",
+      "sources": [
+        "https://huggingface.co/MiniMaxAI/MiniMax-H3/blob/main/docs/QA-about-License.md",
+        "https://modelfit.io/video/minimax-h3/gguf/",
+        "https://runtimewire.com/article/minimax-h3-open-weights-us-license-restrictions"
+      ],
+      "licenseCheck": "HUMAN MUST READ THE LICENCE FIRST. Sources disagree: it may exclude local use in the US, EU, UK and South Korea, and cap commercial use. Do not download until the human has decided it is allowed for them.",
+      "tests": "Smoke shots, only after the licence decision."
+    },
+    {
+      "id": "flux2-klein-mflux",
+      "name": "FLUX.2 klein 4B (4-bit) with mflux",
+      "kind": "image",
+      "priority": 1,
+      "runtime": "mlx",
+      "why": "Makes the character and place reference images the video tests need, and answers plan 10's image-model question.",
+      "setup": "mflux (Python, MLX). The 4-bit 4B model is about 5 GB.",
+      "sources": ["https://github.com/ddalcu/mlx-serve"],
+      "licenseCheck": "Read the FLUX.2 klein licence (human); FLUX.2 [dev] is non-commercial, the 4B klein may differ.",
+      "tests": "Make spikes/draft-final/inputs/maria.png, tom.png and ferry-deck.png from the briefs in shots.json (3 images, 1024 px)."
+    },
+    {
+      "id": "kokoro-mlx",
+      "name": "Kokoro 82M speech on MLX",
+      "kind": "speech",
+      "priority": 1,
+      "runtime": "mlx",
+      "why": "Small, fast, Apache-licensed speech model for narration and dialogue.",
+      "setup": "kokoro-mlx or mlx-audio (Python, MLX 0.31+). One user reported silent or NaN output with the mlx-community bf16 weights on an M3 Max: check the output is audible.",
+      "sources": [
+        "https://github.com/gabrimatic/kokoro-mlx",
+        "https://huggingface.co/mlx-community/Kokoro-82M-bf16/discussions/5"
+      ],
+      "licenseCheck": "Apache-2.0 reported; confirm.",
+      "tests": "Say the dialogue lines in shots.json (S05) and one 30 s narration."
+    },
+    {
+      "id": "f5tts-mlx",
+      "name": "F5-TTS on MLX (voice cloning)",
+      "kind": "speech",
+      "priority": 2,
+      "runtime": "mlx",
+      "why": "Voice cloning from a short reference, needed for consistent character voices.",
+      "setup": "f5-tts-mlx (Python, MLX), 24 kHz output.",
+      "sources": [
+        "https://relatedrepos.com/gh/lucasnewman/f5-tts-mlx",
+        "https://huggingface.co/aufklarer/F5TTS-v1-Base-MLX-fp16"
+      ],
+      "licenseCheck": "Check the weights licence (some F5-TTS weights are non-commercial).",
+      "tests": "Clone a 10 s reference of the human's own voice (never anyone else's) and speak two lines."
+    },
+    {
+      "id": "ace-step-mlx",
+      "name": "ACE-Step 1.5 on MLX (music)",
+      "kind": "music",
+      "priority": 1,
+      "runtime": "mlx",
+      "why": "Full songs with vocals from a style prompt and lyrics; one listing says about 8 GB for the 8-bit turbo model.",
+      "setup": "Follow the ACE-Step MLX wrapper's README; about 6 GB download.",
+      "sources": ["https://github.com/ddalcu/mlx-serve"],
+      "licenseCheck": "Check the ACE-Step licence on the model card.",
+      "tests": "One 60 s instrumental from a style prompt and one 30 s sung verse."
+    },
+    {
+      "id": "musicgen",
+      "name": "MusicGen (AudioCraft)",
+      "kind": "music",
+      "priority": 2,
+      "runtime": "pytorch-mps",
+      "why": "Listed in plan 10 as the second music candidate.",
+      "setup": "audiocraft or a transformers/MLX port; whichever works on MPS.",
+      "sources": ["https://github.com/facebookresearch/audiocraft"],
+      "licenseCheck": "Weights licence is reported non-commercial; confirm before relying on it.",
+      "tests": "One 30 s instrumental."
+    },
+    {
+      "id": "ffmpeg-lanczos",
+      "name": "ffmpeg Lanczos upscale (control)",
+      "kind": "upscale",
+      "priority": 1,
+      "runtime": "ffmpeg",
+      "why": "Plan 10b path A control: what a plain resize does, so real upscalers are judged against it.",
+      "setup": "brew install ffmpeg.",
+      "sources": ["https://ffmpeg.org/ffmpeg-filters.html#scale"],
+      "licenseCheck": "None.",
+      "tests": "Upscale each draft 2x with -vf scale=iw*2:ih*2:flags=lanczos."
+    },
+    {
+      "id": "realesrgan-2x",
+      "name": "Real-ESRGAN 2x video upscale (MPS or Core ML)",
+      "kind": "upscale",
+      "priority": 2,
+      "runtime": "pytorch-mps",
+      "why": "Plan 10b path A: classic super-resolution. One tool reports about 0.15-0.3 s per frame at 2x on Apple Silicon (its own numbers). The 4x model is far slower.",
+      "setup": "venhance (npm) or realesrgan with PyTorch MPS; frames in, frames out, then ffmpeg to re-encode.",
+      "sources": [
+        "https://libraries.io/npm/venhance",
+        "https://github.com/ken8303/MetalVideoPlayer"
+      ],
+      "licenseCheck": "Real-ESRGAN is BSD-3-Clause; check the specific weights.",
+      "tests": "2x on every draft."
+    },
+    {
+      "id": "vid2vid-refine",
+      "name": "Video-to-video refine / structure-conditioned re-render",
+      "kind": "refine",
+      "priority": 3,
+      "runtime": "comfyui",
+      "why": "Plan 10b paths B, C and D. There is no single known-good recipe on Mac yet: finding one IS the spike.",
+      "setup": "Look for a ComfyUI workflow or mlx-video feature that takes a start video (path B) or depth/edge/pose control extracted from the draft (path C) plus reference images. Record exactly what worked in INSTALL-LOG.md.",
+      "sources": [],
+      "licenseCheck": "Per model used.",
+      "tests": "See spikes/draft-final/README.md."
+    }
+  ]
+}

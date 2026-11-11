@@ -6,6 +6,7 @@ export default defineConfig({
       'packages/*/src/**/*.test.ts',
       'packages/*/test/**/*.test.ts',
       'scripts/**/*.test.mjs',
+      'spikes/**/*.test.mjs',
     ],
     passWithNoTests: true,
   },

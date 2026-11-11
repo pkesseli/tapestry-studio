@@ -25,7 +25,11 @@ export default tseslint.config(
     rules: reactHooks.configs.recommended.rules,
   },
   {
-    files: ['scripts/**/*.mjs'],
+    files: ['scripts/**/*.mjs', 'spikes/**/*.mjs'],
     languageOptions: { globals: { ...globals.node } },
+  },
+  {
+    files: ['spikes/rate/*.js'],
+    languageOptions: { globals: { ...globals.browser } },
   },
 );

@@ -1,0 +1,109 @@
+{
+  "note": "The ten fixed test shots for plan 10 (first three: the 'smoke' set) and plan 10b. Every model and path gets exactly these prompts so results can be compared. Do not edit prompts after the first run; add shots instead.",
+  "smoke": ["S01", "S02", "S05"],
+  "defaults": {
+    "seconds": 4,
+    "aspect": "16:9",
+    "resolutionNote": "Use the smallest resolution the model supports well, around 832x480, so runs are quick; record what you used with --meta resolution=WxH."
+  },
+  "references": [
+    {
+      "id": "maria",
+      "file": "inputs/maria.png",
+      "brief": "Portrait of Maria, a woman in her thirties with short dark hair and a grey streak, wearing a dark wool coat, neutral expression, plain background, soft light."
+    },
+    {
+      "id": "tom",
+      "file": "inputs/tom.png",
+      "brief": "Portrait of Tom, a weathered man in his fifties with a short grey beard, wearing a yellow rain jacket, neutral expression, plain background, soft light."
+    },
+    {
+      "id": "ferry-deck",
+      "file": "inputs/ferry-deck.png",
+      "brief": "An empty ferry deck at dawn, wet wooden planks, white railings, coiled ropes, pale pink sky, calm sea."
+    }
+  ],
+  "shots": [
+    {
+      "id": "S01",
+      "title": "Harbor at night",
+      "kind": "static",
+      "uses": [],
+      "prompt": "A small fishing harbor at night in steady rain, wet quay reflecting yellow lamps, moored boats rocking gently. Static wide shot, no people.",
+      "direction": "locked-off camera, low light, soft rain streaks"
+    },
+    {
+      "id": "S02",
+      "title": "Maria watches the ferry",
+      "kind": "camera-move",
+      "uses": ["maria"],
+      "prompt": "Maria stands at the end of a wooden pier at night, looking out at distant ferry lights across dark water. Slow push-in from behind her.",
+      "direction": "slow push-in, shallow depth of field"
+    },
+    {
+      "id": "S03",
+      "title": "Ferry deck at dawn",
+      "kind": "camera-move",
+      "uses": ["ferry-deck"],
+      "prompt": "The empty deck of a ferry at dawn, gulls wheeling overhead, a loose rope swaying. The camera pans slowly left along the railing.",
+      "direction": "slow pan left, pink morning light"
+    },
+    {
+      "id": "S04",
+      "title": "Two on the deck",
+      "kind": "two-people",
+      "uses": ["maria", "tom"],
+      "prompt": "Maria and Tom stand side by side at the ferry railing in the early morning, talking quietly and looking at the shore. Medium two-shot.",
+      "direction": "steady camera, both faces visible"
+    },
+    {
+      "id": "S05",
+      "title": "\"Is anyone there?\"",
+      "kind": "spoken-line",
+      "uses": ["maria"],
+      "prompt": "Close-up of Maria's face as she calls out \"Is anyone there?\", then turns her head toward a sound off camera. Dim ferry corridor.",
+      "direction": "close-up, subtle handheld, tense mood",
+      "dialogue": "Is anyone there?"
+    },
+    {
+      "id": "S06",
+      "title": "Tom coils a rope",
+      "kind": "action",
+      "uses": ["tom"],
+      "prompt": "Close-up of Tom's weathered hands coiling a thick wet rope on the deck, steady and practiced.",
+      "direction": "close-up on hands, natural light"
+    },
+    {
+      "id": "S07",
+      "title": "Cabin, day",
+      "kind": "static",
+      "uses": [],
+      "prompt": "A small ship's cabin by day: a black iron stove with a kettle steaming on it, a narrow bunk, light through a round window. Static shot, no people.",
+      "direction": "locked-off camera, warm interior light, steam rising"
+    },
+    {
+      "id": "S08",
+      "title": "Maria walks to the cabin",
+      "kind": "camera-move",
+      "uses": ["maria"],
+      "prompt": "Maria walks away from the camera down a narrow ship corridor toward a closed wooden cabin door. The camera follows her at a steady distance.",
+      "direction": "tracking shot from behind, steady"
+    },
+    {
+      "id": "S09",
+      "title": "Tom listens",
+      "kind": "two-people",
+      "uses": ["tom", "maria"],
+      "prompt": "Over Maria's shoulder we see Tom sitting in the cabin listening to her, rain running down the round window behind him.",
+      "direction": "over-the-shoulder, shallow focus on Tom"
+    },
+    {
+      "id": "S10",
+      "title": "The ferry leaves",
+      "kind": "camera-move",
+      "uses": [],
+      "prompt": "A ferry leaves a small harbor at dawn, wake spreading behind it, the camera drifting slowly upward and back to reveal the whole harbor.",
+      "direction": "slow rising drift, wide, soft sunrise"
+    }
+  ]
+}

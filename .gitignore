@@ -11,3 +11,11 @@ Thumbs.db
 out/
 test-results/
 playwright-report/
+
+# Spikes: never commit model files or full-size outputs (see spikes/README.md)
+spikes/**/out/
+spikes/**/models/
+spikes/**/.venv/
+*.safetensors
+*.gguf
+*.ckpt

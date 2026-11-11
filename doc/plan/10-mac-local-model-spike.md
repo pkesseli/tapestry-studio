@@ -4,6 +4,11 @@
 This must be executed on the target MacBook Pro (M4 Pro, 20-core GPU, 48 GB; record the exact figures). An agent prepares scripts and the report template; the
 human runs them. Budget: free (local only).
 
+## Prepared
+Everything the Mac session needs is in `spikes/`: start at `spikes/README.md`, procedure in `spikes/mac/README.md`,
+candidates (with sources, all UNVERIFIED) in `spikes/mac/candidates.json`. Runs are recorded by `spikes/bench.mjs`;
+`node spikes/report.mjs` builds the results table. Steps 1 to 4 below are done by following those files.
+
 ## Goal
 Replace guesses in `doc/readme/providers.md` with measurements, and decide the local-model strategy.
 
