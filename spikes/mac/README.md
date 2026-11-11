@@ -20,7 +20,8 @@ Known from searching (UNVERIFIED, from blogs and model pages, 2026-11-11):
    (`../draft-final/inputs/`, see `../draft-final/shots.json`). Small images may be committed (under 1 MB each, resize
    with `ffmpeg -i in.png -vf scale=768:-1 out.png` if needed).
 3. **Video candidates** in priority order. For each one:
-   1. Tell the human the licence terms, wait for a yes (see `../README.md`).
+   1. Read the licence and record its key terms in `findings.json`; ask the human only in the cases listed in
+      `../README.md`.
    2. Install it in its own folder and virtual environment. Write each command that worked into `INSTALL-LOG.md`.
    3. Run the **smoke shots** (`S01`, `S02`, `S05` from `../draft-final/shots.json`) through `bench.mjs`.
    4. If they work, run all ten. If the first smoke shot fails twice for the same reason, stop and record the reason.

@@ -19,9 +19,14 @@ Read `AGENTS.md`, both plan files, and this folder's READMEs. Then work through 
   (not inside this repository), use a separate Python virtual environment per runtime, and read an install script before
   running it. Never pipe a remote script into a shell. Never use `sudo`. Do not run anything you downloaded from inside
   this repository's folders.
-- **Licences are a human decision.** Before downloading any model, open its licence or model card and tell the human
-  the key terms in two sentences (commercial use? region limits? gated?). Wait for a yes. `candidates.json` marks the
-  ones that need extra care (MiniMax H3 especially). Never accept a licence on the human's behalf.
+- **Testing a model privately is fine; record the licence, do not wait on it.** Before downloading, open the licence or
+  model card and write its key terms into `findings.json` (`licence`: commercial use? non-commercial? region limits?
+  gated?). Then carry on. **Stop and ask the human only if** the terms restrict *who may run the model* (region or
+  identity limits that could apply to them; MiniMax H3 is the known case in `candidates.json`), if a login needs payment
+  or personal details, or if accepting means agreeing to something beyond using the model. Never click "accept" on a
+  licence page for the human: tell them what it says and let them do it. Voice cloning uses the human's own voice only.
+- **Commit outputs only if the licence allows sharing them.** Small previews of a model's videos go in the repository
+  only when its terms permit sharing outputs; otherwise keep them local and say so in `findings.json`.
 - **Every measured run goes through `bench.mjs`**, so time, memory and outcome are recorded the same way. Something that
   fails or is too slow is a result, not an embarrassment: record it and the reason.
 - **Be honest in the notes.** "Did not run: Metal has no FP8" is useful. "Seems fine" is not. Mark what you did not
@@ -85,7 +90,8 @@ is better than a finished one that is lost.
 
 ## When to stop and ask the human
 
-- A licence needs reading or accepting, or a model needs a login.
+- A licence restricts who may run the model, needs accepting on the human's behalf, or a model needs a login with
+  payment or personal details.
 - A download is larger than 20 GB, or the disk has less than 50 GB free (`system.json` shows `freeDiskGiB`).
 - Something needs `sudo`, a system setting, or Rosetta.
 - A run has used more than 45 minutes with no sign of finishing (the default timeout will stop it and record that).
