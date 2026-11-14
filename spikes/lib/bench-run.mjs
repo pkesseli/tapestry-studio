@@ -54,7 +54,8 @@ function trimLog(file) {
  * @param {string} [options.cwd] Working directory.
  * @param {NodeJS.Platform} [options.platform] Platform to assume (tests only).
  * @returns {Promise<{ outcome: 'ok' | 'failed' | 'timeout' | 'no-output', seconds: number, realSeconds: number | null,
- *   peakBytes: number | null, exitCode: number | null, signal: string | null, outputBytes: number | null }>}
+ *   peakBytes: number | null, rssBytes: number | null, exitCode: number | null, signal: string | null,
+ *   outputBytes: number | null }>}
  */
 export async function runMeasured({
   command,
@@ -108,7 +109,7 @@ export async function runMeasured({
   return {
     outcome,
     seconds,
-    ...(timed ? parseTimeOutput(errorText) : { realSeconds: null, peakBytes: null }),
+    ...(timed ? parseTimeOutput(errorText) : { realSeconds: null, peakBytes: null, rssBytes: null }),
     exitCode,
     signal,
     outputBytes,

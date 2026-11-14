@@ -1,0 +1,27 @@
+Fetching 56 files:   0%|          | 0/56 [00:00<?, ?it/s]Fetching 56 files: 100%|██████████| 56/56 [00:00<00:00, 5653.79it/s]
+~/tapestry-spikes/mlx-audio/.venv/lib/python3.12/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+[94mText:[0m Is anyone there?
+[94mVoice:[0m af_heart
+[94mSpeed:[0m 1.0x
+[94mLanguage:[0m a
+Creating new KokoroPipeline for language: a
+✅ Audio successfully generated and saving as: spikes/mac/results/out/kokoro-S05_000.wav
+        2.63 real         1.66 user         0.41 sys
+           803225600  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+               95945  page reclaims
+                   1  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                  19  messages sent
+                  35  messages received
+                   0  signals received
+                  80  voluntary context switches
+                2340  involuntary context switches
+         26648670808  instructions retired
+          8624932010  cycles elapsed
+          1956660832  peak memory footprint

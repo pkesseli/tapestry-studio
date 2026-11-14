@@ -1,0 +1,19 @@
+device=mps frames=97 upscale_seconds=65.8
+       68.03 real        20.29 user         1.15 sys
+           863895552  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+              136457  page reclaims
+                 408  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                   1  messages sent
+                   0  messages received
+                   0  signals received
+                  92  voluntary context switches
+               50610  involuntary context switches
+        140824674841  instructions retired
+         47830038312  cycles elapsed
+          2787689840  peak memory footprint

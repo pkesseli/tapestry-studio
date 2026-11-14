@@ -1,0 +1,45 @@
+[Loading text encoder (Gemma)] ...
+Mode: Distilled Two-Stage (half-res + upscale + distilled refine)
+  Model: ~/tapestry-spikes/ltx-2-mlx/models/ltx-2.3-mlx-q4
+Fetching 13 files:   0%|          | 0/13 [00:00<?, ?it/s]Fetching 13 files: 100%|██████████| 13/13 [00:00<00:00, 4917.12it/s]
+[Loading text encoder (Gemma)] done in 3.0s
+[Encoding prompt] ...
+[Encoding prompt] done in 6.5s
+[Loading transformer (transformer-distilled-1.1.safetensors)] ...
+[Loading transformer (transformer-distilled-1.1.safetensors)] done in 2.1s
+two-stage half-res snaps dims to multiples of 64; output will be 832x448 (requested 832x480). Use --single-stage for exact dims.
+[estimate] denoising: 8 steps x 1 passes over 1183 video + 101 audio tokens = 8 forwards
+Denoising:   0%|          | 0/8 [00:00<?, ?it/s]                                                [estimate] denoising: ~1 min 0 s remaining (8.5 s/forward) (first step includes warm-up)
+Denoising:   0%|          | 0/8 [00:08<?, ?it/s]Denoising:  12%|█▎        | 1/8 [00:08<00:59,  8.51s/it]                                                        [estimate] denoising: ~49 s remaining (8.2 s/forward) (refined)
+Denoising:  12%|█▎        | 1/8 [00:16<00:59,  8.51s/it]Denoising:  25%|██▌       | 2/8 [00:16<00:49,  8.31s/it]Denoising:  38%|███▊      | 3/8 [00:25<00:41,  8.37s/it]Denoising:  50%|█████     | 4/8 [00:33<00:33,  8.39s/it]Denoising:  62%|██████▎   | 5/8 [00:42<00:25,  8.43s/it]Denoising:  75%|███████▌  | 6/8 [00:50<00:16,  8.46s/it]Denoising:  88%|████████▊ | 7/8 [00:59<00:08,  8.50s/it]Denoising: 100%|██████████| 8/8 [01:07<00:00,  8.45s/it]Denoising: 100%|██████████| 8/8 [01:07<00:00,  8.44s/it]
+[estimate] denoising: 3 steps x 1 passes over 4732 video + 101 audio tokens = 3 forwards
+Denoising:   0%|          | 0/3 [00:00<?, ?it/s]                                                [estimate] denoising: ~1 min 9 s remaining (34.3 s/forward) (first step includes warm-up)
+Denoising:   0%|          | 0/3 [00:34<?, ?it/s]Denoising:  33%|███▎      | 1/3 [00:34<01:08, 34.29s/it]                                                        [estimate] denoising: ~34 s remaining (34.4 s/forward) (refined)
+Denoising:  33%|███▎      | 1/3 [01:08<01:08, 34.29s/it]Denoising:  67%|██████▋   | 2/3 [01:08<00:34, 34.33s/it]Denoising: 100%|██████████| 3/3 [01:43<00:00, 34.46s/it]Denoising: 100%|██████████| 3/3 [01:43<00:00, 34.42s/it]
+[Loading decoders (VAE + audio + vocoder)] ...
+[Loading decoders (VAE + audio + vocoder)] done in 0.0s
+[Decoding video + audio + muxing] ...
+[vae-decode tiling] frames=80/24 est. 22.2 GB budget=24.0 GB
+[vae-decode tiling] peak Metal memory 18.51 GB
+[Decoding video + audio + muxing] done in 12.3s
+
+Saved to: spikes/mac/results/out/ltx23-q4-S03-cold.mp4
+Time: 195.7s
+      195.95 real         5.42 user        14.52 sys
+         14296891392  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+             1741767  page reclaims
+                 573  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                  75  messages sent
+                  59  messages received
+                   0  signals received
+               13457  voluntary context switches
+              102544  involuntary context switches
+        188790251605  instructions retired
+         70238693907  cycles elapsed
+         18121886552  peak memory footprint

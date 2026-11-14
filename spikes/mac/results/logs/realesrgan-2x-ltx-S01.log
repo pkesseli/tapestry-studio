@@ -1,0 +1,31 @@
+[in#0 @ 0x12de04610] Error opening input: No such file or directory
+Error opening input file spikes/mac/results/out/ltx23-q4-S01-cold.mp4.
+Error opening input files: No such file or directory
+Traceback (most recent call last):
+  File "~/Documents/Software/tapestry-studio/spikes/mac/scripts/realesrgan.py", line 103, in <module>
+    main()
+  File "~/Documents/Software/tapestry-studio/spikes/mac/scripts/realesrgan.py", line 99, in main
+    upscale(args.source, args.out, args.weights)
+  File "~/Documents/Software/tapestry-studio/spikes/mac/scripts/realesrgan.py", line 72, in upscale
+    subprocess.run(["ffmpeg", "-loglevel", "error", "-i", str(source), str(work / "in" / "f_%05d.png")], check=True)
+  File "~/.local/share/uv/python/cpython-3.12.16-macos-aarch64-none/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['ffmpeg', '-loglevel', 'error', '-i', 'spikes/mac/results/out/ltx23-q4-S01-cold.mp4', '/var/folders/kr/yzg4k4755rl9vylp530k4vjh0000gn/T/realesrgan-g4lvcg7p/in/f_%05d.png']' returned non-zero exit status 254.
+        1.48 real         1.07 user         0.21 sys
+           453033984  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+               50291  page reclaims
+                  41  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                  14  messages sent
+                   0  messages received
+                   0  signals received
+                1264  voluntary context switches
+                6053  involuntary context switches
+         13640104378  instructions retired
+          5472336466  cycles elapsed
+           486573088  peak memory footprint

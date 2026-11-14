@@ -13,11 +13,20 @@ Loading model...
 `;
 
 test('reads seconds and peak memory from the macOS time report', () => {
-  expect(parseTimeOutput(MAC_TIME)).toEqual({ realSeconds: 95.42, peakBytes: 21474836480 });
+  expect(parseTimeOutput(MAC_TIME)).toEqual({
+    realSeconds: 95.42,
+    peakBytes: 21474836480,
+    rssBytes: 21474836480,
+  });
+});
+
+test('prefers the peak memory footprint, which counts GPU memory, over the resident size', () => {
+  const text = `${MAC_TIME}          30000000000  peak memory footprint\n`;
+  expect(parseTimeOutput(text)).toEqual({ realSeconds: 95.42, peakBytes: 30000000000, rssBytes: 21474836480 });
 });
 
 test('a missing report gives nulls, not a crash', () => {
-  expect(parseTimeOutput('nothing here')).toEqual({ realSeconds: null, peakBytes: null });
+  expect(parseTimeOutput('nothing here')).toEqual({ realSeconds: null, peakBytes: null, rssBytes: null });
 });
 
 test('runs are appended one per line and read back, skipping damaged lines', () => {

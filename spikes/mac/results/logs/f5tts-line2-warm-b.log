@@ -1,0 +1,22 @@
+Fetching 3 files:   0%|          | 0/3 [00:00<?, ?it/s]Fetching 3 files: 100%|██████████| 3/3 [00:00<00:00, 2926.94it/s]
+Fetching 2 files:   0%|          | 0/2 [00:00<?, ?it/s]Fetching 2 files: 100%|██████████| 2/2 [00:00<00:00, 2247.15it/s]
+Got reference audio with duration: 5.79 seconds
+Generated 2.04s of audio in 0:00:21.363518.
+       22.77 real         1.65 user         0.99 sys
+          1808941056  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+              112643  page reclaims
+                   7  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                  30  messages sent
+                  58  messages received
+                   0  signals received
+                 534  voluntary context switches
+               41249  involuntary context switches
+         18791830609  instructions retired
+          9035132385  cycles elapsed
+          2752677904  peak memory footprint

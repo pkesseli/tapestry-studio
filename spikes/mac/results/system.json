@@ -1,0 +1,20 @@
+{
+  "capturedAt": "2026-11-12T07:44:48.437Z",
+  "platform": "darwin",
+  "arch": "arm64",
+  "chip": "Apple M4 Pro",
+  "memoryGiB": 48,
+  "gpuCores": 20,
+  "macOS": "15.7.2",
+  "freeDiskGiB": 109,
+  "tools": {
+    "node": "v26.13.1",
+    "python3": "Python 3.15.2",
+    "pip3": "pip 26.2.2 from /opt/homebrew/lib/python3.15/site-packages/pip (python 3.15)",
+    "uv": null,
+    "git": "git version 2.56.1",
+    "brew": "Homebrew 7.0.13",
+    "ffmpeg": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers",
+    "ffprobe": "ffprobe version 9.0.2 Copyright (c) 2007-2026 the FFmpeg developers"
+  }
+}

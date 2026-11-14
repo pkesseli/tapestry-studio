@@ -5,17 +5,25 @@ import { dirname } from 'node:path';
 const GIB = 1024 ** 3;
 
 /**
- * Reads the numbers out of the report that macOS `/usr/bin/time -l` prints at the end of a run. The peak memory is in
- * bytes on macOS (it is kilobytes on Linux, which is not supported here).
+ * Reads the numbers out of the report that macOS `/usr/bin/time -l` prints at the end of a run. Memory is in bytes on
+ * macOS (it is kilobytes on Linux, which is not supported here).
+ *
+ * The peak is the "peak memory footprint" when the report has it, because on Apple Silicon the resident set size
+ * leaves out Metal buffers: measured 2026-11-12 on an M4 Pro, FLUX.2 klein on MLX showed 9.0 GB resident but a
+ * 13.4 GB footprint while MLX itself reported 9.3 GB of model memory. The resident size is kept as `rssBytes`.
  * @param {string} text Standard error of the timed command.
- * @returns {{ realSeconds: number | null, peakBytes: number | null }} What was found; `null` for what was not.
+ * @returns {{ realSeconds: number | null, peakBytes: number | null, rssBytes: number | null }} What was found; `null`
+ *   for what was not.
  */
 export function parseTimeOutput(text) {
   const real = /([\d.]+)\s+real/.exec(text);
-  const peak = /(\d+)\s+maximum resident set size/.exec(text);
+  const rss = /(\d+)\s+maximum resident set size/.exec(text);
+  const footprint = /(\d+)\s+peak memory footprint/.exec(text);
+  const rssBytes = rss ? Number(rss[1]) : null;
   return {
     realSeconds: real ? Number(real[1]) : null,
-    peakBytes: peak ? Number(peak[1]) : null,
+    peakBytes: footprint ? Number(footprint[1]) : rssBytes,
+    rssBytes,
   };
 }
 

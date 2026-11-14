@@ -1,0 +1,26 @@
+Fetching 56 files:   0%|          | 0/56 [00:00<?, ?it/s]Fetching 56 files: 100%|██████████| 56/56 [00:00<00:00, 7269.16it/s]
+~/tapestry-spikes/mlx-audio/.venv/lib/python3.12/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+[94mText:[0m The ferry left the harbor before the sun was fully up. Maria stood at the railing and watched the lamps on the quay go out one by one. She had not slept. Behind her, Tom was coiling the last of the wet ropes, slowly, the way he had done it every morning for thirty years. Neither of them spoke. The sea was flat and pale, and somewhere below deck a kettle had started to sing. It was going to be a long crossing, and both of them knew it.
+[94mVoice:[0m bm_george
+[94mSpeed:[0m 1.0x
+[94mLanguage:[0m b
+Creating new KokoroPipeline for language: b
+        3.39 real         2.04 user         0.62 sys
+           835993600  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+               99500  page reclaims
+                   1  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                  19  messages sent
+                  36  messages received
+                   0  signals received
+                  11  voluntary context switches
+               10523  involuntary context switches
+         32864357566  instructions retired
+         10899685873  cycles elapsed
+          7313737144  peak memory footprint

@@ -1,0 +1,36 @@
+Fetching 3 files:   0%|          | 0/3 [00:00<?, ?it/s]Fetching 3 files: 100%|██████████| 3/3 [00:00<00:00, 43.50it/s]
+Fetching 2 files:   0%|          | 0/2 [00:00<?, ?it/s]Fetching 2 files: 100%|██████████| 2/2 [00:00<00:00, 2669.83it/s]
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "~/tapestry-spikes/f5tts/.venv/lib/python3.12/site-packages/f5_tts_mlx/generate.py", line 347, in <module>
+    generate(
+  File "~/tapestry-spikes/f5tts/.venv/lib/python3.12/site-packages/f5_tts_mlx/generate.py", line 171, in generate
+    wave, _ = f5tts.sample(
+              ^^^^^^^^^^^^^
+  File "~/tapestry-spikes/f5tts/.venv/lib/python3.12/site-packages/f5_tts_mlx/cfm.py", line 373, in sample
+    y0.append(mx.random.normal((self.num_channels, dur)))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: normal(): incompatible function arguments. The following argument types are supported:
+    1. normal(shape: Sequence[int] = [], dtype: Dtype | None = float32, loc: scalar | array | None = None, scale: scalar | array | None = None, key: array | None = None, stream: StreamOrDevice = None) -> array
+
+Invoked with types: tuple
+Got reference audio with duration: 5.79 seconds
+        1.60 real         0.99 user         0.33 sys
+          1755856896  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+              109392  page reclaims
+                  12  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                  43  messages sent
+                  58  messages received
+                   0  signals received
+                1131  voluntary context switches
+                1970  involuntary context switches
+         11671555792  instructions retired
+          5120696762  cycles elapsed
+          2034485216  peak memory footprint

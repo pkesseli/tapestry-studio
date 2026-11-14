@@ -18,6 +18,22 @@
       "tests": "Smoke shots first, then all ten if it works. Record resolution, seconds of video, steps."
     },
     {
+      "id": "ltx23-ltx2mlx-q4",
+      "name": "LTX 2.3 distilled, int4, on MLX (ltx-2-mlx)",
+      "kind": "video",
+      "priority": 1,
+      "runtime": "mlx",
+      "why": "Added 2026-11-12: replaces ltx23-mlx-q4, whose weights need an unpublished package (mlx_ltx). Same model, int4, with a maintained MLX port that also has IC-LoRA (depth/pose/edges), retake and extend, which plan 10b paths B and C need.",
+      "setup": "git clone dgrauet/ltx-2-mlx; uv venv + uv pip install ./src/packages/ltx-core-mlx ./src/packages/ltx-pipelines-mlx; download only the distilled files of dgrauet/ltx-2.3-mlx-q4 (about 20 GB of 55.6 GB) plus mlx-community/gemma-3-12b-it-4bit (7.5 GB). See INSTALL-LOG.md.",
+      "sources": [
+        "https://github.com/dgrauet/ltx-2-mlx",
+        "https://huggingface.co/dgrauet/ltx-2.3-mlx-q4",
+        "https://huggingface.co/mlx-community/gemma-3-12b-it-4bit"
+      ],
+      "licenseCheck": "LTX-2 Community License (human approved 2026-11-12); Gemma Terms of Use for the text encoder.",
+      "tests": "Smoke shots first, then all ten if it works."
+    },
+    {
       "id": "wan22-5b-comfyui-gguf",
       "name": "Wan 2.2 TI2V 5B (GGUF) in ComfyUI on PyTorch MPS",
       "kind": "video",
@@ -32,6 +48,21 @@
         "https://github.com/city96/ComfyUI-GGUF"
       ],
       "licenseCheck": "Wan 2.2 is reported Apache-2.0; confirm on the model card.",
+      "tests": "Smoke shots, then all ten if it works."
+    },
+    {
+      "id": "wan21-1.3b-comfyui",
+      "name": "Wan 2.1 T2V 1.3B (fp16) in ComfyUI on PyTorch MPS",
+      "kind": "video",
+      "priority": 2,
+      "runtime": "comfyui",
+      "why": "Third video candidate (added 2026-11-14): the smallest current video model, to learn whether a 1.3B model is fast enough to draft with. Reuses the Wan 2.2 ComfyUI setup and text encoder; text-to-video only, 16 fps, no audio.",
+      "setup": "Same ComfyUI install as wan22-5b-comfyui-gguf; fp16 weights (2.8 GB) and the Wan 2.1 VAE from Comfy-Org/Wan_2.1_ComfyUI_repackaged. Run with spikes/mac/scripts/comfy-wan.mjs --model wan21-1.3b.",
+      "sources": [
+        "https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged",
+        "https://huggingface.co/Wan-AI/Wan2.1-T2V-1.3B"
+      ],
+      "licenseCheck": "Wan 2.1 is reported Apache-2.0; confirm on the model card.",
       "tests": "Smoke shots, then all ten if it works."
     },
     {
@@ -184,6 +215,42 @@
       ],
       "licenseCheck": "Real-ESRGAN is BSD-3-Clause; check the specific weights.",
       "tests": "2x on every draft."
+    },
+    {
+      "id": "ltx23-stage-split",
+      "name": "LTX 2.3 distilled, split: stage 1 as draft, stage 2 as final (ltx-2-mlx)",
+      "kind": "refine",
+      "priority": 1,
+      "runtime": "mlx",
+      "why": "Plan 10b draft model and path B (added 2026-11-14). The distilled pipeline's half-resolution stage 1 is the draft; the final resumes from its saved latent (upsample plus stage-2 refine), so draft and final share one latent by construction. Fewer stage-2 steps start the refine at a lower noise level.",
+      "setup": "Same install as ltx23-ltx2mlx-q4; run spikes/mac/scripts/ltx_stage.py draft|final with that venv's Python.",
+      "sources": ["https://github.com/dgrauet/ltx-2-mlx"],
+      "licenseCheck": "As ltx23-ltx2mlx-q4.",
+      "tests": "Drafts for all ten shots; finals with 3, 2 and 1 stage-2 steps; three stage-2 seeds for S02, S05, S08."
+    },
+    {
+      "id": "ltx23-iclora-union",
+      "name": "LTX 2.3 IC-LoRA Union-Control re-render from draft edges (ltx-2-mlx)",
+      "kind": "refine",
+      "priority": 1,
+      "runtime": "mlx",
+      "why": "Plan 10b path C (added 2026-11-14): a new full-resolution render that follows the edges of the approved draft. LTX 2.3 has no identity-reference input (its image inputs anchor frames), so this gets structure and text only.",
+      "setup": "Same install as ltx23-ltx2mlx-q4 plus Lightricks/LTX-2.3-22b-IC-LoRA-Union-Control (0.65 GB); `ltx-2-mlx ic-lora`.",
+      "sources": ["https://huggingface.co/Lightricks/LTX-2.3-22b-IC-LoRA-Union-Control"],
+      "licenseCheck": "Read the LoRA's model card licence.",
+      "tests": "Finals for all ten shots; three seeds for S02, S05, S08."
+    },
+    {
+      "id": "wan22-fun-5b-control",
+      "name": "Wan 2.2 Fun 5B Control (GGUF) in ComfyUI, from draft edges plus a reference image",
+      "kind": "refine",
+      "priority": 2,
+      "runtime": "comfyui",
+      "why": "Plan 10b path D (added 2026-11-14): a different model than the draft, given the same edges as path C plus the shot's first reference image (the node's ref_image input).",
+      "setup": "Same ComfyUI install as wan22-5b-comfyui-gguf plus QuantStack/Wan2.2-Fun-5B-Control-GGUF Q8_0 (5.4 GB); spikes/mac/scripts/comfy-wan.mjs --model wan22-fun-5b-control --control <edges.mp4> [--ref <image>].",
+      "sources": ["https://huggingface.co/alibaba-pai/Wan2.2-Fun-5B-Control", "https://huggingface.co/QuantStack/Wan2.2-Fun-5B-Control-GGUF"],
+      "licenseCheck": "Apache-2.0 on both repos, not gated (read 2026-11-14).",
+      "tests": "Finals for all ten shots; three seeds for S02, S05, S08 if time allows (about 20 min each)."
     },
     {
       "id": "vid2vid-refine",

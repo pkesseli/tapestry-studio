@@ -1,0 +1,111 @@
+[32m[INFO][0m setup plugin alembic.autogenerate.schemas
+[32m[INFO][0m setup plugin alembic.autogenerate.tables
+[32m[INFO][0m setup plugin alembic.autogenerate.types
+[32m[INFO][0m setup plugin alembic.autogenerate.constraints
+[32m[INFO][0m setup plugin alembic.autogenerate.defaults
+[32m[INFO][0m setup plugin alembic.autogenerate.comments
+[32m[INFO][0m setup plugin alembic.ext.checkconstraint_byname
+[1m[33m[WARNING][0m Could not autodetect AIMDO implementation, assuming Nvidia
+[32m[INFO][0m comfy-aimdo unsupported operating system: Darwin
+[32m[INFO][0m NOTE: comfy-aimdo currently only supports Windows and Linux
+[32m[INFO][0m Setting output directory to: /var/folders/kr/yzg4k4755rl9vylp530k4vjh0000gn/T/comfy-wan-gK5y8y/output
+[32m[INFO][0m Setting input directory to: /var/folders/kr/yzg4k4755rl9vylp530k4vjh0000gn/T/comfy-wan-gK5y8y/input
+[32m[INFO][0m Found comfy_kitchen backend eager: {'available': True, 'disabled': False, 'unavailable_reason': None, 'capabilities': ['adaln', 'apply_rope', 'apply_rope1', 'apply_rope1_', 'apply_rope_', 'apply_rope_split_half', 'apply_rope_split_half1', 'apply_rope_split_half1_', 'apply_rope_split_half_', 'convrot_w4a4_linear', 'dequantize_convrot_w4a4_weight', 'dequantize_int8_convrot_weight', 'dequantize_int8_convrot_weight_dtype', 'dequantize_int8_embedding', 'dequantize_int8_simple', 'dequantize_int8_simple_dtype', 'dequantize_mxfp8', 'dequantize_nvfp4', 'dequantize_per_tensor_fp8', 'dequantize_w4a8_int8_weight', 'fp16_conv3d', 'fp16_conv3d_out', 'fp16_linear', 'gemv_awq_w4a16', 'group_norm_silu_pad3d', 'group_norm_silu_pad3d_out', 'group_norm_stats3d', 'int8_linear', 'int8_linear_modulated', 'int8_linear_rms_modulated', 'na3d', 'prepare_int4_weight_for_int8_linear', 'quantize_and_rotate_rowwise', 'quantize_convrot_w4a4_weight', 'quantize_int8_convrot_weight', 'quantize_int8_rowwise', 'quantize_int8_tensorwise', 'quantize_mxfp8', 'quantize_nvfp4', 'quantize_per_tensor_fp8', 'quantize_svdquant_w4a4', 'quantize_w4a8_int8_weight', 'rms_adaln', 'rms_gated_residual', 'rms_rope', 'rms_rope1', 'rms_rope1_', 'rms_rope_', 'rms_rope_split_half', 'rms_rope_split_half1', 'rms_rope_split_half1_', 'rms_rope_split_half_', 'rotate_int8_convrot_weight', 'scaled_mm_mxfp8', 'scaled_mm_nvfp4', 'scaled_mm_svdquant_w4a4', 'sol_attn', 'stochastic_rounding_fp8', 'w4a8_int8_linear', 'w4a8_packed_linear', 'window_attention']}
+[32m[INFO][0m Found comfy_kitchen backend ascend: {'available': False, 'disabled': False, 'unavailable_reason': "torch-npu is not installed: No module named 'torch_npu'", 'capabilities': []}
+[32m[INFO][0m Found comfy_kitchen backend triton: {'available': False, 'disabled': True, 'unavailable_reason': "ImportError: No module named 'triton'", 'capabilities': []}
+[32m[INFO][0m Found comfy_kitchen backend hip: {'available': False, 'disabled': False, 'unavailable_reason': 'PyTorch ROCm/HIP runtime not available', 'capabilities': []}
+[32m[INFO][0m Found comfy_kitchen backend cuda: {'available': False, 'disabled': True, 'unavailable_reason': 'Extension file not found: ~/tapestry-spikes/comfyui/.venv/lib/python3.12/site-packages/comfy_kitchen/backends/cuda/_C.abi3.so', 'capabilities': []}
+[32m[INFO][0m Checkpoint files will always be loaded safely.
+[32m[INFO][0m Total VRAM 49152 MB, total RAM 49152 MB
+[32m[INFO][0m pytorch version: 2.15.0
+[32m[INFO][0m Mac Version (15, 7, 2)
+[32m[INFO][0m Set vram state to: SHARED
+[32m[INFO][0m Device: mps
+[32m[INFO][0m Using sub quadratic optimization for attention, if you have memory or speed issues try using: --use-split-cross-attention
+[32m[INFO][0m Python version: 3.12.16 (main, Oct 26 2026, 13:59:40) [Clang 23.1.3 ]
+[32m[INFO][0m ComfyUI version: 0.45.0
+[32m[INFO][0m comfy-aimdo version: 0.6.0
+[32m[INFO][0m comfy-kitchen version: 0.2.41
+[32m[INFO][0m comfyui-frontend-package version: 1.59.1
+[32m[INFO][0m comfyui-workflow-templates version: 0.11.107
+[32m[INFO][0m comfyui-embedded-docs version: 0.5.16
+[32m[INFO][0m comfy-aimdo version: 0.6.0
+[32m[INFO][0m comfy-kitchen version: 0.2.41
+[32m[INFO][0m [Prompt Server] web root: ~/tapestry-spikes/comfyui/.venv/lib/python3.12/site-packages/comfyui_frontend_package/static
+[32m[INFO][0m Asset seeder disabled
+[32m[INFO][0m No OpenGL_accelerate module loaded: No module named 'OpenGL_accelerate'
+[32m[INFO][0m ComfyUI-GGUF: Allowing full torch compile
+[32m[INFO][0m 
+Import times for custom nodes:
+[32m[INFO][0m    0.0 seconds: ~/tapestry-spikes/comfyui/src/custom_nodes/websocket_image_save.py
+[32m[INFO][0m    0.0 seconds: ~/tapestry-spikes/comfyui/src/custom_nodes/ComfyUI-GGUF
+[32m[INFO][0m 
+[32m[INFO][0m Using RAM pressure cache.
+[32m[INFO][0m ComfyUI is developed by Comfy Org. We also offer commercial products to deploy ComfyUI as scalable cloud endpoints. Visit platform.comfy.org/ascii for more information.
+[32m[INFO][0m Starting server
+
+[32m[INFO][0m To see the GUI go to: http://127.0.0.1:8199
+[32m[INFO][0m got prompt
+[32m[INFO][0m Model storage policy: fast_disk=False paths=['~/tapestry-spikes/comfyui/src/models/vae/split_files/vae/wan2.2_vae.safetensors']
+[32m[INFO][0m Using split attention in VAE
+[32m[INFO][0m Using split attention in VAE
+[32m[INFO][0m VAE load device: mps, offload device: cpu, dtype: torch.bfloat16
+[32m[INFO][0m gguf qtypes: Q8_0 (169), F32 (73)
+[32m[INFO][0m Attempting to recreate sentencepiece tokenizer from GGUF file metadata...
+[32m[INFO][0m Created tokenizer with vocab size of 256384
+[1m[33m[WARNING][0m Dequantizing token_embd.weight to prevent runtime OOM.
+[32m[INFO][0m Model storage policy: fast_disk=False paths=[]
+[32m[INFO][0m Requested to load WanTEModel
+[32m[INFO][0m loaded completely;  6695.95 MB loaded, full load: True
+[32m[INFO][0m CLIP/text encoder model load device: cpu, offload device: cpu, current: cpu, dtype: torch.float16
+[32m[INFO][0m Requested to load WanTEModel
+[32m[INFO][0m gguf qtypes: F16 (524), Q8_0 (300), F32 (1)
+[32m[INFO][0m model weight dtype torch.float16, manual cast: None
+[32m[INFO][0m model_type FLOW
+[32m[INFO][0m Model storage policy: fast_disk=False paths=[]
+[32m[INFO][0m Requested to load WAN22
+[32m[INFO][0m loaded completely;  5232.90 MB loaded, full load: True
+  0%|          | 0/20 [00:00<?, ?it/s]  5%|▌         | 1/20 [00:42<13:29, 42.63s/it] 10%|█         | 2/20 [01:30<13:47, 45.99s/it] 15%|█▌        | 3/20 [02:19<13:20, 47.07s/it] 20%|██        | 4/20 [03:07<12:41, 47.58s/it] 25%|██▌       | 5/20 [03:57<12:03, 48.21s/it] 30%|███       | 6/20 [04:46<11:22, 48.75s/it] 35%|███▌      | 7/20 [05:35<10:33, 48.70s/it] 40%|████      | 8/20 [06:23<09:42, 48.57s/it] 45%|████▌     | 9/20 [07:12<08:53, 48.53s/it] 50%|█████     | 10/20 [08:00<08:04, 48.47s/it] 55%|█████▌    | 11/20 [08:48<07:15, 48.42s/it] 60%|██████    | 12/20 [09:37<06:27, 48.39s/it] 65%|██████▌   | 13/20 [10:25<05:38, 48.37s/it] 70%|███████   | 14/20 [11:13<04:50, 48.35s/it] 75%|███████▌  | 15/20 [12:02<04:01, 48.34s/it] 80%|████████  | 16/20 [12:50<03:13, 48.32s/it] 85%|████████▌ | 17/20 [13:38<02:24, 48.32s/it] 90%|█████████ | 18/20 [14:26<01:36, 48.33s/it] 95%|█████████▌| 19/20 [15:15<00:48, 48.33s/it]100%|██████████| 20/20 [16:09<00:00, 50.22s/it]100%|██████████| 20/20 [16:09<00:00, 48.50s/it]
+[32m[INFO][0m Requested to load WanVAE
+[32m[INFO][0m loaded completely;  1344.09 MB loaded, full load: True
+[32m[INFO][0m [32mPrompt executed in 00:20:30[0m
+[32m[INFO][0m ComfyUI is developed by Comfy Org. We also offer commercial products to deploy ComfyUI as scalable cloud endpoints. Visit platform.comfy.org/ascii-job for more information.
+frames: 97
+[32m[INFO][0m 
+Stopped server
+     1237.20 real        37.98 user        23.51 sys
+         13612285952  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+             1189236  page reclaims
+              110717  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                 774  messages sent
+                 651  messages received
+                   2  signals received
+                9155  voluntary context switches
+              370570  involuntary context switches
+        522725089451  instructions retired
+        236845739992  cycles elapsed
+         31929428792  peak memory footprint
+     1237.29 real        40.53 user        23.72 sys
+         13612285952  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+             1214533  page reclaims
+              111397  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                1415  messages sent
+                1270  messages received
+                   4  signals received
+                9203  voluntary context switches
+              388845  involuntary context switches
+          2390717526  instructions retired
+          1942290163  cycles elapsed
+            50010592  peak memory footprint

@@ -1,0 +1,16 @@
+[Loading text encoder (Gemma)] ...
+Mode: Distilled Two-Stage (half-res + upscale + distilled refine)
+  Model: ~/tapestry-spikes/ltx-2-mlx/models/ltx-2.3-mlx-q4
+Fetching 13 files:   0%|          | 0/13 [00:00<?, ?it/s]Fetching 13 files: 100%|██████████| 13/13 [00:00<00:00, 3423.71it/s]
+[Loading text encoder (Gemma)] done in 3.3s
+[Encoding prompt] ...
+[Encoding prompt] done in 8.9s
+[Loading transformer (transformer-distilled-1.1.safetensors)] ...
+[Loading transformer (transformer-distilled-1.1.safetensors)] done in 2.0s
+two-stage half-res snaps dims to multiples of 64; output will be 832x448 (requested 832x480). Use --single-stage for exact dims.
+[estimate] denoising: 8 steps x 1 passes over 1183 video + 101 audio tokens = 8 forwards
+Denoising:   0%|          | 0/8 [00:00<?, ?it/s]                                                [estimate] denoising: ~1 min 29 s remaining (12.7 s/forward) (first step includes warm-up)
+Denoising:   0%|          | 0/8 [00:12<?, ?it/s]Denoising:  12%|█▎        | 1/8 [00:12<01:29, 12.74s/it]                                                        [estimate] denoising: ~1 min 10 s remaining (11.7 s/forward) (refined)
+Denoising:  12%|█▎        | 1/8 [00:24<01:29, 12.74s/it]Denoising:  25%|██▌       | 2/8 [00:24<01:12, 12.12s/it]Denoising:  38%|███▊      | 3/8 [00:36<00:59, 11.95s/it]Denoising:  50%|█████     | 4/8 [00:47<00:47, 11.86s/it]Denoising:  62%|██████▎   | 5/8 [11:54<12:23, 248.00s/it]Denoising:  75%|███████▌  | 6/8 [18:18<09:48, 294.14s/it]Denoising:  88%|████████▊ | 7/8 [20:38<04:03, 243.81s/it]Denoising: 100%|██████████| 8/8 [32:08<00:00, 385.89s/it]Denoising: 100%|██████████| 8/8 [32:08<00:00, 241.07s/it]
+[estimate] denoising: 3 steps x 1 passes over 4732 video + 101 audio tokens = 3 forwards
+Denoising:   0%|          | 0/3 [00:00<?, ?it/s]
