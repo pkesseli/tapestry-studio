@@ -272,3 +272,36 @@ All 117 runs ended `ok`; times are per 4 s clip (97 frames), peak memory as benc
 - 2- and 1-step drafts are mostly noise (the distilled model is not trained for so few steps), so they cannot be
   judged. Their finals still come out clean, but they show content the draft never showed: it is a cheaper full
   render, not a draft.
+
+## minimax-h3-gguf — 2026-11-15
+
+The human approved the MiniMax H3 Community License ("we are not in EU") and the Q8 download (over the 20 GB limit).
+Not gated. Full-precision weights are 498 GB in all (66 GB transformer, 52 GB text encoder), far beyond 48 GB, so this
+uses unsloth's GGUF quantisations.
+
+- Weights (about 69 GB), from `~/tapestry-spikes/comfyui/src/models` (folder kept from a first ComfyUI attempt):
+
+      hf download unsloth/MiniMax-H3-GGUF minimax_h3_fl2va_pruned-Q8_0.gguf minimax_h3_ref2va_pruned-Q8_0.gguf --local-dir unet
+      hf download unsloth/MiniMax-H3-GGUF qwen3vl_32b_minimax_h3-Q4_K_M.gguf --local-dir text_encoders
+      hf download Comfy-Org/MiniMax-H3 vae/minimax_h3_video_vae_fp16.safetensors \
+        vae/minimax_h3_audio_vae_fp32.safetensors loras/minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors \
+        loras/minimax_h3_ref2v_turbo_4step_v0.1_comfyui_bf16.safetensors --local-dir .
+
+- ComfyUI does not work with these files: ComfyUI-GGUF (6ea2651) refuses the text encoder ("This gguf file is
+  incompatible with llama.cpp!", it has no `general.architecture`), and ComfyUI's own MiniMax H3 templates use
+  int8/nvfp4 files that need CUDA kernels. unsloth's GGUFs are made for stable-diffusion.cpp.
+- Runtime: stable-diffusion.cpp (leejet, MIT), `git clone --depth 1 --recurse-submodules` → commit 532d2c1
+  (2026-11-15). Built without Homebrew or sudo: `uv venv .venv && uv pip install cmake` (cmake 4.4.5 from PyPI), then
+  `cmake -S src -B build -DSD_METAL=ON -DCMAKE_BUILD_TYPE=Release && cmake --build build --target sd-cli -j 12`.
+  The only download in its CMake files (OpenMP for Windows) is not used on macOS. The prebuilt macOS binary is built
+  on macOS 26 and was not tried on 15.7.
+- Command: `sh spikes/mac/scripts/h3-shot.sh <t2v|r2v> <turbo|full> <shot> [seed]`. t2v = FL2VA with text only,
+  r2v = Ref2VA with the shot's reference images (`-r`, named `<Picture n>` in the prompt). Settings from
+  stable-diffusion.cpp's docs/models/minimax_h3.md and ComfyUI's H3 templates: `--cfg-scale 1.0` (H3 is distilled
+  and CFG-free), 832x480, 107 frames (the 17k+5 grid; 4.46 s), 24 fps; full = 20 steps; turbo = MiniMax's LoRA in the
+  prompt (`<lora:name:1>`) with 6 (t2v) or 4 (r2v) steps.
+- Gotcha: `--offload-to-cpu` (from the docs) is killed by macOS (`Killed: 9`) after staging the 20.5 GB transformer:
+  on unified memory it keeps a RAM copy and a Metal copy of the 43.5 GB of weights. `--params-backend disk --mmap`
+  loads each part from disk when needed; peak footprint 22.3 GB.
+- First result (S01, t2v turbo): 973 s per clip = text encoding 7 s, sampling 841 s (6 steps, about 140 s each),
+  video decode 118 s, audio decode 4 s. Audio track present (32 kHz stereo upstream; AAC in the mp4 copy).

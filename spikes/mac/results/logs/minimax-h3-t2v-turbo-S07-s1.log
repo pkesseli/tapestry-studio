@@ -1,0 +1,362 @@
+[V] version: stable-diffusion.cpp version unknown, commit 532d2c1 --- main.cpp:760
+ggml_metal_device_init: tensor API disabled for pre-M5 and pre-A19 devices
+ggml_metal_library_init: using embedded metal library
+ggml_metal_library_compile_all: compiled 'fa_aux' library in 0.025 sec
+ggml_metal_library_compile_all: compiled 'fa_f16' library in 0.058 sec
+ggml_metal_library_compile_all: compiled 'fa_f32' library in 0.041 sec
+ggml_metal_library_compile_all: compiled 'fa_q4_0' library in 0.054 sec
+ggml_metal_library_compile_all: compiled 'fa_q4_1' library in 0.042 sec
+ggml_metal_library_compile_all: compiled 'fa_q5_0' library in 0.059 sec
+ggml_metal_library_compile_all: compiled 'fa_q5_1' library in 0.011 sec
+ggml_metal_library_compile_all: compiled 'fa_q8_0' library in 0.055 sec
+ggml_metal_library_compile_all: compiled 'fa_tensor' library in 0.041 sec
+ggml_metal_library_compile_all: compiled 'fa_vec_f16' library in 0.035 sec
+ggml_metal_library_compile_all: compiled 'fa_vec_f32' library in 0.004 sec
+ggml_metal_library_compile_all: compiled 'fa_vec_q4_0' library in 0.030 sec
+ggml_metal_library_compile_all: compiled 'fa_vec_q4_1' library in 0.010 sec
+ggml_metal_library_compile_all: compiled 'fa_vec_q5_0' library in 0.047 sec
+ggml_metal_library_compile_all: compiled 'fa_vec_q5_1' library in 0.040 sec
+ggml_metal_library_compile_all: compiled 'fa_vec_q8_0' library in 0.021 sec
+ggml_metal_library_compile_all: compiled 'mul_mv' library in 0.025 sec
+ggml_metal_library_compile_all: compiled 'mul_mv_mma' library in 0.053 sec
+ggml_metal_library_compile_all: compiled 'mul_mm' library in 0.015 sec
+ggml_metal_library_compile_all: compiled 'quantize' library in 0.016 sec
+ggml_metal_library_compile_all: compiled 'softmax' library in 0.035 sec
+ggml_metal_library_compile_all: compiled 'norm' library in 0.004 sec
+ggml_metal_library_compile_all: compiled 'unary' library in 0.053 sec
+ggml_metal_library_compile_all: compiled 'binbcast' library in 0.003 sec
+ggml_metal_library_compile_all: compiled 'reduce' library in 0.025 sec
+ggml_metal_library_compile_all: compiled 'tri' library in 0.005 sec
+ggml_metal_library_compile_all: compiled 'ssm' library in 0.025 sec
+ggml_metal_library_compile_all: compiled 'wkv' library in 0.034 sec
+ggml_metal_library_compile_all: compiled 'gated_delta_net' library in 0.031 sec
+ggml_metal_library_compile_all: compiled 'solve_tri' library in 0.031 sec
+ggml_metal_library_compile_all: compiled 'rope' library in 0.031 sec
+ggml_metal_library_compile_all: compiled 'conv' library in 0.031 sec
+ggml_metal_library_compile_all: compiled 'upscale' library in 0.039 sec
+ggml_metal_library_compile_all: compiled 'argsort' library in 0.001 sec
+ggml_metal_library_compile_all: compiled 'pool' library in 0.049 sec
+ggml_metal_library_compile_all: compiled 'misc' library in 0.038 sec
+ggml_metal_library_compile_all: loaded 36 libraries from embedded data in 0.059 sec (max single = 0.059 sec)
+ggml_metal_rsets_init: creating a residency set collection (keep_alive = 180 s)
+ggml_metal_device_init: GPU name:   MTL0 (Apple M4 Pro)
+ggml_metal_device_init: GPU family: MTLGPUFamilyApple9  (1009)
+ggml_metal_device_init: GPU family: MTLGPUFamilyMetal3  (5001)
+ggml_metal_device_init: simdgroup reduction   = true
+ggml_metal_device_init: simdgroup matrix mul. = true
+ggml_metal_device_init: has unified memory    = true
+ggml_metal_device_init: has bfloat            = true
+ggml_metal_device_init: has tensor            = false
+ggml_metal_device_init: use residency sets    = true
+ggml_metal_device_init: use shared buffers    = true
+ggml_metal_device_init: recommendedMaxWorkingSetSize  = 38654.71 MB
+[V] System Info: 
+   NEON = 1 |    ARM_FMA = 1 |    FP16_VA = 1 |    MATMUL_INT8 = 1 |    DOTPROD = 1 |    SME = 1 |    ACCELERATE = 1 |    REPACK = 1 |  --- main.cpp:761
+[V] using 10 threads for model loading --- model_loader.cpp:194
+[I] loading diffusion model from '~/tapestry-spikes/comfyui/src/models/unet/minimax_h3_fl2va_pruned-Q8_0.gguf' --- diffusion_engine.cpp:697
+[I] load ~/tapestry-spikes/comfyui/src/models/unet/minimax_h3_fl2va_pruned-Q8_0.gguf using gguf format --- model_loader.cpp:220
+[V] init from '~/tapestry-spikes/comfyui/src/models/unet/minimax_h3_fl2va_pruned-Q8_0.gguf' --- model_loader.cpp:266
+[V] GGUF v3, tensor_count=532, metadata_kv_count=0 --- gguf_reader_ext.h:225
+[I] loading llm from '~/tapestry-spikes/comfyui/src/models/text_encoders/qwen3vl_32b_minimax_h3-Q4_K_M.gguf' --- diffusion_engine.cpp:754
+[I] load ~/tapestry-spikes/comfyui/src/models/text_encoders/qwen3vl_32b_minimax_h3-Q4_K_M.gguf using gguf format --- model_loader.cpp:220
+[V] init from '~/tapestry-spikes/comfyui/src/models/text_encoders/qwen3vl_32b_minimax_h3-Q4_K_M.gguf' --- model_loader.cpp:266
+[V] GGUF v3, tensor_count=902, metadata_kv_count=0 --- gguf_reader_ext.h:225
+[I] loading vae from '~/tapestry-spikes/comfyui/src/models/vae/minimax_h3_video_vae_fp16.safetensors' --- diffusion_engine.cpp:768
+[I] load ~/tapestry-spikes/comfyui/src/models/vae/minimax_h3_video_vae_fp16.safetensors using safetensors format --- model_loader.cpp:226
+[V] init from '~/tapestry-spikes/comfyui/src/models/vae/minimax_h3_video_vae_fp16.safetensors', prefix = 'vae.' --- model_loader.cpp:294
+[I] loading audio VAE from '~/tapestry-spikes/comfyui/src/models/vae/minimax_h3_audio_vae_fp32.safetensors' --- diffusion_engine.cpp:792
+[I] load ~/tapestry-spikes/comfyui/src/models/vae/minimax_h3_audio_vae_fp32.safetensors using safetensors format --- model_loader.cpp:226
+[V] init from '~/tapestry-spikes/comfyui/src/models/vae/minimax_h3_audio_vae_fp32.safetensors', prefix = '' --- model_loader.cpp:294
+[I] Version: MiniMax-H3  --- diffusion_engine.cpp:982
+[V] Found 3 backend devices: --- ggml_extend_backend.cpp:719
+[V] #0: MTL0 --- ggml_extend_backend.cpp:722
+[V] #1: BLAS --- ggml_extend_backend.cpp:722
+[V] #2: CPU --- ggml_extend_backend.cpp:722
+[V] Initializing backend: MTL0 --- ggml_extend_backend.cpp:421
+[I] ggml: ggml_metal_init: allocating
+[I] ggml: ggml_metal_init: found device: Apple M4 Pro
+[I] ggml: ggml_metal_init: picking default device: Apple M4 Pro
+[I] ggml: ggml_metal_init: use fusion         = true
+[I] ggml: ggml_metal_init: use concurrency    = true
+[I] ggml: ggml_metal_init: use graph optimize = true
+[V] using 10 threads for model loading --- model_loader.cpp:194
+[I] Weight type stat:                      f32: 925  |     f16: 664  |    q8_0: 210  |    q4_K: 250  |    q6_K: 100  |    bf16: 764   --- diffusion_engine.cpp:1560
+[I] Conditioner weight type stat:         q4_K: 250  |    q6_K: 100  |    bf16: 552   --- diffusion_engine.cpp:1561
+[I] Diffusion model weight type stat:      f32: 8    |     f16: 102  |    q8_0: 210  |    bf16: 212   --- diffusion_engine.cpp:1562
+[I] VAE weight type stat:                  f16: 562   --- diffusion_engine.cpp:1563
+[V] using mmap for I/O --- model_loader.cpp:931
+[I] using mmap for '~/tapestry-spikes/comfyui/src/models/unet/minimax_h3_fl2va_pruned-Q8_0.gguf' --- model_loader.cpp:937
+[V] using mmap for I/O --- model_loader.cpp:931
+[I] using mmap for '~/tapestry-spikes/comfyui/src/models/text_encoders/qwen3vl_32b_minimax_h3-Q4_K_M.gguf' --- model_loader.cpp:937
+[V] using mmap for I/O --- model_loader.cpp:931
+[I] using mmap for '~/tapestry-spikes/comfyui/src/models/vae/minimax_h3_video_vae_fp16.safetensors' --- model_loader.cpp:937
+[V] using mmap for I/O --- model_loader.cpp:931
+[I] using mmap for '~/tapestry-spikes/comfyui/src/models/vae/minimax_h3_audio_vae_fp32.safetensors' --- model_loader.cpp:937
+[V] llm: num_layers = 50, vocab_size = 151936, hidden_size = 5120, intermediate_size = 25600 --- llm.hpp:464
+[V] enable llm vision --- llm.hpp:2475
+[V] minimax_h3: layers=50, hidden=5376, heads=56, head_dim=128, ffn=14336, adaln_curve=1025, two_time=0, audio_latent_channels=32, pdd_num_inference_steps=1 --- minimax_h3.hpp:185
+[I] MiniMax-H3 attention chunk budget: 2 GiB (0 disables grouping) --- minimax_h3.hpp:1269
+[I] using VAE for encoding / decoding --- model_builders.cpp:226
+[V] minimax_h3_vae: decoder=original, layers=36, patch_size_t=4, hidden_size=2048 --- minimax_h3_vae.hpp:66
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_cpy_f32_f32', name = 'kernel_cpy_f32_f32'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_cpy_f32_f32                            0x10c0bb910 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_f32_f32', name = 'kernel_mul_mm_f32_f32_bci=0_bco=0_ne12=4_ne13=1_r2=1_r3=1'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_f32_f32_bci=0_bco=0_ne12=4_ne13=1_r2=1_r3=1      0x10c0b5a50 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_unary_f32_f32_4', name = 'kernel_unary_f32_f32_4_op=10_cnt=0'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_4_op=10_cnt=0            0x10c0b6500 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_soft_max_f32_4', name = 'kernel_soft_max_f32_4'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_soft_max_f32_4                         0x10c0b5390 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_cpy_f32_f16', name = 'kernel_cpy_f32_f16'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_cpy_f32_f16                            0x1037112b0 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_flash_attn_ext_f16_dk64_dv64', name = 'kernel_flash_attn_ext_f16_dk64_dv64_mask=0_sinks=0_bias=0_scap=0_kvpad=0_bcm=0_ns10=64_ns20=64_nsg=4'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_flash_attn_ext_f16_dk64_dv64_mask=0_sinks=0_bias=0_scap=0_kvpad=0_bcm=0_ns10=64_ns20=64_nsg=4      0x103711be0 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_flash_attn_ext_f16_dk128_dv128', name = 'kernel_flash_attn_ext_f16_dk128_dv128_mask=0_sinks=0_bias=0_scap=0_kvpad=0_bcm=0_ns10=128_ns20=128_nsg=4'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_flash_attn_ext_f16_dk128_dv128_mask=0_sinks=0_bias=0_scap=0_kvpad=0_bcm=0_ns10=128_ns20=128_nsg=4      0x12806ca70 | th_max = 1024 | th_width =   32
+[I] flash attention auto: MTL0 -> on (probe: normal 2.243 ms, flash 1.874 ms) --- flash_attn.cpp:99
+[I] conv2d direct auto: MTL0 -> off (no implicit GEMM path) --- conv_direct.cpp:90
+[I] conv3d direct auto: MTL0 -> off (no implicit GEMM path) --- conv_direct.cpp:90
+[V] validating model metadata --- diffusion_engine.cpp:1314
+[V] model metadata validated; weights will be prepared lazily --- diffusion_engine.cpp:1384
+[I] total params memory size = 43464.96MB (VRAM 43464.96MB, RAM 0.00MB): text_encoders 17375.93MB(VRAM), diffusion_model 20530.93MB(VRAM), vae 5558.10MB(VRAM), controlnet 0.00MB(N/A), extensions 0.00MB(N/A) --- diffusion_engine.cpp:1445
+[I] running in MiniMax H3 AV FLOW mode --- diffusion_engine.cpp:1505
+[V] lora ~/tapestry-spikes/comfyui/src/models/loras/minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors:1.00 --- diffusion_engine.cpp:1835
+[I] load ~/tapestry-spikes/comfyui/src/models/loras/minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors using safetensors format --- model_loader.cpp:226
+[V] init from '~/tapestry-spikes/comfyui/src/models/loras/minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors', prefix = 'lora.' --- model_loader.cpp:294
+[V] using 10 threads for model loading --- model_loader.cpp:194
+[I] apply lora at runtime --- diffusion_engine.cpp:1749
+[V] using 10 threads for model loading --- model_loader.cpp:194
+[V] using 10 threads for model loading --- model_loader.cpp:194
+[V] using 10 threads for model loading --- model_loader.cpp:194
+[I] apply_loras completed, taking 0.29s --- diffusion_engine.cpp:1875
+[I] get_sigmas with discrete scheduler --- denoiser.hpp:1132
+[I] sampling using Euler method --- request.cpp:478
+[V] parse 'A small ship's cabin by day: a black iron stove with a kettle steaming on it, a narrow bunk, light through a round window. Static shot, no people. Direction: locked-off camera, warm interior light, steam rising. ' to [['A small ship's cabin by day: a black iron stove with a kettle steaming on it, a narrow bunk, light through a round window. Static shot, no people. Direction: locked-off camera, warm interior light, steam rising. ', 1], ] --- conditioner.hpp:2246
+[V] split prompt "A small ship's cabin by day: a black iron stove with a kettle steaming on it, a narrow bunk, light through a round window. Static shot, no people. Direction: locked-off camera, warm interior light, steam rising. " to 50 tokens ["A", "Ġsmall", "Ġship", "'s", "Ġcabin", "Ġby", "Ġday", ":", "Ġa", "Ġblack", "Ġiron", "Ġstove", "Ġwith", "Ġa", "Ġkettle", "Ġste", "aming", "Ġon", "Ġit", ",", "Ġa", "Ġnarrow", "Ġbunk", ",", "Ġlight", "Ġthrough", "Ġa", "Ġround", "Ġwindow", ".", "ĠStatic", "Ġshot", ",", "Ġno", "Ġpeople", ".", "ĠDirection", ":", "Ġlocked", "-off", "Ġcamera", ",", "Ġwarm", "Ġinterior", "Ġlight", ",", "Ġsteam", "Ġrising", ".", "Ġ", ] --- bpe_tokenizer.cpp:245
+[I] qwen3vl build cached graph cut plan done (taking 3 ms) --- ggml_graph_cut.cpp:1034
+[V] using mmap for I/O --- model_loader.cpp:931
+[I] using mmap for '~/tapestry-spikes/comfyui/src/models/unet/minimax_h3_fl2va_pruned-Q8_0.gguf' --- model_loader.cpp:937
+[V] using mmap for I/O --- model_loader.cpp:931
+[I] using mmap for '~/tapestry-spikes/comfyui/src/models/text_encoders/qwen3vl_32b_minimax_h3-Q4_K_M.gguf' --- model_loader.cpp:937
+[V] using mmap for I/O --- model_loader.cpp:931
+[I] using mmap for '~/tapestry-spikes/comfyui/src/models/vae/minimax_h3_video_vae_fp16.safetensors' --- model_loader.cpp:937
+[V] using mmap for I/O --- model_loader.cpp:931
+[I] using mmap for '~/tapestry-spikes/comfyui/src/models/vae/minimax_h3_audio_vae_fp32.safetensors' --- model_loader.cpp:937
+[V] loading 551/902 tensors from ~/tapestry-spikes/comfyui/src/models/text_encoders/qwen3vl_32b_minimax_h3-Q4_K_M.gguf --- model_loader.cpp:1170
+  |#                                                 |   9/551 -   0.00MB/s[K  |###                                               |  27/551 - 501.83MB/s[K  |#####                                             |  48/551 -   1.69GB/s[K  |######                                            |  66/551 -   1.78GB/s[K  |########                                          |  88/551 -   2.03GB/s[K  |##########                                        | 108/551 -   2.18GB/s[K  |############                                      | 124/551 -   2.09GB/s[K  |############                                      | 132/551 -   1.97GB/s[K  |#############                                     | 143/551 -   1.90GB/s[K  |##############                                    | 154/551 -   1.85GB/s[K  |###############                                   | 165/551 -   1.81GB/s[K  |################                                  | 176/551 -   1.77GB/s[K  |#################                                 | 187/551 -   1.74GB/s[K  |##################                                | 198/551 -   1.72GB/s[K  |###################                               | 206/551 -   1.67GB/s[K  |####################                              | 218/551 -   1.68GB/s[K  |#####################                             | 224/551 -   1.59GB/s[K  |######################                            | 235/551 -   1.58GB/s[K  |######################                            | 242/551 -   1.56GB/s[K  |#######################                           | 253/551 -   1.55GB/s[K  |########################                          | 264/551 -   1.55GB/s[K  |#########################                         | 275/551 -   1.54GB/s[K  |##########################                        | 286/551 -   1.54GB/s[K  |###########################                       | 297/551 -   1.53GB/s[K  |############################                      | 308/551 -   1.53GB/s[K  |#############################                     | 319/551 -   1.52GB/s[K  |##############################                    | 330/551 -   1.52GB/s[K  |###############################                   | 341/551 -   1.51GB/s[K  |################################                  | 347/551 -   1.50GB/s[K  |#################################                 | 357/551 -   1.49GB/s[K  |##################################                | 366/551 -   1.47GB/s[K  |###################################               | 377/551 -   1.46GB/s[K  |####################################              | 388/551 -   1.46GB/s[K  |#####################################             | 399/551 -   1.46GB/s[K  |######################################            | 408/551 -   1.46GB/s[K  |######################################            | 418/551 -   1.45GB/s[K  |#######################################           | 429/551 -   1.45GB/s[K  |########################################          | 440/551 -   1.45GB/s[K  |#########################################         | 451/551 -   1.45GB/s[K  |##########################################        | 462/551 -   1.45GB/s[K  |###########################################       | 473/551 -   1.45GB/s[K  |############################################      | 484/551 -   1.45GB/s[K  |#############################################     | 495/551 -   1.45GB/s[K  |##############################################    | 506/551 -   1.45GB/s[K  |###############################################   | 517/551 -   1.45GB/s[K  |################################################# | 529/551 -   1.61GB/s[K  |################################################# | 539/551 -   1.59GB/s[K  |##################################################| 551/551 -   1.62GB/s[K
+[I] loading tensors completed, taking 9.76s (read: 9.55s, memcpy: 0.00s, convert: 0.00s, copy_to_backend: 0.09s) --- model_loader.cpp:1442
+[V] model manager prepared params backend buffers (16239.66 MB, 551 tensors, 17 blocks, VRAM) on MTL0 --- model_manager.cpp:508
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_get_rows_bf16', name = 'kernel_get_rows_bf16'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_get_rows_bf16                          0x163283490 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_rms_norm_mul_f32_4', name = 'kernel_rms_norm_mul_f32_4'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_rms_norm_mul_f32_4                     0x1632841c0 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_q4_K_f32', name = 'kernel_mul_mm_q4_K_f32_bci=0_bco=1_ne12=1_ne13=1_r2=1_r3=1'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_q4_K_f32_bci=0_bco=1_ne12=1_ne13=1_r2=1_r3=1      0x163284c70 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_q6_K_f32', name = 'kernel_mul_mm_q6_K_f32_bci=0_bco=1_ne12=1_ne13=1_r2=1_r3=1'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_q6_K_f32_bci=0_bco=1_ne12=1_ne13=1_r2=1_r3=1      0x1632863c0 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_rope_multi_f32', name = 'kernel_rope_multi_f32_imrope=1_is_back=0'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_rope_multi_f32_imrope=1_is_back=0      0x163285a50 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_flash_attn_ext_pad', name = 'kernel_flash_attn_ext_pad_mask=1_ncpsg=64'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_flash_attn_ext_pad_mask=1_ncpsg=64      0x163286cf0 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_flash_attn_ext_blk', name = 'kernel_flash_attn_ext_blk_nqptg=8_ncpsg=64'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_flash_attn_ext_blk_nqptg=8_ncpsg=64      0x163288c80 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_flash_attn_ext_f16_dk128_dv128', name = 'kernel_flash_attn_ext_f16_dk128_dv128_mask=1_sinks=0_bias=0_scap=0_kvpad=1_bcm=1_ns10=128_ns20=128_nsg=4'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_flash_attn_ext_f16_dk128_dv128_mask=1_sinks=0_bias=0_scap=0_kvpad=1_bcm=1_ns10=128_ns20=128_nsg=4      0x12d682b40 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_bin_fuse_f32_f32_f32_4', name = 'kernel_bin_fuse_f32_f32_f32_4_op=0_nf=1_rb=0_cb=0'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_bin_fuse_f32_f32_f32_4_op=0_nf=1_rb=0_cb=0      0x12d605690 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_swiglu_f32', name = 'kernel_swiglu_f32'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_swiglu_f32                             0x12d605b70 | th_max = 1024 | th_width =   32
+[V] qwen3vl compute buffer size: 37.46 MB(VRAM) on MTL0 (peak across 1 segment) --- execution_engine.cpp:730
+[V] qwen3vl compute buffer size: 0.01 MB(RAM) on CPU (peak across 1 segment) --- execution_engine.cpp:730
+[V] computing condition graph completed, taking 10633 ms --- conditioner.hpp:3450
+[V] conditioning cache stored (1/4) --- conditioning_cache.h:118
+[I] get_learned_condition completed, taking 10.63s --- video.cpp:1263
+[V] model manager released params backend buffers (16239.66 MB, 551 tensors, 17 blocks, VRAM) from MTL0 --- model_manager.cpp:1316
+[I] generate_video 832x480x107 --- video.cpp:1931
+[V] sample 52x30x32 --- video.cpp:1994
+[I] minimax_h3 build cached graph cut plan done (taking 11 ms) --- ggml_graph_cut.cpp:1034
+[V] loading 532/532 tensors from ~/tapestry-spikes/comfyui/src/models/unet/minimax_h3_fl2va_pruned-Q8_0.gguf --- model_loader.cpp:1170
+  |#                                                 |   8/532 -   0.00MB/s[K  |###                                               |  29/532 -  25.87MB/s[K  |####                                              |  37/532 - 304.85MB/s[K  |####                                              |  37/532 - 204.07MB/s[K  |####                                              |  41/532 - 395.18MB/s[K  |#####                                             |  51/532 - 743.81MB/s[K  |######                                            |  61/532 - 977.42MB/s[K  |######                                            |  61/532 - 834.54MB/s[K  |#######                                           |  71/532 - 970.92MB/s[K  |########                                          |  81/532 -   1.05GB/s[K  |#########                                         |  90/532 -   1.06GB/s[K  |##########                                        |  97/532 -   1.09GB/s[K  |##########                                        | 101/532 -   1.11GB/s[K  |###########                                       | 111/532 -   1.17GB/s[K  |############                                      | 121/532 -   1.22GB/s[K  |#############                                     | 130/532 -   1.24GB/s[K  |##############                                    | 140/532 -   1.28GB/s[K  |##############                                    | 145/532 -   1.26GB/s[K  |###############                                   | 151/532 -   1.26GB/s[K  |################                                  | 161/532 -   1.30GB/s[K  |################                                  | 170/532 -   1.31GB/s[K  |#################                                 | 180/532 -   1.33GB/s[K  |##################                                | 181/532 -   1.29GB/s[K  |##################                                | 191/532 -   1.31GB/s[K  |###################                               | 201/532 -   1.34GB/s[K  |####################                              | 210/532 -   1.35GB/s[K  |#####################                             | 219/532 -   1.34GB/s[K  |#####################                             | 221/532 -   1.33GB/s[K  |######################                            | 231/532 -   1.35GB/s[K  |#######################                           | 241/532 -   1.37GB/s[K  |########################                          | 250/532 -   1.38GB/s[K  |#########################                         | 259/532 -   1.39GB/s[K  |#########################                         | 261/532 -   1.36GB/s[K  |##########################                        | 271/532 -   1.38GB/s[K  |###########################                       | 281/532 -   1.39GB/s[K  |############################                      | 289/532 -   1.37GB/s[K  |#############################                     | 300/532 -   1.41GB/s[K  |#############################                     | 301/532 -   1.38GB/s[K  |##############################                    | 310/532 -   1.39GB/s[K  |###############################                   | 321/532 -   1.41GB/s[K  |###############################                   | 327/532 -   1.39GB/s[K  |################################                  | 331/532 -   1.39GB/s[K  |#################################                 | 341/532 -   1.40GB/s[K  |#################################                 | 349/532 -   1.38GB/s[K  |##################################                | 360/532 -   1.40GB/s[K  |###################################               | 369/532 -   1.41GB/s[K  |###################################               | 371/532 -   1.40GB/s[K  |####################################              | 381/532 -   1.41GB/s[K  |#####################################             | 390/532 -   1.41GB/s[K  |######################################            | 397/532 -   1.41GB/s[K  |######################################            | 401/532 -   1.40GB/s[K  |#######################################           | 411/532 -   1.41GB/s[K  |########################################          | 420/532 -   1.41GB/s[K  |#########################################         | 428/532 -   1.42GB/s[K  |#########################################         | 431/532 -   1.40GB/s[K  |##########################################        | 441/532 -   1.41GB/s[K  |###########################################       | 450/532 -   1.42GB/s[K  |############################################      | 459/532 -   1.41GB/s[K  |############################################      | 461/532 -   1.41GB/s[K  |#############################################     | 471/532 -   1.41GB/s[K  |##############################################    | 479/532 -   1.40GB/s[K  |##############################################    | 485/532 -   1.40GB/s[K  |###############################################   | 491/532 -   1.41GB/s[K  |###############################################   | 500/532 -   1.41GB/s[K  |################################################# | 512/532 -   1.41GB/s[K  |################################################# | 518/532 -   1.40GB/s[K  |##################################################| 527/532 -   1.41GB/s[K  |##################################################| 532/532 -   1.42GB/s[K
+[I] loading tensors completed, taking 14.06s (read: 13.60s, memcpy: 0.00s, convert: 0.00s, copy_to_backend: 0.12s) --- model_loader.cpp:1442
+[V] using mmap for I/O --- model_loader.cpp:931
+[I] using mmap for '~/tapestry-spikes/comfyui/src/models/loras/minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors' --- model_loader.cpp:937
+[V] model manager prepared params backend buffers (22396.43 MB, 948 tensors, 23 blocks, VRAM) on MTL0 --- model_manager.cpp:508
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_bf16_f32', name = 'kernel_mul_mm_bf16_f32_bci=0_bco=1_ne12=1_ne13=1_r2=1_r3=1'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_bf16_f32_bci=0_bco=1_ne12=1_ne13=1_r2=1_r3=1      0x164051f00 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_q8_0_f32', name = 'kernel_mul_mm_q8_0_f32_bci=0_bco=1_ne12=1_ne13=1_r2=1_r3=1'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_q8_0_f32_bci=0_bco=1_ne12=1_ne13=1_r2=1_r3=1      0x164052de0 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_flash_attn_ext_pad', name = 'kernel_flash_attn_ext_pad_mask=0_ncpsg=64'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_flash_attn_ext_pad_mask=0_ncpsg=64      0x164053380 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_flash_attn_ext_f16_dk128_dv128', name = 'kernel_flash_attn_ext_f16_dk128_dv128_mask=0_sinks=0_bias=0_scap=0_kvpad=1_bcm=0_ns10=128_ns20=128_nsg=4'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_flash_attn_ext_f16_dk128_dv128_mask=0_sinks=0_bias=0_scap=0_kvpad=1_bcm=0_ns10=128_ns20=128_nsg=4      0x164053920 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_unary_f32_f32_4', name = 'kernel_unary_f32_f32_4_op=10_cnt=1'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_4_op=10_cnt=1            0x16328c8b0 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_unary_f32_f32', name = 'kernel_unary_f32_f32_op=10_cnt=1'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_op=10_cnt=1              0x16328e820 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_f32_f32', name = 'kernel_mul_mm_f32_f32_bci=0_bco=1_ne12=1_ne13=1_r2=1_r3=1'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_f32_f32_bci=0_bco=1_ne12=1_ne13=1_r2=1_r3=1      0x16328d430 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_concat_f32', name = 'kernel_concat_f32'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_concat_f32                             0x16328efc0 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_f32_f32', name = 'kernel_mul_mm_f32_f32_bci=0_bco=0_ne12=1_ne13=1_r2=1_r3=1'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_f32_f32_bci=0_bco=0_ne12=1_ne13=1_r2=1_r3=1      0x16328f780 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_get_rows_f32', name = 'kernel_get_rows_f32'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_get_rows_f32                           0x16328d890 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_bin_fuse_f32_f32_f32_4', name = 'kernel_bin_fuse_f32_f32_f32_4_op=1_nf=1_rb=0_cb=0'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_bin_fuse_f32_f32_f32_4_op=1_nf=1_rb=0_cb=0      0x163290e90 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_bin_fuse_f32_f32_f32', name = 'kernel_bin_fuse_f32_f32_f32_op=2_nf=1_rb=0_cb=1'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_bin_fuse_f32_f32_f32_op=2_nf=1_rb=0_cb=1      0x1633341a0 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mv_f32_f32_short', name = 'kernel_mul_mv_f32_f32_short_nsg=1_ne12=1_r2=1_r3=1_split=0'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_f32_f32_short_nsg=1_ne12=1_r2=1_r3=1_split=0      0x163291cd0 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_bin_fuse_f32_f32_f32_4', name = 'kernel_bin_fuse_f32_f32_f32_4_op=2_nf=1_rb=0_cb=0'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_bin_fuse_f32_f32_f32_4_op=2_nf=1_rb=0_cb=0      0x163292090 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_q8_0_f32', name = 'kernel_mul_mm_q8_0_f32_bci=0_bco=0_ne12=1_ne13=1_r2=1_r3=1'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_q8_0_f32_bci=0_bco=0_ne12=1_ne13=1_r2=1_r3=1      0x1632905e0 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_bf16_f32', name = 'kernel_mul_mm_bf16_f32_bci=0_bco=0_ne12=1_ne13=1_r2=1_r3=1'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_bf16_f32_bci=0_bco=0_ne12=1_ne13=1_r2=1_r3=1      0x163291720 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_repeat_f32', name = 'kernel_repeat_f32'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_repeat_f32                             0x163293340 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_unary_f32_f32_4', name = 'kernel_unary_f32_f32_4_op=16_cnt=0'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_4_op=16_cnt=0            0x163293b70 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_unary_f32_f32_4', name = 'kernel_unary_f32_f32_4_op=15_cnt=0'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_4_op=15_cnt=0            0x163294130 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_unary_f32_f32', name = 'kernel_unary_f32_f32_op=108_cnt=0'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_op=108_cnt=0             0x163294720 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_bin_fuse_f32_f32_f32_4', name = 'kernel_bin_fuse_f32_f32_f32_4_op=0_nf=1_rb=1_cb=0'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_bin_fuse_f32_f32_f32_4_op=0_nf=1_rb=1_cb=0      0x1632aeea0 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_bin_fuse_f32_f32_f32', name = 'kernel_bin_fuse_f32_f32_f32_op=0_nf=1_rb=0_cb=0'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_bin_fuse_f32_f32_f32_op=0_nf=1_rb=0_cb=0      0x1632b0f00 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_pad_f32', name = 'kernel_pad_f32_circular=0'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_pad_f32_circular=0                     0x1632b18b0 | th_max = 1024 | th_width =   32
+[V] minimax_h3 compute buffer size: 4037.97 MB(VRAM) on MTL0 (peak across 1 segment) --- execution_engine.cpp:730
+[V] minimax_h3 compute buffer size: 5.88 MB(RAM) on CPU (peak across 1 segment) --- execution_engine.cpp:730
+  |========>                                         | 1/6 - 154.49s/it - ETA 12:52[K[I] minimax_h3 build cached graph cut plan done (taking 11 ms) --- ggml_graph_cut.cpp:1034
+  |================>                                 | 2/6 - 138.30s/it - ETA 09:45[K  |=========================>                        | 3/6 - 139.38s/it - ETA 07:12[K  |=================================>                | 4/6 - 141.32s/it - ETA 04:46[K  |=========================================>        | 5/6 - 141.95s/it - ETA 02:23[K  |==================================================| 6/6 - 143.01s/it[K
+[V] model manager released params backend buffers (22396.43 MB, 948 tensors, 23 blocks, VRAM) from MTL0 --- model_manager.cpp:1316
+[I] sampling completed, taking 858.58s --- video.cpp:2028
+[I] generating latent video completed, taking 858.59s --- video.cpp:2195
+[V] decode audio latent 178x2x32x1 --- video.cpp:2246
+[I] minimax_h3_audio_vae build cached graph cut plan done (taking 6 ms) --- ggml_graph_cut.cpp:1034
+[V] loading 781/917 tensors from ~/tapestry-spikes/comfyui/src/models/vae/minimax_h3_audio_vae_fp32.safetensors --- model_loader.cpp:1170
+  |#                                                 |   7/781 -   0.00MB/s[K  |##################################################| 781/781 -   1.15GB/s[K
+[I] loading tensors completed, taking 0.21s (read: 0.08s, memcpy: 0.00s, convert: 0.00s, copy_to_backend: 0.00s) --- model_loader.cpp:1442
+[V] model manager prepared params backend buffers (247.65 MB, 781 tensors, 1 blocks, VRAM) on MTL0 --- model_manager.cpp:508
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_bin_fuse_f32_f32_f32', name = 'kernel_bin_fuse_f32_f32_f32_op=0_nf=1_rb=0_cb=1'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_bin_fuse_f32_f32_f32_op=0_nf=1_rb=0_cb=1      0x16383bdc0 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_im2col_f16', name = 'kernel_im2col_f16'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_im2col_f16                             0x12d633080 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_f16_f32', name = 'kernel_mul_mm_f16_f32_bci=0_bco=1_ne12=1_ne13=1_r2=1_r3=1'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_f16_f32_bci=0_bco=1_ne12=1_ne13=1_r2=1_r3=1      0x163333840 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_conv_transpose_1d_f32_f32', name = 'kernel_conv_transpose_1d_f32_f32'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_conv_transpose_1d_f32_f32              0x16332c990 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_unary_f32_f32', name = 'kernel_unary_f32_f32_op=10_cnt=0'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_op=10_cnt=0              0x1633348a0 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_unary_f32_f32_4', name = 'kernel_unary_f32_f32_4_op=114_cnt=1'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_4_op=114_cnt=1           0x163335600 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mv_f16_f32_short', name = 'kernel_mul_mv_f16_f32_short_nsg=1_ne12=1_r2=1_r3=1_split=0'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_f16_f32_short_nsg=1_ne12=1_r2=1_r3=1_split=0      0x163336520 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_bin_fuse_f32_f32_f32', name = 'kernel_bin_fuse_f32_f32_f32_op=0_nf=1_rb=1_cb=0'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_bin_fuse_f32_f32_f32_op=0_nf=1_rb=1_cb=0      0x163335a60 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_bin_fuse_f32_f32_f32', name = 'kernel_bin_fuse_f32_f32_f32_op=3_nf=1_rb=0_cb=1'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_bin_fuse_f32_f32_f32_op=3_nf=1_rb=0_cb=1      0x163337570 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mv_f16_f32_short', name = 'kernel_mul_mv_f16_f32_short_nsg=1_ne12=512_r2=1_r3=1_split=0'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_f16_f32_short_nsg=1_ne12=512_r2=1_r3=1_split=0      0x163338030 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mv_f16_f32_short', name = 'kernel_mul_mv_f16_f32_short_nsg=1_ne12=256_r2=1_r3=1_split=0'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_f16_f32_short_nsg=1_ne12=256_r2=1_r3=1_split=0      0x12d6337a0 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mv_f16_f32_short', name = 'kernel_mul_mv_f16_f32_short_nsg=1_ne12=128_r2=1_r3=1_split=0'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_f16_f32_short_nsg=1_ne12=128_r2=1_r3=1_split=0      0x12d6343c0 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mv_f16_f32_short', name = 'kernel_mul_mv_f16_f32_short_nsg=1_ne12=64_r2=1_r3=1_split=0'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_f16_f32_short_nsg=1_ne12=64_r2=1_r3=1_split=0      0x12d635180 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mv_f16_f32_short', name = 'kernel_mul_mv_f16_f32_short_nsg=1_ne12=32_r2=1_r3=1_split=0'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_f16_f32_short_nsg=1_ne12=32_r2=1_r3=1_split=0      0x12d636d20 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mv_f16_f32_short', name = 'kernel_mul_mv_f16_f32_short_nsg=1_ne12=16_r2=1_r3=1_split=0'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_f16_f32_short_nsg=1_ne12=16_r2=1_r3=1_split=0      0x12d638890 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mm_f16_f32', name = 'kernel_mul_mm_f16_f32_bci=1_bco=1_ne12=1_ne13=1_r2=1_r3=1'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_mul_mm_f16_f32_bci=1_bco=1_ne12=1_ne13=1_r2=1_r3=1      0x12d639000 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mv_f16_f32_short', name = 'kernel_mul_mv_f16_f32_short_nsg=1_ne12=8_r2=1_r3=1_split=0'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_f16_f32_short_nsg=1_ne12=8_r2=1_r3=1_split=0      0x12d63a720 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_mul_mv_f16_f32_4', name = 'kernel_mul_mv_f16_f32_4_nsg=1_ne12=1_r2=1_r3=1_split=0'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_mul_mv_f16_f32_4_nsg=1_ne12=1_r2=1_r3=1_split=0      0x12d63ca90 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_unary_f32_f32_4', name = 'kernel_unary_f32_f32_4_op=12_cnt=0'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_unary_f32_f32_4_op=12_cnt=0            0x12d658390 | th_max = 1024 | th_width =   32
+[V] minimax_h3_audio_vae compute buffer size: 0.04 MB(RAM) on CPU (peak across 1 segment) --- execution_engine.cpp:730
+[V] minimax_h3_audio_vae compute buffer size: 94.40 MB(VRAM) on MTL0 (peak across 1 segment) --- execution_engine.cpp:730
+[I] MiniMax-H3 audio VAE decode completed, taking 3.99s --- minimax_h3_audio_vae.hpp:495
+[I] decoding audio latent completed, taking 3.99s --- video.cpp:2255
+[V] decode_video_outputs latent 52x30x32x24 --- video.cpp:1289
+[V] VAE decode tile size: 256x256 pixels (16x16 latent) --- vae.hpp:350
+[V] num tiles : 5, 2  --- tiling.cpp:178
+[V] processing 10 tiles --- tiling.cpp:179
+[I] minimax_h3_video_vae build cached graph cut plan done (taking 2 ms) --- ggml_graph_cut.cpp:1034
+[V] ggml: ggml_backend_sched_split_inputs_grow: increasing split inputs capacity from 30 to 60
+[V] ggml: ggml_backend_sched_split_inputs_grow: increasing split inputs capacity from 60 to 120
+[V] loading 441/562 tensors from ~/tapestry-spikes/comfyui/src/models/vae/minimax_h3_video_vae_fp16.safetensors --- model_loader.cpp:1170
+  |##                                                |   9/441 -   0.00MB/s[K  |#########                                         |  73/441 -   1.34GB/s[K  |###############                                   | 127/441 -   2.09GB/s[K  |#####################                             | 179/441 -   2.35GB/s[K  |##########################                        | 229/441 -   2.40GB/s[K  |#################################                 | 285/441 -   2.46GB/s[K  |#######################################           | 337/441 -   2.52GB/s[K  |#############################################     | 391/441 -   2.53GB/s[K  |##################################################| 441/441 -   2.60GB/s[K
+[I] loading tensors completed, taking 1.73s (read: 1.61s, memcpy: 0.00s, convert: 0.00s, copy_to_backend: 0.03s) --- model_loader.cpp:1442
+[V] model manager prepared params backend buffers (4636.94 MB, 441 tensors, 5 blocks, VRAM) on MTL0 --- model_manager.cpp:508
+[V] ggml: ggml_backend_sched_split_inputs_grow: increasing split inputs capacity from 30 to 60
+[V] ggml: ggml_backend_sched_split_inputs_grow: increasing split inputs capacity from 60 to 120
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_conv_3d_f16_f32', name = 'kernel_conv_3d_f16_f32'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_conv_3d_f16_f32                        0x12d634960 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_rms_norm_f32_4', name = 'kernel_rms_norm_f32_4'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_rms_norm_f32_4                         0x12d634c20 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_flash_attn_ext_f16_dk64_dv64', name = 'kernel_flash_attn_ext_f16_dk64_dv64_mask=0_sinks=0_bias=0_scap=0_kvpad=1_bcm=0_ns10=64_ns20=64_nsg=4'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_flash_attn_ext_f16_dk64_dv64_mask=0_sinks=0_bias=0_scap=0_kvpad=1_bcm=0_ns10=64_ns20=64_nsg=4      0x12d636720 | th_max = 1024 | th_width =   32
+[V] ggml: ggml_metal_library_compile_pipeline: compiling pipeline: base = 'kernel_norm_mul_add_f32_4', name = 'kernel_norm_mul_add_f32_4'
+[V] ggml: ggml_metal_library_compile_pipeline: loaded kernel_norm_mul_add_f32_4                     0x12d633340 | th_max = 1024 | th_width =   32
+[V] minimax_h3_video_vae compute buffer size: 0.82 MB(RAM) on CPU (peak across 1 segment) --- execution_engine.cpp:730
+[V] minimax_h3_video_vae compute buffer size: 244.71 MB(VRAM) on MTL0 (peak across 1 segment) --- execution_engine.cpp:730
+  |=====>                                            |  1/10 -   3.74s/it - ETA 00:33[K[V] ggml: ggml_backend_sched_split_inputs_grow: increasing split inputs capacity from 30 to 60
+[V] ggml: ggml_backend_sched_split_inputs_grow: increasing split inputs capacity from 60 to 120
+  |==========>                                       |  2/10 -   1.92s/it - ETA 00:22[K  |===============>                                  |  3/10 -   1.91s/it - ETA 00:17[K  |====================>                             |  4/10 -   1.91s/it - ETA 00:14[K  |=========================>                        |  5/10 -   1.91s/it - ETA 00:11[K  |==============================>                   |  6/10 -   1.91s/it - ETA 00:08[K  |===================================>              |  7/10 -   1.91s/it - ETA 00:06[K  |========================================>         |  8/10 -   1.91s/it - ETA 00:04[K  |=============================================>    |  9/10 -   1.91s/it - ETA 00:02[K  |==================================================| 10/10 -   1.91s/it[K
+[V] computing vae decode graph completed, taking 20.95s --- vae.hpp:386
+[V] VAE decode tile size: 256x256 pixels (16x16 latent) --- vae.hpp:350
+[V] num tiles : 5, 2  --- tiling.cpp:178
+[V] processing 10 tiles --- tiling.cpp:179
+  |=====>                                            |  1/10 -   1.92s/it - ETA 00:17[K  |==========>                                       |  2/10 -   1.91s/it - ETA 00:15[K  |===============>                                  |  3/10 -   1.91s/it - ETA 00:13[K  |====================>                             |  4/10 -   1.91s/it - ETA 00:11[K  |=========================>                        |  5/10 -   1.91s/it - ETA 00:09[K  |==============================>                   |  6/10 -   1.91s/it - ETA 00:07[K  |===================================>              |  7/10 -   1.91s/it - ETA 00:05[K  |========================================>         |  8/10 -   1.91s/it - ETA 00:03[K  |=============================================>    |  9/10 -   1.91s/it - ETA 00:01[K  |==================================================| 10/10 -   1.91s/it[K
+[V] computing vae decode graph completed, taking 19.12s --- vae.hpp:386
+[V] VAE decode tile size: 256x256 pixels (16x16 latent) --- vae.hpp:350
+[V] num tiles : 5, 2  --- tiling.cpp:178
+[V] processing 10 tiles --- tiling.cpp:179
+  |=====>                                            |  1/10 -   1.93s/it - ETA 00:17[K  |==========>                                       |  2/10 -   1.91s/it - ETA 00:15[K  |===============>                                  |  3/10 -   1.91s/it - ETA 00:13[K  |====================>                             |  4/10 -   1.91s/it - ETA 00:11[K  |=========================>                        |  5/10 -   1.91s/it - ETA 00:09[K  |==============================>                   |  6/10 -   1.91s/it - ETA 00:07[K  |===================================>              |  7/10 -   1.91s/it - ETA 00:05[K  |========================================>         |  8/10 -   1.91s/it - ETA 00:03[K  |=============================================>    |  9/10 -   1.91s/it - ETA 00:01[K  |==================================================| 10/10 -   1.91s/it[K
+[V] computing vae decode graph completed, taking 19.14s --- vae.hpp:386
+[V] VAE decode tile size: 256x256 pixels (16x16 latent) --- vae.hpp:350
+[V] num tiles : 5, 2  --- tiling.cpp:178
+[V] processing 10 tiles --- tiling.cpp:179
+  |=====>                                            |  1/10 -   1.93s/it - ETA 00:17[K  |==========>                                       |  2/10 -   1.91s/it - ETA 00:15[K  |===============>                                  |  3/10 -   1.91s/it - ETA 00:13[K  |====================>                             |  4/10 -   1.91s/it - ETA 00:11[K  |=========================>                        |  5/10 -   1.91s/it - ETA 00:09[K  |==============================>                   |  6/10 -   1.91s/it - ETA 00:07[K  |===================================>              |  7/10 -   1.91s/it - ETA 00:05[K  |========================================>         |  8/10 -   1.91s/it - ETA 00:03[K  |=============================================>    |  9/10 -   1.91s/it - ETA 00:01[K  |==================================================| 10/10 -   1.91s/it[K
+[V] computing vae decode graph completed, taking 19.13s --- vae.hpp:386
+[V] VAE decode tile size: 256x256 pixels (16x16 latent) --- vae.hpp:350
+[V] num tiles : 5, 2  --- tiling.cpp:178
+[V] processing 10 tiles --- tiling.cpp:179
+  |=====>                                            |  1/10 -   1.93s/it - ETA 00:17[K  |==========>                                       |  2/10 -   1.91s/it - ETA 00:15[K  |===============>                                  |  3/10 -   1.91s/it - ETA 00:13[K  |====================>                             |  4/10 -   1.91s/it - ETA 00:11[K  |=========================>                        |  5/10 -   1.91s/it - ETA 00:09[K  |==============================>                   |  6/10 -   1.91s/it - ETA 00:07[K  |===================================>              |  7/10 -   1.91s/it - ETA 00:05[K  |========================================>         |  8/10 -   1.91s/it - ETA 00:03[K  |=============================================>    |  9/10 -   1.91s/it - ETA 00:01[K  |==================================================| 10/10 -   1.91s/it[K
+[V] computing vae decode graph completed, taking 19.12s --- vae.hpp:386
+[V] VAE decode tile size: 256x256 pixels (16x16 latent) --- vae.hpp:350
+[V] num tiles : 5, 2  --- tiling.cpp:178
+[V] processing 10 tiles --- tiling.cpp:179
+  |=====>                                            |  1/10 -   1.93s/it - ETA 00:17[K  |==========>                                       |  2/10 -   1.91s/it - ETA 00:15[K  |===============>                                  |  3/10 -   1.91s/it - ETA 00:13[K  |====================>                             |  4/10 -   1.91s/it - ETA 00:11[K  |=========================>                        |  5/10 -   1.91s/it - ETA 00:09[K  |==============================>                   |  6/10 -   1.91s/it - ETA 00:07[K  |===================================>              |  7/10 -   1.91s/it - ETA 00:05[K  |========================================>         |  8/10 -   1.91s/it - ETA 00:03[K  |=============================================>    |  9/10 -   1.91s/it - ETA 00:01[K  |==================================================| 10/10 -   1.91s/it[K
+[V] computing vae decode graph completed, taking 19.12s --- vae.hpp:386
+[V] model manager released params backend buffers (4636.94 MB, 441 tensors, 5 blocks, VRAM) from MTL0 --- model_manager.cpp:1316
+[I] decode_first_stage completed, taking 118.37s --- video.cpp:1294
+[V] decode_video_outputs decoded 832x480x107x3 --- video.cpp:1303
+[I] runtime_lora_models: --- diffusion_engine.cpp:1814
+[I] (624 / 624) LoRA tensors have been applied, lora_file_path = ~/tapestry-spikes/comfyui/src/models/loras/minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors --- lora.hpp:1055
+[I] generate_video completed in 992.00s --- video.cpp:2283
+[V] model manager released params backend buffers (247.65 MB, 781 tensors, 1 blocks, VRAM) from MTL0 --- model_manager.cpp:1316
+[I] ggml: ggml_metal_free: deallocating
+[I] save result video to 'spikes/mac/results/out/minimax-h3-t2v-turbo-S07-s1.webm' --- main.cpp:553
+      994.96 real        10.60 user        25.63 sys
+         43345592320  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+             3507455  page reclaims
+             2781656  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                 806  messages sent
+                   0  messages received
+                   0  signals received
+                 392  voluntary context switches
+             2260066  involuntary context switches
+        295890682210  instructions retired
+        132326781644  cycles elapsed
+         23963352224  peak memory footprint

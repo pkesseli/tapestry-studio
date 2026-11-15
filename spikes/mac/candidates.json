@@ -109,19 +109,19 @@
     },
     {
       "id": "minimax-h3-gguf",
-      "name": "MiniMax H3 (community GGUF) in ComfyUI",
+      "name": "MiniMax H3 (unsloth GGUF) in stable-diffusion.cpp",
       "kind": "video",
       "priority": 6,
-      "runtime": "comfyui",
+      "runtime": "stable-diffusion.cpp",
       "why": "Named in plan 10. Reportedly runs on a 48 GB Mac with a Q5_K_M GGUF (third-party claim).",
-      "setup": "ComfyUI plus ComfyUI-GGUF; community GGUF files from about 9 GB (Q3) to 22 GB (Q8).",
+      "setup": "stable-diffusion.cpp built with Metal; unsloth Q8_0 GGUF transformers (about 22 GB each), Q4_K_M text encoder, Comfy-Org VAEs and turbo LoRAs. ComfyUI-GGUF cannot load these files.",
       "sources": [
         "https://huggingface.co/MiniMaxAI/MiniMax-H3/blob/main/docs/QA-about-License.md",
         "https://modelfit.io/video/minimax-h3/gguf/",
         "https://runtimewire.com/article/minimax-h3-open-weights-us-license-restrictions"
       ],
-      "licenseCheck": "HUMAN MUST READ THE LICENCE FIRST. Sources disagree: it may exclude local use in the US, EU, UK and South Korea, and cap commercial use. Do not download until the human has decided it is allowed for them.",
-      "tests": "Smoke shots, only after the licence decision."
+      "licenseCheck": "Human read and approved the MiniMax H3 Community License on 2026-11-15.",
+      "tests": "Turbo t2v on all ten shots, turbo r2v on the seven shots with references, full 20-step t2v and r2v on S02, S05, S08."
     },
     {
       "id": "flux2-klein-mflux",
@@ -248,7 +248,10 @@
       "runtime": "comfyui",
       "why": "Plan 10b path D (added 2026-11-14): a different model than the draft, given the same edges as path C plus the shot's first reference image (the node's ref_image input).",
       "setup": "Same ComfyUI install as wan22-5b-comfyui-gguf plus QuantStack/Wan2.2-Fun-5B-Control-GGUF Q8_0 (5.4 GB); spikes/mac/scripts/comfy-wan.mjs --model wan22-fun-5b-control --control <edges.mp4> [--ref <image>].",
-      "sources": ["https://huggingface.co/alibaba-pai/Wan2.2-Fun-5B-Control", "https://huggingface.co/QuantStack/Wan2.2-Fun-5B-Control-GGUF"],
+      "sources": [
+        "https://huggingface.co/alibaba-pai/Wan2.2-Fun-5B-Control",
+        "https://huggingface.co/QuantStack/Wan2.2-Fun-5B-Control-GGUF"
+      ],
       "licenseCheck": "Apache-2.0 on both repos, not gated (read 2026-11-14).",
       "tests": "Finals for all ten shots; three seeds for S02, S05, S08 if time allows (about 20 min each)."
     },
