@@ -1,0 +1,37 @@
+[Loading text encoder (Gemma)] ...
+Fetching 13 files:   0%|          | 0/13 [00:00<?, ?it/s]Fetching 13 files: 100%|██████████| 13/13 [00:00<00:00, 3947.44it/s]
+[Loading text encoder (Gemma)] done in 2.8s
+[Encoding prompt] ...
+[Encoding prompt] done in 5.1s
+[Loading transformer (transformer-distilled-1.1.safetensors)] ...
+[Loading transformer (transformer-distilled-1.1.safetensors)] done in 1.0s
+two-stage half-res snaps dims to multiples of 64; output will be 832x448 (requested 832x480). Use --single-stage for exact dims.
+[estimate] denoising: 8 steps x 1 passes over 1183 video + 101 audio tokens = 8 forwards
+Denoising:   0%|          | 0/8 [00:00<?, ?it/s]                                                [estimate] denoising: ~50 s remaining (7.2 s/forward) (first step includes warm-up)
+Denoising:   0%|          | 0/8 [00:07<?, ?it/s]Denoising:  12%|█▎        | 1/8 [00:07<00:50,  7.18s/it]                                                        [estimate] denoising: ~43 s remaining (7.2 s/forward) (refined)
+Denoising:  12%|█▎        | 1/8 [00:14<00:50,  7.18s/it]Denoising:  25%|██▌       | 2/8 [00:14<00:43,  7.17s/it]Denoising:  38%|███▊      | 3/8 [00:21<00:35,  7.17s/it]Denoising:  50%|█████     | 4/8 [00:28<00:28,  7.17s/it]Denoising:  62%|██████▎   | 5/8 [00:35<00:21,  7.16s/it]Denoising:  75%|███████▌  | 6/8 [00:42<00:14,  7.16s/it]Denoising:  88%|████████▊ | 7/8 [00:50<00:07,  7.15s/it]Denoising: 100%|██████████| 8/8 [00:57<00:00,  7.15s/it]Denoising: 100%|██████████| 8/8 [00:57<00:00,  7.16s/it]
+[Loading decoders (VAE + audio + vocoder)] ...
+[Loading decoders (VAE + audio + vocoder)] done in 0.0s
+[Decoding video + audio + muxing] ...
+[vae-decode tiling] untiled est. 6.3 GB budget=24.0 GB
+[vae-decode tiling] peak Metal memory 19.91 GB
+[Decoding video + audio + muxing] done in 3.0s
+draft 416x224, final will be 832x448
+       69.91 real         3.43 user         7.27 sys
+         14326874112  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+             1671123  page reclaims
+                 645  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                  59  messages sent
+                  61  messages received
+                   0  signals received
+               10218  voluntary context switches
+               83670  involuntary context switches
+         94172214745  instructions retired
+         38478200807  cycles elapsed
+         20829531056  peak memory footprint

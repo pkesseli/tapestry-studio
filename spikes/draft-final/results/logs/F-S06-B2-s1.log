@@ -1,0 +1,35 @@
+[Loading text encoder (Gemma)] ...
+Fetching 13 files:   0%|          | 0/13 [00:00<?, ?it/s]Fetching 13 files: 100%|██████████| 13/13 [00:00<00:00, 3672.52it/s]
+[Loading text encoder (Gemma)] done in 2.6s
+[Encoding prompt] ...
+[Encoding prompt] done in 5.1s
+[Loading transformer (transformer-distilled-1.1.safetensors)] ...
+[Loading transformer (transformer-distilled-1.1.safetensors)] done in 1.2s
+[estimate] denoising: 2 steps x 1 passes over 4732 video + 101 audio tokens = 2 forwards
+Denoising:   0%|          | 0/2 [00:00<?, ?it/s]                                                [estimate] denoising: ~29 s remaining (28.9 s/forward) (first step includes warm-up)
+Denoising:   0%|          | 0/2 [00:28<?, ?it/s]Denoising:  50%|█████     | 1/2 [00:28<00:28, 28.92s/it]                                                        [estimate] denoising: ~0 s remaining (28.9 s/forward) (refined)
+Denoising:  50%|█████     | 1/2 [00:57<00:28, 28.92s/it]Denoising: 100%|██████████| 2/2 [00:57<00:00, 28.90s/it]Denoising: 100%|██████████| 2/2 [00:57<00:00, 28.91s/it]
+[Loading decoders (VAE + audio + vocoder)] ...
+[Loading decoders (VAE + audio + vocoder)] done in 0.0s
+[Decoding video + audio + muxing] ...
+[vae-decode tiling] frames=80/24 est. 22.2 GB budget=24.0 GB
+[vae-decode tiling] peak Metal memory 18.51 GB
+[Decoding video + audio + muxing] done in 10.3s
+       78.23 real         4.75 user        12.75 sys
+         14332395520  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+             1744135  page reclaims
+                 614  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                  51  messages sent
+                  59  messages received
+                   0  signals received
+               12839  voluntary context switches
+               89428  involuntary context switches
+        150278040677  instructions retired
+         58537341868  cycles elapsed
+         16688990752  peak memory footprint

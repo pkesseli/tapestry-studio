@@ -1,0 +1,34 @@
+[Loading text encoder (Gemma)] ...
+Fetching 13 files:   0%|          | 0/13 [00:00<?, ?it/s]Fetching 13 files: 100%|██████████| 13/13 [00:00<00:00, 3688.17it/s]
+[Loading text encoder (Gemma)] done in 2.7s
+[Encoding prompt] ...
+[Encoding prompt] done in 5.1s
+[Loading transformer (transformer-distilled-1.1.safetensors)] ...
+[Loading transformer (transformer-distilled-1.1.safetensors)] done in 1.3s
+[estimate] denoising: 1 steps x 1 passes over 4732 video + 101 audio tokens = 1 forwards
+Denoising:   0%|          | 0/1 [00:00<?, ?it/s]                                                [estimate] denoising: ~0 s remaining (29.0 s/forward) (first step includes warm-up)
+Denoising:   0%|          | 0/1 [00:29<?, ?it/s]Denoising: 100%|██████████| 1/1 [00:29<00:00, 29.04s/it]Denoising: 100%|██████████| 1/1 [00:29<00:00, 29.04s/it]
+[Loading decoders (VAE + audio + vocoder)] ...
+[Loading decoders (VAE + audio + vocoder)] done in 0.0s
+[Decoding video + audio + muxing] ...
+[vae-decode tiling] frames=80/24 est. 22.2 GB budget=24.0 GB
+[vae-decode tiling] peak Metal memory 18.51 GB
+[Decoding video + audio + muxing] done in 10.3s
+       49.58 real         3.74 user        12.55 sys
+         14306066432  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+             1741960  page reclaims
+                 616  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                  46  messages sent
+                  58  messages received
+                   0  signals received
+               13365  voluntary context switches
+               84785  involuntary context switches
+        148089208874  instructions retired
+         57433494993  cycles elapsed
+         17569172168  peak memory footprint

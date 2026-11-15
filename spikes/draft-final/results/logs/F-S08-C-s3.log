@@ -1,0 +1,43 @@
+[Loading text encoder (Gemma)] ...
+Mode: IC-LoRA (two-stage)
+  LoRA: ~/tapestry-spikes/ltx-2-mlx/models/ic-lora-union/ltx-2.3-22b-ic-lora-union-control-ref0.5.safetensors (strength=1.0)
+  Control: spikes/draft-final/results/out/D-S08-edges.mp4 (strength=1.0)
+Fetching 13 files:   0%|          | 0/13 [00:00<?, ?it/s]Fetching 13 files: 100%|██████████| 13/13 [00:00<00:00, 4128.25it/s]
+[Loading text encoder (Gemma)] done in 2.9s
+[Loading transformer (transformer-distilled-1.1.safetensors)] ...
+[Loading transformer (transformer-distilled-1.1.safetensors)] done in 1.4s
+[estimate] denoising: 8 steps x 1 passes over 1417 video + 101 audio tokens = 8 forwards (cost follows total clip length, not the regenerated window)
+Denoising:   0%|          | 0/8 [00:00<?, ?it/s]                                                [estimate] denoising: ~1 min 6 s remaining (9.5 s/forward) (first step includes warm-up)
+Denoising:   0%|          | 0/8 [00:09<?, ?it/s]Denoising:  12%|█▎        | 1/8 [00:09<01:06,  9.44s/it]                                                        [estimate] denoising: ~54 s remaining (9.1 s/forward) (refined)
+Denoising:  12%|█▎        | 1/8 [00:18<01:06,  9.44s/it]Denoising:  25%|██▌       | 2/8 [00:18<00:55,  9.21s/it]Denoising:  38%|███▊      | 3/8 [00:27<00:45,  9.14s/it]Denoising:  50%|█████     | 4/8 [00:36<00:36,  9.10s/it]Denoising:  62%|██████▎   | 5/8 [00:45<00:27,  9.08s/it]Denoising:  75%|███████▌  | 6/8 [00:54<00:18,  9.07s/it]Denoising:  88%|████████▊ | 7/8 [01:03<00:09,  9.06s/it]Denoising: 100%|██████████| 8/8 [01:12<00:00,  9.06s/it]Denoising: 100%|██████████| 8/8 [01:12<00:00,  9.10s/it]
+[estimate] denoising: 3 steps x 1 passes over 4732 video + 101 audio tokens = 3 forwards
+Denoising:   0%|          | 0/3 [00:00<?, ?it/s]                                                [estimate] denoising: ~58 s remaining (28.9 s/forward) (first step includes warm-up)
+Denoising:   0%|          | 0/3 [00:28<?, ?it/s]Denoising:  33%|███▎      | 1/3 [00:28<00:57, 28.92s/it]                                                        [estimate] denoising: ~29 s remaining (28.9 s/forward) (refined)
+Denoising:  33%|███▎      | 1/3 [00:57<00:57, 28.92s/it]Denoising:  67%|██████▋   | 2/3 [00:57<00:28, 28.93s/it]Denoising: 100%|██████████| 3/3 [01:26<00:00, 29.02s/it]Denoising: 100%|██████████| 3/3 [01:26<00:00, 29.00s/it]
+[Loading decoders (VAE + audio + vocoder)] ...
+[Loading decoders (VAE + audio + vocoder)] done in 0.0s
+[Decoding video + audio + muxing] ...
+[vae-decode tiling] frames=80/24 est. 22.2 GB budget=24.0 GB
+[vae-decode tiling] peak Metal memory 18.51 GB
+[Decoding video + audio + muxing] done in 10.2s
+
+Saved to: spikes/draft-final/results/out/F-S08-C-s3.mp4
+Time: 181.4s
+      181.67 real         5.88 user        15.97 sys
+         14322155520  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+             1839134  page reclaims
+                 863  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                  72  messages sent
+                  60  messages received
+                   0  signals received
+               15399  voluntary context switches
+              159527  involuntary context switches
+        195353488057  instructions retired
+         74854185727  cycles elapsed
+         26568026504  peak memory footprint
