@@ -6,6 +6,7 @@
 #
 # Steps:
 #   draft     D-<shot>-normal: LTX 2.3 stage 1 only (416x224, 97 frames, seed 1) plus its saved latent
+#   draft-steps<n>, B-steps<n>   a draft with n (1-7) of the 8 stage-1 steps, and its final with 3 refine steps
 #   edges     D-<shot>-edges: edges of the draft (also the control video for C and D)
 #   blocks    D-<shot>-blocks: the draft as flat blocks of colour
 #   A0 | A1   finals: 2x Lanczos | 2x Real-ESRGAN of the draft
@@ -33,11 +34,21 @@ bench() {
 }
 
 case $step in
-  draft)
-    bench ltx23-stage-split "D-$shot-normal" draft normal - "$draft" \
-      --meta resolution=416x224 --meta seconds=4 --meta frames=97 --meta steps=8 --meta seed=1 --meta quant=q4 -- \
-      caffeinate -i "$ltx/.venv/bin/python" spikes/mac/scripts/ltx_stage.py draft --seed 1 \
-      --prompt "$(node spikes/mac/scripts/shot-prompt.mjs "$shot")" --out "$draft" ;;
+  draft|draft-steps[1-7])
+    # draft-steps<n>: a cheaper draft with n of the 8 stage-1 steps, D-<shot>-steps<n>; B-steps<n> finishes it.
+    n=8; variant=normal
+    [ "$step" = draft ] || { n=${step#draft-steps}; variant=steps$n; }
+    file=$out/D-$shot-$variant.mp4
+    bench ltx23-stage-split "D-$shot-$variant" draft "$variant" - "$file" \
+      --meta resolution=416x224 --meta seconds=4 --meta frames=97 --meta steps="$n" --meta seed=1 --meta quant=q4 -- \
+      caffeinate -i "$ltx/.venv/bin/python" spikes/mac/scripts/ltx_stage.py draft --seed 1 --stage1-steps "$n" \
+      --prompt "$(node spikes/mac/scripts/shot-prompt.mjs "$shot")" --out "$file" ;;
+  B-steps[1-7])
+    variant=${step#B-}
+    bench ltx23-stage-split "F-$shot-$step-s$seed" final "$step" "D-$shot-$variant" "$out/F-$shot-$step-s$seed.mp4" \
+      --meta resolution=832x448 --meta stage2steps=3 --meta seed="$seed" -- \
+      caffeinate -i "$ltx/.venv/bin/python" spikes/mac/scripts/ltx_stage.py final --draft "$out/D-$shot-$variant.mp4" \
+      --stage2-steps 3 --seed "$seed" --out "$out/F-$shot-$step-s$seed.mp4" ;;
   edges)
     bench ffmpeg-structure "D-$shot-edges" draft edges "D-$shot-normal" "$edges" -- \
       ffmpeg -loglevel error -y -i "$draft" -vf "edgedetect=low=0.1:high=0.3,format=yuv420p" -an "$edges" ;;

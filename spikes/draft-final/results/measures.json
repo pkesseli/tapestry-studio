@@ -560,28 +560,6 @@
     "ssimToDraft": 0.983498,
     "motionCorrelationToDraft": 0.9971472369334897
   },
-  "F-S01-B2-s1": {
-    "width": 832,
-    "height": 448,
-    "frames": 97,
-    "seconds": 4.041667,
-    "fps": 24,
-    "flicker": 0.08362916666666664,
-    "motion": 0.5297764020618555,
-    "ssimToDraft": 0.935728,
-    "motionCorrelationToDraft": 0.7718260094219508
-  },
-  "F-S01-B1-s1": {
-    "width": 832,
-    "height": 448,
-    "frames": 97,
-    "seconds": 4.041667,
-    "fps": 24,
-    "flicker": 0.13744479166666693,
-    "motion": 0.58569787628866,
-    "ssimToDraft": 0.965751,
-    "motionCorrelationToDraft": 0.755951120977507
-  },
   "F-S02-B3-s1": {
     "width": 832,
     "height": 448,
@@ -592,28 +570,6 @@
     "motion": 2.358374948453609,
     "ssimToDraft": 0.881714,
     "motionCorrelationToDraft": 0.8878311909056764
-  },
-  "F-S02-B2-s1": {
-    "width": 832,
-    "height": 448,
-    "frames": 97,
-    "seconds": 4.041667,
-    "fps": 24,
-    "flicker": 0.13756249999999995,
-    "motion": 2.1663299999999994,
-    "ssimToDraft": 0.946454,
-    "motionCorrelationToDraft": 0.9455573524586264
-  },
-  "F-S02-B1-s1": {
-    "width": 832,
-    "height": 448,
-    "frames": 97,
-    "seconds": 4.041667,
-    "fps": 24,
-    "flicker": 0.1434479166666669,
-    "motion": 2.2206117525773195,
-    "ssimToDraft": 0.972669,
-    "motionCorrelationToDraft": 0.9803195031118707
   },
   "F-S03-B3-s1": {
     "width": 832,
@@ -626,28 +582,6 @@
     "ssimToDraft": 0.844184,
     "motionCorrelationToDraft": 0.7903498091333452
   },
-  "F-S03-B2-s1": {
-    "width": 832,
-    "height": 448,
-    "frames": 97,
-    "seconds": 4.041667,
-    "fps": 24,
-    "flicker": 0.2635520833333332,
-    "motion": 3.774559793814434,
-    "ssimToDraft": 0.931467,
-    "motionCorrelationToDraft": 0.9877359726434867
-  },
-  "F-S03-B1-s1": {
-    "width": 832,
-    "height": 448,
-    "frames": 97,
-    "seconds": 4.041667,
-    "fps": 24,
-    "flicker": 0.2517604166666665,
-    "motion": 3.9717528865979395,
-    "ssimToDraft": 0.966613,
-    "motionCorrelationToDraft": 0.9915797812857436
-  },
   "F-S04-B3-s1": {
     "width": 832,
     "height": 448,
@@ -658,28 +592,6 @@
     "motion": 0.804493556701031,
     "ssimToDraft": 0.867402,
     "motionCorrelationToDraft": 0.5225752698998366
-  },
-  "F-S04-B2-s1": {
-    "width": 832,
-    "height": 448,
-    "frames": 97,
-    "seconds": 4.041667,
-    "fps": 24,
-    "flicker": 0.11484375000000006,
-    "motion": 0.8668685360824742,
-    "ssimToDraft": 0.943354,
-    "motionCorrelationToDraft": 0.8988053373727126
-  },
-  "F-S04-B1-s1": {
-    "width": 832,
-    "height": 448,
-    "frames": 97,
-    "seconds": 4.041667,
-    "fps": 24,
-    "flicker": 0.102343749999999,
-    "motion": 0.8337330206185568,
-    "ssimToDraft": 0.971104,
-    "motionCorrelationToDraft": 0.9656030438637854
   },
   "F-S05-B3-s1": {
     "width": 832,
@@ -692,28 +604,6 @@
     "ssimToDraft": 0.789655,
     "motionCorrelationToDraft": 0.9578341254776447
   },
-  "F-S05-B2-s1": {
-    "width": 832,
-    "height": 448,
-    "frames": 97,
-    "seconds": 4.041667,
-    "fps": 24,
-    "flicker": 0.6026770833333335,
-    "motion": 6.230489020618559,
-    "ssimToDraft": 0.922245,
-    "motionCorrelationToDraft": 0.9873598241080231
-  },
-  "F-S05-B1-s1": {
-    "width": 832,
-    "height": 448,
-    "frames": 97,
-    "seconds": 4.041667,
-    "fps": 24,
-    "flicker": 0.6400177083333332,
-    "motion": 6.342115876288661,
-    "ssimToDraft": 0.962191,
-    "motionCorrelationToDraft": 0.9962392549344818
-  },
   "F-S06-B3-s1": {
     "width": 832,
     "height": 448,
@@ -724,28 +614,6 @@
     "motion": 16.392165154639176,
     "ssimToDraft": 0.632513,
     "motionCorrelationToDraft": 0.9887895929147151
-  },
-  "F-S06-B2-s1": {
-    "width": 832,
-    "height": 448,
-    "frames": 97,
-    "seconds": 4.041667,
-    "fps": 24,
-    "flicker": 1.1017833333333338,
-    "motion": 16.7773681443299,
-    "ssimToDraft": 0.822143,
-    "motionCorrelationToDraft": 0.9936557480092084
-  },
-  "F-S06-B1-s1": {
-    "width": 832,
-    "height": 448,
-    "frames": 97,
-    "seconds": 4.041667,
-    "fps": 24,
-    "flicker": 1.2303114583333334,
-    "motion": 16.854275051546395,
-    "ssimToDraft": 0.897178,
-    "motionCorrelationToDraft": 0.9947131391525014
   },
   "F-S07-B3-s1": {
     "width": 832,
@@ -758,28 +626,6 @@
     "ssimToDraft": 0.866312,
     "motionCorrelationToDraft": 0.9645365436366595
   },
-  "F-S07-B2-s1": {
-    "width": 832,
-    "height": 448,
-    "frames": 97,
-    "seconds": 4.041667,
-    "fps": 24,
-    "flicker": 0.2263135416666664,
-    "motion": 1.3820952577319596,
-    "ssimToDraft": 0.954052,
-    "motionCorrelationToDraft": 0.9819701444355942
-  },
-  "F-S07-B1-s1": {
-    "width": 832,
-    "height": 448,
-    "frames": 97,
-    "seconds": 4.041667,
-    "fps": 24,
-    "flicker": 0.2340437500000001,
-    "motion": 1.4448882474226803,
-    "ssimToDraft": 0.97917,
-    "motionCorrelationToDraft": 0.9916123960862142
-  },
   "F-S08-B3-s1": {
     "width": 832,
     "height": 448,
@@ -790,28 +636,6 @@
     "motion": 7.023683195876288,
     "ssimToDraft": 0.816094,
     "motionCorrelationToDraft": 0.9642757419069343
-  },
-  "F-S08-B2-s1": {
-    "width": 832,
-    "height": 448,
-    "frames": 97,
-    "seconds": 4.041667,
-    "fps": 24,
-    "flicker": 0.913096875,
-    "motion": 6.843278659793816,
-    "ssimToDraft": 0.922247,
-    "motionCorrelationToDraft": 0.9918165636675704
-  },
-  "F-S08-B1-s1": {
-    "width": 832,
-    "height": 448,
-    "frames": 97,
-    "seconds": 4.041667,
-    "fps": 24,
-    "flicker": 0.9565218750000004,
-    "motion": 6.927238556701029,
-    "ssimToDraft": 0.960173,
-    "motionCorrelationToDraft": 0.9953446002064223
   },
   "F-S09-B3-s1": {
     "width": 832,
@@ -824,28 +648,6 @@
     "ssimToDraft": 0.799412,
     "motionCorrelationToDraft": 0.9006370416364508
   },
-  "F-S09-B2-s1": {
-    "width": 832,
-    "height": 448,
-    "frames": 97,
-    "seconds": 4.041667,
-    "fps": 24,
-    "flicker": 0.15824687499999998,
-    "motion": 2.9177863917525784,
-    "ssimToDraft": 0.932188,
-    "motionCorrelationToDraft": 0.9778331096556052
-  },
-  "F-S09-B1-s1": {
-    "width": 832,
-    "height": 448,
-    "frames": 97,
-    "seconds": 4.041667,
-    "fps": 24,
-    "flicker": 0.16986249999999967,
-    "motion": 3.037527659793816,
-    "ssimToDraft": 0.971302,
-    "motionCorrelationToDraft": 0.9896930792098584
-  },
   "F-S10-B3-s1": {
     "width": 832,
     "height": 448,
@@ -856,28 +658,6 @@
     "motion": 1.1102298659793812,
     "ssimToDraft": 0.698279,
     "motionCorrelationToDraft": 0.9143185678737786
-  },
-  "F-S10-B2-s1": {
-    "width": 832,
-    "height": 448,
-    "frames": 97,
-    "seconds": 4.041667,
-    "fps": 24,
-    "flicker": 0.10169791666666761,
-    "motion": 1.0500608350515466,
-    "ssimToDraft": 0.817897,
-    "motionCorrelationToDraft": 0.9157812769485966
-  },
-  "F-S10-B1-s1": {
-    "width": 832,
-    "height": 448,
-    "frames": 97,
-    "seconds": 4.041667,
-    "fps": 24,
-    "flicker": 0.11968750000000217,
-    "motion": 1.0200599484536081,
-    "ssimToDraft": 0.895073,
-    "motionCorrelationToDraft": 0.9424490619044059
   },
   "F-S01-C-s1": {
     "width": 832,
@@ -1000,28 +780,6 @@
     "ssimToDraft": 0.883966,
     "motionCorrelationToDraft": 0.8290407358156435
   },
-  "F-S02-B2-s2": {
-    "width": 832,
-    "height": 448,
-    "frames": 97,
-    "seconds": 4.041667,
-    "fps": 24,
-    "flicker": 0.1297156249999997,
-    "motion": 2.181198144329897,
-    "ssimToDraft": 0.948965,
-    "motionCorrelationToDraft": 0.9245668643220891
-  },
-  "F-S02-B1-s2": {
-    "width": 832,
-    "height": 448,
-    "frames": 97,
-    "seconds": 4.041667,
-    "fps": 24,
-    "flicker": 0.13503125000000016,
-    "motion": 2.228870309278351,
-    "ssimToDraft": 0.97332,
-    "motionCorrelationToDraft": 0.9804940298242795
-  },
   "F-S02-C-s2": {
     "width": 832,
     "height": 448,
@@ -1043,28 +801,6 @@
     "motion": 2.16923649484536,
     "ssimToDraft": 0.885327,
     "motionCorrelationToDraft": 0.7864007313553013
-  },
-  "F-S02-B2-s3": {
-    "width": 832,
-    "height": 448,
-    "frames": 97,
-    "seconds": 4.041667,
-    "fps": 24,
-    "flicker": 0.13457604166666615,
-    "motion": 2.152270515463919,
-    "ssimToDraft": 0.946912,
-    "motionCorrelationToDraft": 0.9336501646292468
-  },
-  "F-S02-B1-s3": {
-    "width": 832,
-    "height": 448,
-    "frames": 97,
-    "seconds": 4.041667,
-    "fps": 24,
-    "flicker": 0.1413531250000004,
-    "motion": 2.2393706185567006,
-    "ssimToDraft": 0.972922,
-    "motionCorrelationToDraft": 0.9823235523743119
   },
   "F-S02-C-s3": {
     "width": 832,
@@ -1088,28 +824,6 @@
     "ssimToDraft": 0.803322,
     "motionCorrelationToDraft": 0.9665190478461737
   },
-  "F-S05-B2-s2": {
-    "width": 832,
-    "height": 448,
-    "frames": 97,
-    "seconds": 4.041667,
-    "fps": 24,
-    "flicker": 0.6127260416666666,
-    "motion": 6.289004958762887,
-    "ssimToDraft": 0.922745,
-    "motionCorrelationToDraft": 0.9925019086411129
-  },
-  "F-S05-B1-s2": {
-    "width": 832,
-    "height": 448,
-    "frames": 97,
-    "seconds": 4.041667,
-    "fps": 24,
-    "flicker": 0.6463593749999998,
-    "motion": 6.381386402061854,
-    "ssimToDraft": 0.962187,
-    "motionCorrelationToDraft": 0.9967473380513556
-  },
   "F-S05-C-s2": {
     "width": 832,
     "height": 448,
@@ -1131,28 +845,6 @@
     "motion": 6.448778608247421,
     "ssimToDraft": 0.781009,
     "motionCorrelationToDraft": 0.9440300905347021
-  },
-  "F-S05-B2-s3": {
-    "width": 832,
-    "height": 448,
-    "frames": 97,
-    "seconds": 4.041667,
-    "fps": 24,
-    "flicker": 0.6086333333333331,
-    "motion": 6.169159123711339,
-    "ssimToDraft": 0.921735,
-    "motionCorrelationToDraft": 0.9883537921862807
-  },
-  "F-S05-B1-s3": {
-    "width": 832,
-    "height": 448,
-    "frames": 97,
-    "seconds": 4.041667,
-    "fps": 24,
-    "flicker": 0.6354281249999999,
-    "motion": 6.33795480412371,
-    "ssimToDraft": 0.962342,
-    "motionCorrelationToDraft": 0.9968572665055786
   },
   "F-S05-C-s3": {
     "width": 832,
@@ -1176,28 +868,6 @@
     "ssimToDraft": 0.797503,
     "motionCorrelationToDraft": 0.9531003503162994
   },
-  "F-S08-B2-s2": {
-    "width": 832,
-    "height": 448,
-    "frames": 97,
-    "seconds": 4.041667,
-    "fps": 24,
-    "flicker": 0.918521875,
-    "motion": 6.76415319587629,
-    "ssimToDraft": 0.921561,
-    "motionCorrelationToDraft": 0.9898995241608054
-  },
-  "F-S08-B1-s2": {
-    "width": 832,
-    "height": 448,
-    "frames": 97,
-    "seconds": 4.041667,
-    "fps": 24,
-    "flicker": 0.9556656250000001,
-    "motion": 6.9078016494845365,
-    "ssimToDraft": 0.960171,
-    "motionCorrelationToDraft": 0.9954197627995874
-  },
   "F-S08-C-s2": {
     "width": 832,
     "height": 448,
@@ -1219,28 +889,6 @@
     "motion": 6.274398556701033,
     "ssimToDraft": 0.809885,
     "motionCorrelationToDraft": 0.9763237456044864
-  },
-  "F-S08-B2-s3": {
-    "width": 832,
-    "height": 448,
-    "frames": 97,
-    "seconds": 4.041667,
-    "fps": 24,
-    "flicker": 0.9102239583333334,
-    "motion": 6.653511649484534,
-    "ssimToDraft": 0.92282,
-    "motionCorrelationToDraft": 0.9892180171573615
-  },
-  "F-S08-B1-s3": {
-    "width": 832,
-    "height": 448,
-    "frames": 97,
-    "seconds": 4.041667,
-    "fps": 24,
-    "flicker": 0.9529625000000003,
-    "motion": 6.876921443298967,
-    "ssimToDraft": 0.960058,
-    "motionCorrelationToDraft": 0.9951087882607854
   },
   "F-S08-C-s3": {
     "width": 832,
@@ -1428,5 +1076,665 @@
     "motion": 7.7749205154639185,
     "ssimToDraft": 0.76494,
     "motionCorrelationToDraft": 0.9488718877461146
+  },
+  "D-S05-steps4": {
+    "width": 416,
+    "height": 224,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.32326041666666677,
+    "motion": 3.2268080412371125,
+    "ssimToDraft": null,
+    "motionCorrelationToDraft": null
+  },
+  "D-S01-steps4": {
+    "width": 416,
+    "height": 224,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.04372187500000021,
+    "motion": 0.1464756804123712,
+    "ssimToDraft": null,
+    "motionCorrelationToDraft": null
+  },
+  "D-S02-steps4": {
+    "width": 416,
+    "height": 224,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.06514479166666669,
+    "motion": 1.0133835360824741,
+    "ssimToDraft": null,
+    "motionCorrelationToDraft": null
+  },
+  "D-S03-steps4": {
+    "width": 416,
+    "height": 224,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.2888645833333334,
+    "motion": 4.292821907216494,
+    "ssimToDraft": null,
+    "motionCorrelationToDraft": null
+  },
+  "D-S04-steps4": {
+    "width": 416,
+    "height": 224,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.17293750000000005,
+    "motion": 1.1608678453608245,
+    "ssimToDraft": null,
+    "motionCorrelationToDraft": null
+  },
+  "D-S06-steps4": {
+    "width": 416,
+    "height": 224,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.3459843750000003,
+    "motion": 10.472806804123714,
+    "ssimToDraft": null,
+    "motionCorrelationToDraft": null
+  },
+  "D-S07-steps4": {
+    "width": 416,
+    "height": 224,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.12069687500000088,
+    "motion": 1.1276568762886594,
+    "ssimToDraft": null,
+    "motionCorrelationToDraft": null
+  },
+  "D-S08-steps4": {
+    "width": 416,
+    "height": 224,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.2751156250000002,
+    "motion": 3.1187691752577322,
+    "ssimToDraft": null,
+    "motionCorrelationToDraft": null
+  },
+  "D-S09-steps4": {
+    "width": 416,
+    "height": 224,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.11824895833333364,
+    "motion": 1.3252651649484546,
+    "ssimToDraft": null,
+    "motionCorrelationToDraft": null
+  },
+  "D-S10-steps4": {
+    "width": 416,
+    "height": 224,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.12452083333333223,
+    "motion": 0.8135778453608248,
+    "ssimToDraft": null,
+    "motionCorrelationToDraft": null
+  },
+  "D-S01-steps2": {
+    "width": 416,
+    "height": 224,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.05163750000000026,
+    "motion": 0.09937398762886598,
+    "ssimToDraft": null,
+    "motionCorrelationToDraft": null
+  },
+  "D-S02-steps2": {
+    "width": 416,
+    "height": 224,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.03257604166666672,
+    "motion": 0.15935236082474225,
+    "ssimToDraft": null,
+    "motionCorrelationToDraft": null
+  },
+  "D-S03-steps2": {
+    "width": 416,
+    "height": 224,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.2656770833333339,
+    "motion": 1.544774721649484,
+    "ssimToDraft": null,
+    "motionCorrelationToDraft": null
+  },
+  "D-S04-steps2": {
+    "width": 416,
+    "height": 224,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.2267291666666685,
+    "motion": 0.4920353608247421,
+    "ssimToDraft": null,
+    "motionCorrelationToDraft": null
+  },
+  "D-S05-steps2": {
+    "width": 416,
+    "height": 224,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.1155874999999998,
+    "motion": 0.46393938144329905,
+    "ssimToDraft": null,
+    "motionCorrelationToDraft": null
+  },
+  "D-S06-steps2": {
+    "width": 416,
+    "height": 224,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.5301552083333334,
+    "motion": 3.3522454639175248,
+    "ssimToDraft": null,
+    "motionCorrelationToDraft": null
+  },
+  "D-S07-steps2": {
+    "width": 416,
+    "height": 224,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.1410770833333331,
+    "motion": 0.35231127835051534,
+    "ssimToDraft": null,
+    "motionCorrelationToDraft": null
+  },
+  "D-S08-steps2": {
+    "width": 416,
+    "height": 224,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.07670312500000025,
+    "motion": 1.139662206185567,
+    "ssimToDraft": null,
+    "motionCorrelationToDraft": null
+  },
+  "D-S09-steps2": {
+    "width": 416,
+    "height": 224,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.14792708333333318,
+    "motion": 0.3141108453608248,
+    "ssimToDraft": null,
+    "motionCorrelationToDraft": null
+  },
+  "D-S10-steps2": {
+    "width": 416,
+    "height": 224,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.23035416666666508,
+    "motion": 0.6394974742268041,
+    "ssimToDraft": null,
+    "motionCorrelationToDraft": null
+  },
+  "D-S01-steps1": {
+    "width": 416,
+    "height": 224,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.06584479166666646,
+    "motion": 0.12364571237113402,
+    "ssimToDraft": null,
+    "motionCorrelationToDraft": null
+  },
+  "D-S02-steps1": {
+    "width": 416,
+    "height": 224,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.024689583333333192,
+    "motion": 0.10283819793814435,
+    "ssimToDraft": null,
+    "motionCorrelationToDraft": null
+  },
+  "D-S03-steps1": {
+    "width": 416,
+    "height": 224,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.3375208333333344,
+    "motion": 0.8729396288659794,
+    "ssimToDraft": null,
+    "motionCorrelationToDraft": null
+  },
+  "D-S04-steps1": {
+    "width": 416,
+    "height": 224,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.4045208333333332,
+    "motion": 0.5996861958762887,
+    "ssimToDraft": null,
+    "motionCorrelationToDraft": null
+  },
+  "D-S05-steps1": {
+    "width": 416,
+    "height": 224,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.153946875,
+    "motion": 0.32288085567010294,
+    "ssimToDraft": null,
+    "motionCorrelationToDraft": null
+  },
+  "D-S06-steps1": {
+    "width": 416,
+    "height": 224,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.54694375,
+    "motion": 1.538186288659794,
+    "ssimToDraft": null,
+    "motionCorrelationToDraft": null
+  },
+  "D-S07-steps1": {
+    "width": 416,
+    "height": 224,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.20431770833333385,
+    "motion": 0.3436863402061855,
+    "ssimToDraft": null,
+    "motionCorrelationToDraft": null
+  },
+  "D-S08-steps1": {
+    "width": 416,
+    "height": 224,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.10691354166666615,
+    "motion": 0.5302655670103094,
+    "ssimToDraft": null,
+    "motionCorrelationToDraft": null
+  },
+  "D-S09-steps1": {
+    "width": 416,
+    "height": 224,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.3043677083333322,
+    "motion": 0.3939798969072165,
+    "ssimToDraft": null,
+    "motionCorrelationToDraft": null
+  },
+  "D-S10-steps1": {
+    "width": 416,
+    "height": 224,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.29219791666666756,
+    "motion": 0.5859246185567009,
+    "ssimToDraft": null,
+    "motionCorrelationToDraft": null
+  },
+  "F-S01-B-steps4-s1": {
+    "width": 832,
+    "height": 448,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.043577083333333176,
+    "motion": 0.11996864329896911,
+    "ssimToDraft": 0.864323,
+    "motionCorrelationToDraft": 0.7758230327760637
+  },
+  "F-S02-B-steps4-s1": {
+    "width": 832,
+    "height": 448,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.0633687499999999,
+    "motion": 1.0939428453608253,
+    "ssimToDraft": 0.864047,
+    "motionCorrelationToDraft": 0.8321552400444675
+  },
+  "F-S03-B-steps4-s1": {
+    "width": 832,
+    "height": 448,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.3124270833333334,
+    "motion": 4.275554298969071,
+    "ssimToDraft": 0.720738,
+    "motionCorrelationToDraft": 0.9198042835944867
+  },
+  "F-S04-B-steps4-s1": {
+    "width": 832,
+    "height": 448,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.2018541666666671,
+    "motion": 1.2239264639175258,
+    "ssimToDraft": 0.731739,
+    "motionCorrelationToDraft": 0.5285687174995256
+  },
+  "F-S05-B-steps4-s1": {
+    "width": 832,
+    "height": 448,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.4065635416666668,
+    "motion": 3.3145583505154645,
+    "ssimToDraft": 0.837954,
+    "motionCorrelationToDraft": 0.6805904479642413
+  },
+  "F-S06-B-steps4-s1": {
+    "width": 832,
+    "height": 448,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.4031958333333339,
+    "motion": 10.200715876288662,
+    "ssimToDraft": 0.566971,
+    "motionCorrelationToDraft": 0.8493712517668441
+  },
+  "F-S07-B-steps4-s1": {
+    "width": 832,
+    "height": 448,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.13073437499999993,
+    "motion": 1.3711221340206183,
+    "ssimToDraft": 0.761248,
+    "motionCorrelationToDraft": 0.8251949670686847
+  },
+  "F-S08-B-steps4-s1": {
+    "width": 832,
+    "height": 448,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.2732270833333332,
+    "motion": 3.0998629896907217,
+    "ssimToDraft": 0.785942,
+    "motionCorrelationToDraft": 0.7915756396492749
+  },
+  "F-S09-B-steps4-s1": {
+    "width": 832,
+    "height": 448,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.13062604166666603,
+    "motion": 1.5539866185567017,
+    "ssimToDraft": 0.756502,
+    "motionCorrelationToDraft": 0.7259876008821025
+  },
+  "F-S10-B-steps4-s1": {
+    "width": 832,
+    "height": 448,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.1515729166666686,
+    "motion": 0.8480315876288661,
+    "ssimToDraft": 0.668942,
+    "motionCorrelationToDraft": 0.8756867709955735
+  },
+  "F-S01-B-steps2-s1": {
+    "width": 832,
+    "height": 448,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.059733333333333416,
+    "motion": 0.12881426597938145,
+    "ssimToDraft": 0.842552,
+    "motionCorrelationToDraft": 0.7154026501944641
+  },
+  "F-S02-B-steps2-s1": {
+    "width": 832,
+    "height": 448,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.050692708333333135,
+    "motion": 0.456525618556701,
+    "ssimToDraft": 0.882507,
+    "motionCorrelationToDraft": 0.5143453106921102
+  },
+  "F-S03-B-steps2-s1": {
+    "width": 832,
+    "height": 448,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.18196874999999965,
+    "motion": 4.424171958762887,
+    "ssimToDraft": 0.627756,
+    "motionCorrelationToDraft": 0.8479976965451753
+  },
+  "F-S04-B-steps2-s1": {
+    "width": 832,
+    "height": 448,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.1191666666666668,
+    "motion": 0.44042142268041257,
+    "ssimToDraft": 0.571077,
+    "motionCorrelationToDraft": 0.25901472468948533
+  },
+  "F-S05-B-steps2-s1": {
+    "width": 832,
+    "height": 448,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.38873854166666694,
+    "motion": 1.5094837010309283,
+    "ssimToDraft": 0.894517,
+    "motionCorrelationToDraft": 0.5944363855304349
+  },
+  "F-S06-B-steps2-s1": {
+    "width": 832,
+    "height": 448,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.2572791666666668,
+    "motion": 7.7159697938144385,
+    "ssimToDraft": 0.517863,
+    "motionCorrelationToDraft": 0.6725033120075037
+  },
+  "F-S07-B-steps2-s1": {
+    "width": 832,
+    "height": 448,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.17554791666666683,
+    "motion": 0.693605206185567,
+    "ssimToDraft": 0.652116,
+    "motionCorrelationToDraft": 0.7618123904809189
+  },
+  "F-S08-B-steps2-s1": {
+    "width": 832,
+    "height": 448,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.1951822916666667,
+    "motion": 2.4771201030927825,
+    "ssimToDraft": 0.819512,
+    "motionCorrelationToDraft": 0.5082546273000833
+  },
+  "F-S09-B-steps2-s1": {
+    "width": 832,
+    "height": 448,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.12486875000000008,
+    "motion": 0.5934437422680412,
+    "ssimToDraft": 0.728154,
+    "motionCorrelationToDraft": 0.36495667963828665
+  },
+  "F-S10-B-steps2-s1": {
+    "width": 832,
+    "height": 448,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.17874999999999966,
+    "motion": 0.7801065360824745,
+    "ssimToDraft": 0.571257,
+    "motionCorrelationToDraft": 0.8392116916922525
+  },
+  "F-S01-B-steps1-s1": {
+    "width": 832,
+    "height": 448,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.06953541666666647,
+    "motion": 0.1463245257731959,
+    "ssimToDraft": 0.825593,
+    "motionCorrelationToDraft": 0.4120739912333195
+  },
+  "F-S02-B-steps1-s1": {
+    "width": 832,
+    "height": 448,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.06486145833333339,
+    "motion": 0.5783139278350518,
+    "ssimToDraft": 0.864527,
+    "motionCorrelationToDraft": 0.32444707188700805
+  },
+  "F-S03-B-steps1-s1": {
+    "width": 832,
+    "height": 448,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.18682291666666742,
+    "motion": 4.391633515463917,
+    "ssimToDraft": 0.61086,
+    "motionCorrelationToDraft": 0.6299118557099874
+  },
+  "F-S04-B-steps1-s1": {
+    "width": 832,
+    "height": 448,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.14071875000000103,
+    "motion": 0.5527356391752576,
+    "ssimToDraft": 0.520917,
+    "motionCorrelationToDraft": 0.07243750364325321
+  },
+  "F-S05-B-steps1-s1": {
+    "width": 832,
+    "height": 448,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.5232697916666665,
+    "motion": 1.7156277731958764,
+    "ssimToDraft": 0.883736,
+    "motionCorrelationToDraft": 0.32149180058166754
+  },
+  "F-S06-B-steps1-s1": {
+    "width": 832,
+    "height": 448,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.2573697916666671,
+    "motion": 8.035155154639174,
+    "ssimToDraft": 0.515189,
+    "motionCorrelationToDraft": 0.6235654687503036
+  },
+  "F-S07-B-steps1-s1": {
+    "width": 832,
+    "height": 448,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.20248437500000027,
+    "motion": 0.6715687422680411,
+    "ssimToDraft": 0.620494,
+    "motionCorrelationToDraft": 0.4740387341345693
+  },
+  "F-S08-B-steps1-s1": {
+    "width": 832,
+    "height": 448,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.1733822916666663,
+    "motion": 2.4537934020618555,
+    "ssimToDraft": 0.79377,
+    "motionCorrelationToDraft": 0.5165555514893367
+  },
+  "F-S09-B-steps1-s1": {
+    "width": 832,
+    "height": 448,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.14653333333333265,
+    "motion": 0.5641804639175256,
+    "ssimToDraft": 0.684898,
+    "motionCorrelationToDraft": -0.11471848621071341
+  },
+  "F-S10-B-steps1-s1": {
+    "width": 832,
+    "height": 448,
+    "frames": 97,
+    "seconds": 4.041667,
+    "fps": 24,
+    "flicker": 0.1824895833333325,
+    "motion": 0.8740334536082474,
+    "ssimToDraft": 0.546549,
+    "motionCorrelationToDraft": 0.6163108419907006
   }
 }

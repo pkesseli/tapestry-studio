@@ -252,3 +252,23 @@ All 117 runs ended `ok`; times are per 4 s clip (97 frames), peak memory as benc
 - C and D keep the layout and camera move but re-invent people and materials: on S05 the face is a different
   person, on S08 the costume changes. D with the reference image washed S02 (night pier) out to grey fog.
 - D takes about 20 minutes per clip, more than a full LTX render (167 s), so it is not a cheap "finish" step.
+
+### Cheaper drafts: fewer stage-1 steps — 2026-11-15
+
+`draft-final.sh draft-steps<n>` runs stage 1 with n of its 8 steps (ltx-2-mlx keeps the schedule's start and tail,
+`shorten_schedule(keep="start")`); `B-steps<n>` finishes it with 3 refine steps. All ten shots, seed 1.
+
+| Draft steps | Draft time | Final time | Final vs its own draft (SSIM / motion corr.) | Final motion |
+|---|---|---|---|---|
+| 8 (normal) | 70 s | 107 s | 0.805 / 0.857 | 4.2 |
+| 4 | 42 s | 109 s | 0.756 / 0.780 | 2.7 |
+| 2 | 28 s | 108 s | 0.711 / 0.608 | 1.9 |
+| 1 | 20 s | 108 s | 0.687 / 0.388 | 2.0 |
+
+- About 13 s of every draft is fixed: Python start, loading (4 s), prompt encoding (5.5 s) and decoding (3 s). A
+  denoising step costs 7.1 s at draft size and 29 s at final size, so keeping the model loaded saves only about 5 s.
+- 4-step drafts are legible, but a different picture from the 8-step draft with the same seed; their finals follow
+  them, with less motion.
+- 2- and 1-step drafts are mostly noise (the distilled model is not trained for so few steps), so they cannot be
+  judged. Their finals still come out clean, but they show content the draft never showed: it is a cheaper full
+  render, not a draft.

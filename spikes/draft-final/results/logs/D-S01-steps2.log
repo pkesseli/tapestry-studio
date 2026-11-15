@@ -1,0 +1,37 @@
+[Loading text encoder (Gemma)] ...
+Fetching 13 files:   0%|          | 0/13 [00:00<?, ?it/s]Fetching 13 files: 100%|██████████| 13/13 [00:00<00:00, 4165.47it/s]
+[Loading text encoder (Gemma)] done in 3.0s
+[Encoding prompt] ...
+[Encoding prompt] done in 5.2s
+[Loading transformer (transformer-distilled-1.1.safetensors)] ...
+[Loading transformer (transformer-distilled-1.1.safetensors)] done in 1.4s
+two-stage half-res snaps dims to multiples of 64; output will be 832x448 (requested 832x480). Use --single-stage for exact dims.
+[estimate] denoising: 2 steps x 1 passes over 1183 video + 101 audio tokens = 2 forwards
+Denoising:   0%|          | 0/2 [00:00<?, ?it/s]                                                [estimate] denoising: ~7 s remaining (7.1 s/forward) (first step includes warm-up)
+Denoising:   0%|          | 0/2 [00:07<?, ?it/s]Denoising:  50%|█████     | 1/2 [00:07<00:07,  7.12s/it]                                                        [estimate] denoising: ~0 s remaining (7.1 s/forward) (refined)
+Denoising:  50%|█████     | 1/2 [00:14<00:07,  7.12s/it]Denoising: 100%|██████████| 2/2 [00:14<00:00,  7.10s/it]Denoising: 100%|██████████| 2/2 [00:14<00:00,  7.11s/it]
+[Loading decoders (VAE + audio + vocoder)] ...
+[Loading decoders (VAE + audio + vocoder)] done in 0.0s
+[Decoding video + audio + muxing] ...
+[vae-decode tiling] untiled est. 6.3 GB budget=24.0 GB
+[vae-decode tiling] peak Metal memory 19.91 GB
+[Decoding video + audio + muxing] done in 3.0s
+draft 416x224, final will be 832x448
+       27.49 real         2.76 user         6.45 sys
+         14311047168  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+             1669627  page reclaims
+                 632  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                  53  messages sent
+                  59  messages received
+                   0  signals received
+               10778  voluntary context switches
+               62564  involuntary context switches
+         79637019551  instructions retired
+         33368580336  cycles elapsed
+         20361702056  peak memory footprint
