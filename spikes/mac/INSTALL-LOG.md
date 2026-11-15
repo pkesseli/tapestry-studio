@@ -205,3 +205,50 @@ and sizes). A failed attempt belongs here too, with the error message and what y
   <final.mp4>`. The checkpoint is loaded with `torch.load(weights_only=True)`, so no pickled code runs.
 - Result: one 4 s LTX clip (97 frames, 832x448 to 1664x896) in 68 s, of which 66 s upscaling (about 0.7 s per
   frame on MPS), peak footprint 2.6 GB. A plain Lanczos 2x of the same clip takes under a second.
+
+## Plan 10b workflows — 2026-11-14
+
+All clips are made with `sh spikes/mac/scripts/draft-final.sh <step> <shot> [seed]`, which calls bench.mjs with the
+clip names of spikes/draft-final/README.md.
+
+- **Draft and path B (`ltx23-stage-split`)**: `spikes/mac/scripts/ltx_stage.py` (ltx-2-mlx venv Python). `draft`
+  runs only stage 1 of the distilled pipeline (416x224 for an 832x448 final, 8 steps) and saves the latent next to
+  the mp4; `final` resumes stage 2 from it (`DistilledPipeline.generate_two_stage(stage1=...)`, a documented
+  ltx-2-mlx feature). Checked on S01: a resumed final with 3 stage-2 steps is identical to the uninterrupted plan 10
+  render (ffmpeg PSNR infinite on every frame). Draft 70 s, final 107 s, against 167 s for one render.
+  The README's "refine from the draft at strength 0.3 / 0.6" maps to fewer stage-2 steps: 3 / 2 / 1 steps start the
+  refine at sigma 0.909 / 0.725 / 0.422 (variants B3, B2, B1).
+- **Path C (`ltx23-iclora-union`)**: `ltx-2-mlx ic-lora` with Lightricks/LTX-2.3-22b-IC-LoRA-Union-Control and the
+  draft's edges (ffmpeg `edgedetect`) as control video. The LoRA expects the control at half the output size, which
+  is the draft size; ltx-2-mlx resizes it anyway. Gotcha: by default the LoRA is fused into the int4 weights and
+  re-quantisation loses most of it (ltx-2-mlx says so in `ltx_core_mlx/loader/lora_adapters.py`); the output then
+  ignores the edges. `LTX2_LORA_MODE=unfused` applies it at run time and the output follows the draft's layout and
+  camera move (checked on S07). `--upsample-only --refine-steps 3` made no visible difference with the fused LoRA.
+  LTX 2.3 has no identity-reference input (`--image` anchors frames), so C gets edges and text only.
+- **Path D (`wan22-fun-5b-control`)**: `comfy-wan.mjs --model wan22-fun-5b-control --control <edges.mp4> [--ref
+  <image>]`, ComfyUI's core `Wan22FunControlToVideo` node fed through `LoadVideo` and `GetVideoComponents`. Weights:
+  `hf download QuantStack/Wan2.2-Fun-5B-Control-GGUF Wan2.2-Fun-5B-Control-Q8_0.gguf --local-dir unet` (5.4 GB,
+  Apache-2.0), with the Wan 2.2 VAE and text encoder already there. The reference image is the shot's first `uses`
+  entry from shots.json.
+
+### Overnight run, all ten shots — 2026-11-15
+
+All 117 runs ended `ok`; times are per 4 s clip (97 frames), peak memory as bench records it.
+
+| Step | Time | Peak memory | Faithful to the draft (mean SSIM / motion correlation) |
+|---|---|---|---|
+| Draft (stage 1, 416x224) | 69–70 s | 19.3 GB | — |
+| A0 Lanczos 2x | < 1 s | 0.1 GB | 0.997 / 0.999 |
+| A1 Real-ESRGAN 2x | 18 s | 1.5 GB | 0.988 / 0.998 |
+| B3 (3 refine steps) | 107–110 s | 16 GB | 0.813 / 0.877 |
+| B2 / B1 | 78 s / 49 s | 16 GB | 0.920 / 0.954, 0.958 / 0.972 |
+| C IC-LoRA, unfused | 181–188 s | 24.8 GB | 0.525 / 0.741 |
+| D Wan Fun Control | 1178–1234 s | 28–35 GB | 0.676 / 0.864 |
+
+- B2 and B1 come out softer than Real-ESRGAN of the draft (checked on face crops of S05): starting the refine that
+  late leaves no room to add detail. Only B3 adds detail; it keeps framing, motion and the person, with small drift
+  in face details (eye colour, brows). B3 is rated as variant `B`; B1 and B2 are kept in
+  `spikes/draft-final/results/manifest-unrated.json` and left out of rating to keep the session near 40 minutes.
+- C and D keep the layout and camera move but re-invent people and materials: on S05 the face is a different
+  person, on S08 the costume changes. D with the reference image washed S02 (night pier) out to grey fog.
+- D takes about 20 minutes per clip, more than a full LTX render (167 s), so it is not a cheap "finish" step.
