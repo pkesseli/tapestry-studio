@@ -2,7 +2,7 @@ import { mkdtempSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
-import { appendRun, median, parseTimeOutput, readRuns, summarizeRuns } from './runs.mjs';
+import { appendRun, median, parseTimeOutput, readRuns, redactHome, summarizeRuns } from './runs.mjs';
 
 /** What macOS `/usr/bin/time -l` prints after a command. */
 const MAC_TIME = `
@@ -60,4 +60,10 @@ test('a candidate summary counts outcomes and reports the largest memory use', (
     peakGiB: 30,
   });
   expect(summarizeRuns([]).medianSeconds).toBeNull();
+});
+
+test('the home folder is replaced with ~ everywhere, and an empty home changes nothing', () => {
+  const text = 'log /Users/me/x.log and /Users/me/y; /Users/meow stays apart from its prefix';
+  expect(redactHome(text, '/Users/me')).toBe('log ~/x.log and ~/y; ~ow stays apart from its prefix');
+  expect(redactHome(text, '')).toBe(text);
 });

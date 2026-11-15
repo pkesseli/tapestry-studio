@@ -28,6 +28,17 @@ export function parseTimeOutput(text) {
 }
 
 /**
+ * Replaces the home folder in text with `~`, so committed logs and run records do not carry the user's account name
+ * (it is part of every absolute path on macOS).
+ * @param {string} text Text that may contain absolute paths.
+ * @param {string} home Absolute path of the home folder, e.g. `os.homedir()`.
+ * @returns {string} The text with every occurrence of `home` replaced.
+ */
+export function redactHome(text, home) {
+  return home ? text.split(home).join('~') : text;
+}
+
+/**
  * Appends one run to a log of runs (one JSON object per line, so a crash never corrupts earlier lines).
  * @param {string} file Path of the `.jsonl` file; its folder is created when missing.
  * @param {Record<string, unknown>} record The run.

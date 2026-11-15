@@ -1,11 +1,12 @@
 #!/usr/bin/env node
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { homedir } from 'node:os';
 import { dirname, join, relative, resolve } from 'node:path';
 import { parseArgs } from 'node:util';
 import { fileURLToPath } from 'node:url';
 import { runMeasured } from './lib/bench-run.mjs';
 import { upsertClip } from './lib/manifest.mjs';
-import { appendRun } from './lib/runs.mjs';
+import { appendRun, redactHome } from './lib/runs.mjs';
 
 /** The `spikes/` folder. */
 const SPIKES = dirname(fileURLToPath(import.meta.url));
@@ -78,6 +79,9 @@ const result = await runMeasured({
   logFile: join(results, 'logs', `${label}.log`),
   outFile,
 });
+// Logs and run records are committed: keep the account name (part of every absolute path) out of them.
+const logFile = join(results, 'logs', `${label}.log`);
+if (existsSync(logFile)) writeFileSync(logFile, redactHome(readFileSync(logFile, 'utf8'), homedir()));
 
 const systemFile = join(results, 'system.json');
 const machine = existsSync(systemFile) ? JSON.parse(readFileSync(systemFile, 'utf8')) : null;
@@ -87,7 +91,7 @@ const record = {
   suite: values.suite,
   shot: values.shot ?? null,
   startedAt: new Date(Date.now() - result.seconds * 1000).toISOString(),
-  command: [command, ...args].join(' '),
+  command: redactHome([command, ...args].join(' '), homedir()),
   meta,
   note: values.note ?? null,
   machine: machine ? `${machine.chip}, ${machine.memoryGiB} GB` : null,
