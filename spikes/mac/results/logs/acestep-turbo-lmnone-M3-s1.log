@@ -1,0 +1,76 @@
+W1116 04:05:05.862000 87948 torch/distributed/elastic/multiprocessing/redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.
+2026-11-16 04:05:06.594 | WARNING  | acestep.training.trainer:<module>:40 - bitsandbytes not installed. Using standard AdamW.
+2026-11-16 04:05:06.613 | INFO     | acestep.gpu_config:get_gpu_config:846 - macOS MPS detected (36.0 GB unified memory, tier=unlimited). Applying Apple Silicon optimizations: no compile, no quantization, mlx backend, no CPU offload.
+2026-11-16 04:05:06.615 | INFO     | acestep.core.generation.handler.init_service_loader:_load_main_model_from_checkpoint:174 - [initialize_service] Attempting to load model with attention implementation: sdpa
+2026-11-16 04:05:11.472 | INFO     | acestep.core.generation.handler.mlx_dit_init:_init_mlx_dit:34 - [MLX-DiT] Native MLX DiT decoder initialized successfully (mx.compile=False).
+2026-11-16 04:05:11.976 | INFO     | acestep.core.generation.handler.mlx_vae_init:_init_mlx_vae:75 - [MLX-VAE] Decode/encode compiled with mx.compile().
+2026-11-16 04:05:11.976 | INFO     | acestep.core.generation.handler.mlx_vae_init:_init_mlx_vae:85 - [MLX-VAE] Native MLX VAE initialized (dtype=mlx.core.float32, compiled=True).
+2026-11-16 04:05:11.979 | INFO     | acestep.inference:generate_music:662 - [generate_music] LLM usage decision: thinking=False, use_cot_caption=True, use_cot_language=True, use_cot_metas=True, need_lm_for_cot=True, llm_initialized=False, use_lm=False
+2026-11-16 04:05:11.979 | INFO     | acestep.core.generation.handler.generate_music:generate_music:329 - [generate_music] Starting generation...
+2026-11-16 04:05:11.979 | INFO     | acestep.core.generation.handler.generate_music:generate_music:332 - [generate_music] Preparing inputs...
+2026-11-16 04:05:12.022 | INFO     | acestep.core.generation.handler.conditioning_text:_prepare_text_conditioning_inputs:119 - 
+======================================================================
+2026-11-16 04:05:12.022 | INFO     | acestep.core.generation.handler.conditioning_text:_prepare_text_conditioning_inputs:120 - 🔍 [DEBUG] DiT TEXT ENCODER INPUT (Inference)
+2026-11-16 04:05:12.022 | INFO     | acestep.core.generation.handler.conditioning_text:_prepare_text_conditioning_inputs:121 - ======================================================================
+2026-11-16 04:05:12.022 | INFO     | acestep.core.generation.handler.conditioning_text:_prepare_text_conditioning_inputs:122 - text_prompt:
+# Instruction
+Fill the audio semantic mask based on the given conditions:
+
+# Caption
+Driving action cue for a chase: taiko drums, staccato strings, short brass hits, fast and relentless, instrumental
+
+# Metas
+- bpm: 140
+- timesignature: N/A
+- keyscale: E minor
+- duration: 30 seconds
+<|endoftext|>
+
+2026-11-16 04:05:12.022 | INFO     | acestep.core.generation.handler.conditioning_text:_prepare_text_conditioning_inputs:123 - ======================================================================
+2026-11-16 04:05:12.022 | INFO     | acestep.core.generation.handler.conditioning_text:_prepare_text_conditioning_inputs:124 - lyrics_text:
+# Languages
+unknown
+
+# Lyric
+<|endoftext|>
+2026-11-16 04:05:12.022 | INFO     | acestep.core.generation.handler.conditioning_text:_prepare_text_conditioning_inputs:125 - ======================================================================
+
+2026-11-16 04:05:12.031 | INFO     | acestep.core.generation.handler.conditioning_embed:preprocess_batch:110 - [preprocess_batch] Inferring prompt embeddings...
+2026-11-16 04:05:12.071 | INFO     | acestep.core.generation.handler.conditioning_embed:preprocess_batch:113 - [preprocess_batch] Inferring lyric embeddings...
+2026-11-16 04:05:12.073 | INFO     | acestep.core.generation.handler.service_generate_execute:_execute_service_generate_diffusion:173 - [service_generate] Generating audio... (DiT backend: MLX (native))
+2026-11-16 04:05:12.346 | INFO     | acestep.models.mlx.dit_generate:mlx_generate_diffusion:410 - [MLX-DiT] DCW enabled (mode=double, scaler=0.050, high_scaler=0.020, wavelet=haar, backend=MLX-native Haar).
+load_seconds=5.4
+MLX DiT diffusion:   0%|          | 0/8 [00:00<?, ?it/s]MLX DiT diffusion:  12%|█▎        | 1/8 [00:00<00:01,  4.72it/s]MLX DiT diffusion:  25%|██▌       | 2/8 [00:00<00:01,  4.83it/s]MLX DiT diffusion:  38%|███▊      | 3/8 [00:00<00:01,  4.90it/s]MLX DiT diffusion:  50%|█████     | 4/8 [00:00<00:00,  4.93it/s]MLX DiT diffusion:  62%|██████▎   | 5/8 [00:01<00:00,  4.96it/s]MLX DiT diffusion:  75%|███████▌  | 6/8 [00:01<00:00,  4.96it/s]MLX DiT diffusion:  88%|████████▊ | 7/8 [00:01<00:00,  4.97it/s]MLX DiT diffusion: 100%|██████████| 8/8 [00:01<00:00,  4.97it/s]MLX DiT diffusion: 100%|██████████| 8/8 [00:01<00:00,  4.94it/s]
+2026-11-16 04:05:13.993 | INFO     | acestep.core.generation.handler.service_generate_execute:_execute_service_generate_diffusion:267 - [service_generate] DiT diffusion complete via MLX (1.65s total, 0.206s/step).
+2026-11-16 04:05:13.993 | INFO     | acestep.core.generation.handler.generate_music_decode:_prepare_generate_music_decode_state:42 - [generate_music] Model generation completed. Decoding latents...
+2026-11-16 04:05:13.994 | DEBUG    | acestep.core.generation.handler.generate_music_decode:_prepare_generate_music_decode_state:64 - [generate_music] pred_latents: torch.Size([1, 750, 64]), dtype=torch.float32
+2026-11-16 04:05:13.994 | DEBUG    | acestep.core.generation.handler.generate_music_decode:_prepare_generate_music_decode_state:65 - [generate_music] time_costs: {'diffusion_time_cost': 1.6485400199890137, 'diffusion_per_step_time_cost': 0.2060675024986267, 'total_time_cost': 1.6487181186676025, 'sampler_mode': 'euler', 'offload_time_cost': 0.0}
+2026-11-16 04:05:14.007 | INFO     | acestep.core.generation.handler.generate_music_decode:_decode_generate_music_pred_latents:127 - [generate_music] Decoding latents with VAE...
+2026-11-16 04:05:14.013 | DEBUG    | acestep.core.generation.handler.generate_music_decode:_decode_generate_music_pred_latents:136 - [generate_music] Before VAE decode: allocated=0.00GB, max=0.00GB
+2026-11-16 04:05:14.013 | INFO     | acestep.core.generation.handler.generate_music_decode:_decode_generate_music_pred_latents:172 - [generate_music] Using tiled VAE decode to reduce VRAM usage...
+2026-11-16 04:05:18.607 | INFO     | acestep.core.generation.handler.mlx_vae_decode_native:_mlx_vae_decode:66 - [MLX-VAE] Decoded 1 sample(s), 750 latent frames -> audio in 4.59s (convert=0.001s, decode=4.59s, dtype=mlx.core.float32)
+2026-11-16 04:05:18.607 | DEBUG    | acestep.core.generation.handler.generate_music_decode:_decode_generate_music_pred_latents:193 - [generate_music] After VAE decode: allocated=0.00GB, max=0.00GB
+2026-11-16 04:05:18.906 | INFO     | acestep.core.generation.handler.generate_music_payload:_build_generate_music_success_payload:38 - [generate_music] VAE decode completed. Preparing audio tensors...
+2026-11-16 04:05:18.907 | INFO     | acestep.core.generation.handler.generate_music_payload:_build_generate_music_success_payload:50 - [generate_music] Done! Generated 1 audio tensors.
+2026-11-16 04:05:18.984 | INFO     | acestep.inference:generate_music:1002 - [Normalization] Audio 0 BEFORE: Peak=1.0000, Target=-1.0dB
+2026-11-16 04:05:18.996 | INFO     | acestep.inference:generate_music:1007 - [Normalization] Audio 0 AFTER: Peak=0.8913
+2026-11-16 04:05:19.023 | DEBUG    | acestep.audio_utils:save_audio:339 - [AudioSaver] Fallback soundfile Saved audio to /var/folders/kr/yzg4k4755rl9vylp530k4vjh0000gn/T/tmp6xme9miq/69e29893-d527-e2e8-7d38-afa21d7235ca.wav (wav, 48000Hz)
+generate_seconds=7.0
+       16.36 real         4.50 user         5.70 sys
+         14816870400  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+             1301895  page reclaims
+              385635  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                  48  messages sent
+                   0  messages received
+                   0  signals received
+                8746  voluntary context switches
+              192025  involuntary context switches
+        112131760274  instructions retired
+         39902578216  cycles elapsed
+         50756281056  peak memory footprint

@@ -1,0 +1,175 @@
+W1116 04:03:33.873000 87917 torch/distributed/elastic/multiprocessing/redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.
+2026-11-16 04:03:34.605 | WARNING  | acestep.training.trainer:<module>:40 - bitsandbytes not installed. Using standard AdamW.
+2026-11-16 04:03:34.624 | INFO     | acestep.gpu_config:get_gpu_config:846 - macOS MPS detected (36.0 GB unified memory, tier=unlimited). Applying Apple Silicon optimizations: no compile, no quantization, mlx backend, no CPU offload.
+2026-11-16 04:03:34.626 | INFO     | acestep.core.generation.handler.init_service_loader:_load_main_model_from_checkpoint:174 - [initialize_service] Attempting to load model with attention implementation: sdpa
+2026-11-16 04:03:38.925 | INFO     | acestep.core.generation.handler.mlx_dit_init:_init_mlx_dit:34 - [MLX-DiT] Native MLX DiT decoder initialized successfully (mx.compile=False).
+2026-11-16 04:03:39.438 | INFO     | acestep.core.generation.handler.mlx_vae_init:_init_mlx_vae:75 - [MLX-VAE] Decode/encode compiled with mx.compile().
+2026-11-16 04:03:39.438 | INFO     | acestep.core.generation.handler.mlx_vae_init:_init_mlx_vae:85 - [MLX-VAE] Native MLX VAE initialized (dtype=mlx.core.float32, compiled=True).
+2026-11-16 04:03:39.438 | INFO     | acestep.llm_inference:initialize:609 - loading 5Hz LM tokenizer... it may take 80~90s
+2026-11-16 04:03:47.442 | INFO     | acestep.llm_inference:initialize:613 - 5Hz LM tokenizer loaded successfully in 8.00 seconds
+2026-11-16 04:03:47.442 | INFO     | acestep.llm_inference:initialize:618 - Initializing constrained decoding processor...
+2026-11-16 04:03:47.442 | INFO     | acestep.llm_inference:initialize:624 - Setting constrained decoding max_duration to 600s based on GPU config (tier: unlimited)
+2026-11-16 04:03:47.903 | DEBUG    | acestep.constrained_logits_processor:_precompute_audio_code_tokens:577 - Found 1535 audio code tokens with values outside valid range [0, 63999]
+2026-11-16 04:03:49.108 | INFO     | acestep.llm_inference:initialize:632 - Constrained processor initialized in 1.67 seconds
+2026-11-16 04:03:49.108 | INFO     | acestep.llm_inference:initialize:659 - flash_attn not installed: disabling CUDA graph capture for nano-vllm (SDPA fallback uses .item() calls in paged-cache decode that are incompatible with CUDA graph capture)
+2026-11-16 04:03:49.108 | INFO     | acestep.llm_inference:initialize:671 - Triton not available: disabling CUDA graph capture for nano-vllm (CUDA graphs require torch.compile which depends on Triton)
+2026-11-16 04:03:49.115 | INFO     | acestep.llm_inference:initialize:681 - Attempting MLX backend for Apple Silicon acceleration...
+2026-11-16 04:03:49.115 | INFO     | acestep.llm_inference:_load_mlx_model:2947 - Loading MLX model from ~/tapestry-spikes/ace-step/src/checkpoints/acestep-5Hz-lm-0.6B
+2026-11-16 04:03:57.484 | INFO     | acestep.llm_inference:_load_mlx_model:3003 - MLX model loaded successfully in 8.37s
+2026-11-16 04:03:57.514 | INFO     | acestep.inference:generate_music:662 - [generate_music] LLM usage decision: thinking=True, use_cot_caption=True, use_cot_language=True, use_cot_metas=True, need_lm_for_cot=True, llm_initialized=True, use_lm=True
+2026-11-16 04:03:57.514 | INFO     | acestep.inference:generate_music:720 - LM chunk 1/1 (infer_type=llm_dit) (size: 1, seeds: [1])
+2026-11-16 04:03:57.514 | INFO     | acestep.llm_inference:generate_with_stop_condition:1371 - Phase 1: Generating CoT metadata...
+2026-11-16 04:03:57.522 | INFO     | acestep.llm_inference:generate_with_stop_condition:1377 - generate_with_stop_condition: formatted_prompt=<|im_start|>system
+# Instruction
+Generate audio semantic tokens based on the given conditions:
+
+<|im_end|>
+<|im_start|>user
+# Caption
+Calm, melancholic folk instrumental for a film score: solo acoustic guitar and soft cello, slow tempo, sea at dawn
+
+# Lyric
+
+<|im_end|>
+<|im_start|>assistant
+
+2026-11-16 04:03:57.564 | INFO     | acestep.llm_inference:_run_mlx_single_native:3595 - MLX native prefill: 60 tokens in 0.04s (1455.5 tok/s)
+load_seconds=22.9
+MLX Gen (native):   0%|          | 0/3500 [00:00<?, ?tok/s]MLX Gen (native):   0%|          | 12/3500 [00:00<00:29, 116.86tok/s]MLX Gen (native):   1%|          | 24/3500 [00:00<00:29, 117.72tok/s]MLX Gen (native):   1%|          | 36/3500 [00:00<00:29, 118.01tok/s]MLX Gen (native):   1%|▏         | 49/3500 [00:00<00:28, 119.50tok/s]MLX Gen (native):   2%|▏         | 62/3500 [00:00<00:28, 120.06tok/s]MLX Gen (native):   2%|▏         | 75/3500 [00:00<00:28, 120.48tok/s]MLX Gen (native):   3%|▎         | 88/3500 [00:00<00:28, 120.83tok/s]MLX Gen (native):   3%|▎         | 101/3500 [00:00<00:28, 120.76tok/s]MLX Gen (native):   3%|▎         | 114/3500 [00:00<00:28, 120.78tok/s]MLX Gen (native):   4%|▎         | 127/3500 [00:01<00:27, 121.11tok/s]MLX Gen (native):   4%|▍         | 137/3500 [00:01<00:27, 120.37tok/s]
+2026-11-16 04:03:58.729 | INFO     | acestep.llm_inference:_run_mlx_single_native:3711 - MLX native generation complete: 137 tokens in 1.17s (117.6 tok/s) | prefill 0.04s + decode 1.17s = 1.21s total
+2026-11-16 04:03:58.729 | DEBUG    | acestep.llm_inference:parse_lm_output:2813 - Debug output text: <think>
+bpm: 70
+caption: A gentle and introspective instrumental piece led by a clean-toned acoustic
+  guitar playing delicate arpeggios with spacious reverb. A mournful cello enters,
+  weaving long, expressive melodic lines that contrast with the guitar's steady harmonic
+  foundation. The arrangement is sparse and cinematic, creating a pensive and slightly
+  melancholic atmosphere perfect for reflection or storytelling. The track builds
+  subtly through layered strings before resolving into its final chord progression
+  and fading to silence.
+duration: 30
+keyscale: G major
+language: unknown
+timesignature: 4
+<|im_end|>
+2026-11-16 04:03:58.730 | INFO     | acestep.llm_inference:generate_with_stop_condition:1422 - Phase 1 completed in 1.22s. Generated metadata: ['bpm', 'caption', 'duration', 'keyscale', 'language', 'timesignature']
+2026-11-16 04:03:58.730 | INFO     | acestep.llm_inference:generate_with_stop_condition:1482 - Phase 2: Generating audio codes...
+2026-11-16 04:03:58.731 | INFO     | acestep.llm_inference:generate_with_stop_condition:1490 - generate_with_stop_condition: formatted_prompt_with_cot=<|im_start|>system
+# Instruction
+Generate audio semantic tokens based on the given conditions:
+
+<|im_end|>
+<|im_start|>user
+# Caption
+Calm, melancholic folk instrumental for a film score: solo acoustic guitar and soft cello, slow tempo, sea at dawn
+
+# Lyric
+
+<|im_end|>
+<|im_start|>assistant
+<think>
+bpm: 70
+caption: A gentle and introspective instrumental piece led by a clean-toned acoustic
+  guitar playing delicate arpeggios with spacious reverb. A mournful cello enters,
+  weaving long, expressive melodic lines that contrast with the guitar's steady harmonic
+  foundation. The arrangement is sparse and cinematic, creating a pensive and slightly
+  melancholic atmosphere perfect for reflection or storytelling. The track builds
+  subtly through layered strings before resolving into its final chord progression
+  and fading to silence.
+duration: 30
+keyscale: G major
+language: unknown
+timesignature: 4
+</think>
+
+
+2026-11-16 04:03:58.732 | INFO     | acestep.llm_inference:_run_mlx_single_native:3514 - MLX native: pre-transitioned FSM to CODES_GENERATION (native fast path)
+2026-11-16 04:03:58.733 | INFO     | acestep.llm_inference:_build_unconditional_prompt:395 - CFG unconditional prompt (phase=codes, is_batch=False, negative_prompt='NO USER INPUT'):
+<|im_start|>system
+# Instruction
+Generate audio semantic tokens based on the given conditions:
+
+<|im_end|>
+<|im_start|>user
+NO USER INPUT<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+
+2026-11-16 04:03:58.802 | INFO     | acestep.llm_inference:_run_mlx_single_native:3571 - MLX native prefill: 231 tokens (cond=198, uncond=33) in 0.07s (3298.6 tok/s)
+MLX CFG Gen (native):   0%|          | 0/160 [00:00<?, ?tok/s]MLX CFG Gen (native):   6%|▋         | 10/160 [00:00<00:01, 97.04tok/s]MLX CFG Gen (native):  12%|█▎        | 20/160 [00:00<00:01, 91.49tok/s]MLX CFG Gen (native):  19%|█▉        | 30/160 [00:00<00:01, 89.96tok/s]MLX CFG Gen (native):  25%|██▌       | 40/160 [00:00<00:01, 89.05tok/s]MLX CFG Gen (native):  31%|███       | 49/160 [00:00<00:01, 88.67tok/s]MLX CFG Gen (native):  36%|███▋      | 58/160 [00:00<00:01, 88.81tok/s]MLX CFG Gen (native):  42%|████▏     | 67/160 [00:00<00:01, 88.04tok/s]MLX CFG Gen (native):  48%|████▊     | 76/160 [00:00<00:00, 88.52tok/s]MLX CFG Gen (native):  53%|█████▎    | 85/160 [00:00<00:00, 87.66tok/s]MLX CFG Gen (native):  59%|█████▉    | 94/160 [00:01<00:00, 88.21tok/s]MLX CFG Gen (native):  64%|██████▍   | 103/160 [00:01<00:00, 88.48tok/s]MLX CFG Gen (native):  70%|███████   | 112/160 [00:01<00:00, 88.52tok/s]MLX CFG Gen (native):  76%|███████▌  | 121/160 [00:01<00:00, 88.87tok/s]MLX CFG Gen (native):  81%|████████▏ | 130/160 [00:01<00:00, 88.89tok/s]MLX CFG Gen (native):  88%|████████▊ | 140/160 [00:01<00:00, 89.41tok/s]MLX CFG Gen (native):  94%|█████████▍| 150/160 [00:01<00:00, 89.72tok/s]MLX CFG Gen (native):  94%|█████████▍| 151/160 [00:01<00:00, 89.14tok/s]
+2026-11-16 04:04:00.496 | INFO     | acestep.llm_inference:_run_mlx_single_native:3711 - MLX native generation complete: 151 tokens in 1.69s (89.1 tok/s) | prefill 0.07s + decode 1.69s = 1.76s total
+2026-11-16 04:04:00.496 | DEBUG    | acestep.llm_inference:parse_lm_output:2813 - Debug output text: <|audio_code_58824|><|audio_code_8185|><|audio_code_53186|><|audio_code_58337|><|audio_code_50973|><|audio_code_15935|><|audio_code_12302|><|audio_code_27246|><|audio_code_41677|><|audio_code_15420|><|audio_code_61756|><|audio_code_5053|><|audio_code_50596|><|audio_code_11286|><|audio_code_41032|><|audio_code_58877|><|audio_code_63998|><|audio_code_12717|><|audio_code_9187|><|audio_code_9636|><|audio_code_9132|><|audio_code_12765|><|audio_code_11957|><|audio_code_12013|><|audio_code_19613|><|audio_code_28244|><|audio_code_31475|><|audio_code_15548|><|audio_code_11195|><|audio_code_23996|><|audio_code_44086|><|audio_code_14954|><|audio_code_32116|><|audio_code_23918|><|audio_code_31556|><|audio_code_445|><|audio_code_8125|><|audio_code_12221|><|audio_code_12677|><|audio_code_9911|><|audio_code_9870|><|audio_code_2205|><|audio_code_30302|><|audio_code_41557|><|audio_code_28228|><|audio_code_43455|><|audio_code_43781|><|audio_code_4758|><|audio_code_53285|><|audio_code_60948|><|audio_code_26415|><|audio_code_1886|><|audio_code_36671|><|audio_code_14277|><|audio_code_25521|><|audio_code_23427|><|audio_code_2460|><|audio_code_36734|><|audio_code_26751|><|audio_code_24455|><|audio_code_17518|><|audio_code_34303|><|audio_code_2347|><|audio_code_47046|><|audio_code_7523|><|audio_code_36141|><|audio_code_2155|><|audio_code_23091|><|audio_code_63803|><|audio_code_22344|><|audio_code_13241|><|audio_code_51592|><|audio_code_31616|><|audio_code_25803|><|audio_code_38656|><|audio_code_20793|><|audio_code_63994|><|audio_code_12064|><|audio_code_4944|><|audio_code_14280|><|audio_code_15696|><|audio_code_15235|><|audio_code_30228|><|audio_code_36480|><|audio_code_23988|><|audio_code_10629|><|audio_code_5508|><|audio_code_5444|><|audio_code_8644|><|audio_code_8581|><|audio_code_20230|><|audio_code_25445|><|audio_code_60125|><|audio_code_28373|><|audio_code_28747|><|audio_code_38716|><|audio_code_36669|><|audio_code_24445|><|audio_code_18886|><|audio_code_49278|><|audio_code_28865|><|audio_code_15685|><|audio_code_21316|><|audio_code_13124|><|audio_code_18365|><|audio_code_36348|><|audio_code_61886|><|audio_code_63855|><|audio_code_36150|><|audio_code_11510|><|audio_code_11958|><|audio_code_2213|><|audio_code_55909|><|audio_code_29342|><|audio_code_16077|><|audio_code_260|><|audio_code_30230|><|audio_code_58403|><|audio_code_41492|><|audio_code_28479|><|audio_code_1429|><|audio_code_35972|><|audio_code_53708|><|audio_code_9899|><|audio_code_9142|><|audio_code_6892|><|audio_code_22903|><|audio_code_27798|><|audio_code_303|><|audio_code_37431|><|audio_code_1879|><|audio_code_15165|><|audio_code_15232|><|audio_code_15163|><|audio_code_4818|><|audio_code_25213|><|audio_code_19466|><|audio_code_38332|><|audio_code_53185|><|audio_code_23848|><|audio_code_26049|><|audio_code_52584|><|audio_code_22904|><|audio_code_38849|><|audio_code_53680|><|audio_code_22886|><|audio_code_35855|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|im_end|>
+2026-11-16 04:04:00.496 | INFO     | acestep.llm_inference:generate_with_stop_condition:1650 - Phase 2 completed in 1.77s. Generated 150 audio codes
+2026-11-16 04:04:00.497 | INFO     | acestep.core.generation.handler.generate_music:generate_music:329 - [generate_music] Starting generation...
+2026-11-16 04:04:00.497 | INFO     | acestep.core.generation.handler.generate_music:generate_music:332 - [generate_music] Preparing inputs...
+2026-11-16 04:04:00.498 | INFO     | acestep.core.generation.handler.generate_music_request:_prepare_reference_and_source_audio:204 - [generate_music] cover task: no src_audio but audio codes provided, proceeding with codes
+2026-11-16 04:04:00.511 | INFO     | acestep.core.generation.handler.conditioning_target:_prepare_target_latents_and_wavs:78 - [generate_music] Decoding audio codes for item 0...
+2026-11-16 04:04:00.679 | INFO     | acestep.core.generation.handler.conditioning_text:_prepare_precomputed_lm_hints:31 - [generate_music] Decoding audio codes for LM hints for item 0...
+2026-11-16 04:04:00.682 | INFO     | acestep.core.generation.handler.conditioning_text:_prepare_text_conditioning_inputs:119 - 
+======================================================================
+2026-11-16 04:04:00.682 | INFO     | acestep.core.generation.handler.conditioning_text:_prepare_text_conditioning_inputs:120 - 🔍 [DEBUG] DiT TEXT ENCODER INPUT (Inference)
+2026-11-16 04:04:00.682 | INFO     | acestep.core.generation.handler.conditioning_text:_prepare_text_conditioning_inputs:121 - ======================================================================
+2026-11-16 04:04:00.682 | INFO     | acestep.core.generation.handler.conditioning_text:_prepare_text_conditioning_inputs:122 - text_prompt:
+# Instruction
+Generate audio semantic tokens based on the given conditions:
+
+# Caption
+A gentle and introspective instrumental piece led by a clean-toned acoustic guitar playing delicate arpeggios with spacious reverb. A mournful cello enters, weaving long, expressive melodic lines that contrast with the guitar's steady harmonic foundation. The arrangement is sparse and cinematic, creating a pensive and slightly melancholic atmosphere perfect for reflection or storytelling. The track builds subtly through layered strings before resolving into its final chord progression and fading to silence.
+
+# Metas
+- bpm: 70
+- timesignature: 4
+- keyscale: G major
+- duration: 30 seconds
+<|endoftext|>
+
+2026-11-16 04:04:00.682 | INFO     | acestep.core.generation.handler.conditioning_text:_prepare_text_conditioning_inputs:123 - ======================================================================
+2026-11-16 04:04:00.682 | INFO     | acestep.core.generation.handler.conditioning_text:_prepare_text_conditioning_inputs:124 - lyrics_text:
+# Languages
+unknown
+
+# Lyric
+<|endoftext|>
+2026-11-16 04:04:00.682 | INFO     | acestep.core.generation.handler.conditioning_text:_prepare_text_conditioning_inputs:125 - ======================================================================
+
+2026-11-16 04:04:00.724 | INFO     | acestep.core.generation.handler.conditioning_embed:preprocess_batch:110 - [preprocess_batch] Inferring prompt embeddings...
+2026-11-16 04:04:00.877 | INFO     | acestep.core.generation.handler.conditioning_embed:preprocess_batch:113 - [preprocess_batch] Inferring lyric embeddings...
+2026-11-16 04:04:00.880 | INFO     | acestep.core.generation.handler.service_generate_execute:_execute_service_generate_diffusion:173 - [service_generate] Generating audio... (DiT backend: MLX (native))
+2026-11-16 04:04:01.058 | INFO     | acestep.models.mlx.dit_generate:mlx_generate_diffusion:410 - [MLX-DiT] DCW enabled (mode=double, scaler=0.050, high_scaler=0.020, wavelet=haar, backend=MLX-native Haar).
+Using precomputed LM hints
+MLX DiT diffusion:   0%|          | 0/8 [00:00<?, ?it/s]MLX DiT diffusion:  12%|█▎        | 1/8 [00:00<00:01,  4.70it/s]MLX DiT diffusion:  25%|██▌       | 2/8 [00:00<00:01,  4.81it/s]MLX DiT diffusion:  38%|███▊      | 3/8 [00:00<00:01,  4.88it/s]MLX DiT diffusion:  50%|█████     | 4/8 [00:00<00:00,  4.91it/s]MLX DiT diffusion:  62%|██████▎   | 5/8 [00:01<00:00,  4.92it/s]MLX DiT diffusion:  75%|███████▌  | 6/8 [00:01<00:00,  4.93it/s]MLX DiT diffusion:  88%|████████▊ | 7/8 [00:01<00:00,  4.93it/s]MLX DiT diffusion: 100%|██████████| 8/8 [00:01<00:00,  4.94it/s]MLX DiT diffusion: 100%|██████████| 8/8 [00:01<00:00,  4.91it/s]
+2026-11-16 04:04:02.688 | INFO     | acestep.core.generation.handler.service_generate_execute:_execute_service_generate_diffusion:267 - [service_generate] DiT diffusion complete via MLX (1.63s total, 0.204s/step).
+2026-11-16 04:04:02.688 | INFO     | acestep.core.generation.handler.generate_music_decode:_prepare_generate_music_decode_state:42 - [generate_music] Model generation completed. Decoding latents...
+2026-11-16 04:04:02.689 | DEBUG    | acestep.core.generation.handler.generate_music_decode:_prepare_generate_music_decode_state:64 - [generate_music] pred_latents: torch.Size([1, 750, 64]), dtype=torch.float32
+2026-11-16 04:04:02.689 | DEBUG    | acestep.core.generation.handler.generate_music_decode:_prepare_generate_music_decode_state:65 - [generate_music] time_costs: {'diffusion_time_cost': 1.630692720413208, 'diffusion_per_step_time_cost': 0.203836590051651, 'total_time_cost': 1.6309409141540527, 'sampler_mode': 'euler', 'offload_time_cost': 0.0}
+2026-11-16 04:04:02.701 | INFO     | acestep.core.generation.handler.generate_music_decode:_decode_generate_music_pred_latents:127 - [generate_music] Decoding latents with VAE...
+2026-11-16 04:04:02.707 | DEBUG    | acestep.core.generation.handler.generate_music_decode:_decode_generate_music_pred_latents:136 - [generate_music] Before VAE decode: allocated=0.00GB, max=0.00GB
+2026-11-16 04:04:02.707 | INFO     | acestep.core.generation.handler.generate_music_decode:_decode_generate_music_pred_latents:172 - [generate_music] Using tiled VAE decode to reduce VRAM usage...
+2026-11-16 04:04:07.050 | INFO     | acestep.core.generation.handler.mlx_vae_decode_native:_mlx_vae_decode:66 - [MLX-VAE] Decoded 1 sample(s), 750 latent frames -> audio in 4.34s (convert=0.001s, decode=4.34s, dtype=mlx.core.float32)
+2026-11-16 04:04:07.050 | DEBUG    | acestep.core.generation.handler.generate_music_decode:_decode_generate_music_pred_latents:193 - [generate_music] After VAE decode: allocated=0.00GB, max=0.00GB
+2026-11-16 04:04:07.201 | INFO     | acestep.core.generation.handler.generate_music_payload:_build_generate_music_success_payload:38 - [generate_music] VAE decode completed. Preparing audio tensors...
+2026-11-16 04:04:07.201 | INFO     | acestep.core.generation.handler.generate_music_payload:_build_generate_music_success_payload:50 - [generate_music] Done! Generated 1 audio tensors.
+2026-11-16 04:04:07.434 | INFO     | acestep.inference:generate_music:1002 - [Normalization] Audio 0 BEFORE: Peak=1.0000, Target=-1.0dB
+2026-11-16 04:04:07.446 | INFO     | acestep.inference:generate_music:1007 - [Normalization] Audio 0 AFTER: Peak=0.8913
+2026-11-16 04:04:07.472 | DEBUG    | acestep.audio_utils:save_audio:339 - [AudioSaver] Fallback soundfile Saved audio to /var/folders/kr/yzg4k4755rl9vylp530k4vjh0000gn/T/tmpg064li0y/9a1d2330-53fb-876c-2481-0ee52bff1180.wav (wav, 48000Hz)
+generate_seconds=10.0
+       36.68 real        24.47 user         8.69 sys
+         14823030784  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+             1630448  page reclaims
+              215364  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                 110  messages sent
+                   0  messages received
+                   0  signals received
+                7041  voluntary context switches
+              269342  involuntary context switches
+        707936757057  instructions retired
+        131231971281  cycles elapsed
+         49938753208  peak memory footprint

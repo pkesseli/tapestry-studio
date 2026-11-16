@@ -1,0 +1,24 @@
+W1116 04:37:02.511000 89382 torch/distributed/elastic/multiprocessing/redirects.py:35] NOTE: Redirects are currently not supported in MacOs.
+[transformers] Model config: pad_token_id must be `None` or an integer within the vocabulary (between 0 and 2047), got 2048. This may result in unexpected behavior.
+[transformers] Model config: bos_token_id must be `None` or an integer within the vocabulary (between 0 and 2047), got 2048. This may result in unexpected behavior.
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/996 [00:00<?, ?it/s]Loading weights: 100%|██████████| 996/996 [00:00<00:00, 59409.07it/s]
+device=mps generate_seconds=71.4
+       75.91 real        17.43 user         1.99 sys
+          1761345536  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+              160238  page reclaims
+                   2  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                  41  messages sent
+                 104  messages received
+                   0  signals received
+                  24  voluntary context switches
+               39530  involuntary context switches
+        248879115800  instructions retired
+         77414910520  cycles elapsed
+         14467353576  peak memory footprint

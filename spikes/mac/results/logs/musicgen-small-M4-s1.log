@@ -1,0 +1,23 @@
+W1116 04:30:05.541000 89090 torch/distributed/elastic/multiprocessing/redirects.py:35] NOTE: Redirects are currently not supported in MacOs.
+[transformers] Model config: pad_token_id must be `None` or an integer within the vocabulary (between 0 and 2047), got 2048. This may result in unexpected behavior.
+[transformers] Model config: bos_token_id must be `None` or an integer within the vocabulary (between 0 and 2047), got 2048. This may result in unexpected behavior.
+Loading weights:   0%|          | 0/611 [00:00<?, ?it/s]Loading weights: 100%|██████████| 611/611 [00:00<00:00, 21201.23it/s]
+device=mps generate_seconds=23.5
+       27.01 real        11.38 user         1.19 sys
+          1730215936  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+              151300  page reclaims
+                   5  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                  33  messages sent
+                  76  messages received
+                   0  signals received
+                  18  voluntary context switches
+               39160  involuntary context switches
+        157707866694  instructions retired
+         49790819146  cycles elapsed
+          6376589736  peak memory footprint

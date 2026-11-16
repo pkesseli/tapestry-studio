@@ -167,15 +167,18 @@
     },
     {
       "id": "ace-step-mlx",
-      "name": "ACE-Step 1.5 on MLX (music)",
+      "name": "ACE-Step 1.5 (music)",
       "kind": "music",
       "priority": 1,
       "runtime": "mlx",
       "why": "Full songs with vocals from a style prompt and lyrics; one listing says about 8 GB for the 8-bit turbo model.",
-      "setup": "Follow the ACE-Step MLX wrapper's README; about 6 GB download.",
-      "sources": ["https://github.com/ddalcu/mlx-serve"],
-      "licenseCheck": "Check the ACE-Step licence on the model card.",
-      "tests": "One 60 s instrumental from a style prompt and one 30 s sung verse."
+      "setup": "ACE-Step 1.5 from its git repository with uv sync; it uses MLX on macOS by itself. Turbo, sft and xl-turbo music models and the 0.6B, 1.7B and 4B planning LMs, about 45 GB in all.",
+      "sources": [
+        "https://github.com/ACE-Step/ACE-Step-1.5",
+        "https://huggingface.co/ACE-Step/Ace-Step1.5"
+      ],
+      "licenseCheck": "MIT per the Hugging Face cards, not gated (read 2026-11-15).",
+      "tests": "The five briefs in spikes/music/cues.json: turbo with each LM size and without, sft, xl-turbo, and a second seed."
     },
     {
       "id": "musicgen",

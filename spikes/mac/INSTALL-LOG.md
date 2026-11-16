@@ -305,3 +305,23 @@ uses unsloth's GGUF quantisations.
   loads each part from disk when needed; peak footprint 22.3 GB.
 - First result (S01, t2v turbo): 973 s per clip = text encoding 7 s, sampling 841 s (6 steps, about 140 s each),
   video decode 118 s, audio decode 4 s. Audio track present (32 kHz stereo upstream; AAC in the mp4 copy).
+
+## ace-step-mlx and musicgen medium — 2026-11-16 (music round)
+
+- ACE-Step 1.5: `git clone --depth 1 https://github.com/ACE-Step/ACE-Step-1.5.git` → commit ca1e85f (2026-08-29), then
+  `uv sync` from its lockfile (Python 3.12.16, torch 2.10.0, mlx 0.30.6). MIT, not gated. On macOS it picks MLX for
+  the music model, the VAE and the 5 Hz language model by itself (`acestep.gpu_config`: "no CPU offload").
+- Models (about 45 GB in all), from the checkout: `.venv/bin/acestep-download` (main: turbo music model, VAE,
+  Qwen3-Embedding-0.6B, 1.7B LM; 10.1 GB), then `--skip-main --model` for `acestep-v15-sft` (4.8 GB),
+  `acestep-v15-xl-turbo` (20.0 GB, just under the 20 GB stop), `acestep-5Hz-lm-0.6B` (1.4 GB), `acestep-5Hz-lm-4B`
+  (8.4 GB). 12 minutes.
+- Command: `sh spikes/mac/scripts/music-cue.sh acestep <turbo|sft|xl-turbo> <none|0.6B|1.7B|4B> <cue> [seed]`, which
+  benches `spikes/mac/scripts/acestep_cue.py` on the briefs in `spikes/music/cues.json` (four 30 s score cues, one
+  60 s song with lyrics).
+- Gotcha: peak footprint is 46-48 GB for every ACE-Step run (58 GB for XL), on a 48 GB Mac, even though the turbo
+  music model takes 2 s to sample. MLX keeps its buffer cache, so the number is what it grabbed, not what it needs;
+  but it means ACE-Step cannot share the Mac with a video render without a cache limit (`mx.set_cache_limit`,
+  untested).
+- MusicGen medium: same venv and script as `musicgen` with `--model facebook/musicgen-medium` (CC-BY-NC-4.0, not
+  gated); `sh spikes/mac/scripts/music-cue.sh musicgen <small|medium> - <cue>`. 30 s cap; the song brief runs as
+  30 s instrumental from the caption, since MusicGen takes no lyrics.

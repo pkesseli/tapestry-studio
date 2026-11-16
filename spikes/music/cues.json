@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "about": "Fixed music briefs for the local music spike: four film-score cues and one song, the same for every model.",
+  "cues": [
+    {
+      "id": "M1",
+      "name": "tense",
+      "seconds": 30,
+      "caption": "Tense cinematic underscore for a night scene: low string ostinato, pulsing synth bass, sparse metallic percussion, minor key, slowly building, instrumental",
+      "bpm": 90,
+      "keyscale": "D minor"
+    },
+    {
+      "id": "M2",
+      "name": "warm",
+      "seconds": 30,
+      "caption": "Calm, melancholic folk instrumental for a film score: solo acoustic guitar and soft cello, slow tempo, sea at dawn",
+      "bpm": 70,
+      "keyscale": "G major"
+    },
+    {
+      "id": "M3",
+      "name": "action",
+      "seconds": 30,
+      "caption": "Driving action cue for a chase: taiko drums, staccato strings, short brass hits, fast and relentless, instrumental",
+      "bpm": 140,
+      "keyscale": "E minor"
+    },
+    {
+      "id": "M4",
+      "name": "ambient",
+      "seconds": 30,
+      "caption": "Ambient bed under dialogue: slow evolving synth pads, distant felt piano notes, calm and spacious, no drums, instrumental",
+      "bpm": 60,
+      "keyscale": "C major"
+    },
+    {
+      "id": "M5",
+      "name": "song",
+      "seconds": 60,
+      "caption": "Melancholic indie pop ballad, female vocal, piano and soft brushed drums, intimate and warm",
+      "bpm": 80,
+      "keyscale": "A minor",
+      "lyrics": "[Verse]\nThe ferry leaves at seven\nThe harbour lights go dim\nI kept your coat beside me\nAnd waited by the rim\n\n[Chorus]\nSo call me from the water\nSay the tide will bring you home\nI'll leave the porch light burning\nSo you never sail alone"
+    }
+  ]
+}
