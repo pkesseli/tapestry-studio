@@ -54,6 +54,16 @@
       .muted {
         color: var(--muted);
       }
+      a {
+        color: var(--accent);
+        font-weight: 600;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+      a:focus-visible {
+        outline: 3px solid var(--accent);
+        outline-offset: 2px;
+      }
       .bar {
         display: flex;
         gap: 12px;
