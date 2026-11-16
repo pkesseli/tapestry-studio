@@ -81,7 +81,8 @@ const result = await runMeasured({
 });
 // Logs and run records are committed: keep the account name (part of every absolute path) out of them.
 const logFile = join(results, 'logs', `${label}.log`);
-if (existsSync(logFile)) writeFileSync(logFile, redactHome(readFileSync(logFile, 'utf8'), homedir()));
+if (existsSync(logFile))
+  writeFileSync(logFile, redactHome(readFileSync(logFile, 'utf8'), homedir()));
 
 const systemFile = join(results, 'system.json');
 const machine = existsSync(systemFile) ? JSON.parse(readFileSync(systemFile, 'utf8')) : null;

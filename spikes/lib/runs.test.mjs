@@ -2,7 +2,14 @@ import { mkdtempSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
-import { appendRun, median, parseTimeOutput, readRuns, redactHome, summarizeRuns } from './runs.mjs';
+import {
+  appendRun,
+  median,
+  parseTimeOutput,
+  readRuns,
+  redactHome,
+  summarizeRuns,
+} from './runs.mjs';
 
 /** What macOS `/usr/bin/time -l` prints after a command. */
 const MAC_TIME = `
@@ -22,11 +29,19 @@ test('reads seconds and peak memory from the macOS time report', () => {
 
 test('prefers the peak memory footprint, which counts GPU memory, over the resident size', () => {
   const text = `${MAC_TIME}          30000000000  peak memory footprint\n`;
-  expect(parseTimeOutput(text)).toEqual({ realSeconds: 95.42, peakBytes: 30000000000, rssBytes: 21474836480 });
+  expect(parseTimeOutput(text)).toEqual({
+    realSeconds: 95.42,
+    peakBytes: 30000000000,
+    rssBytes: 21474836480,
+  });
 });
 
 test('a missing report gives nulls, not a crash', () => {
-  expect(parseTimeOutput('nothing here')).toEqual({ realSeconds: null, peakBytes: null, rssBytes: null });
+  expect(parseTimeOutput('nothing here')).toEqual({
+    realSeconds: null,
+    peakBytes: null,
+    rssBytes: null,
+  });
 });
 
 test('runs are appended one per line and read back, skipping damaged lines', () => {
@@ -64,6 +79,8 @@ test('a candidate summary counts outcomes and reports the largest memory use', (
 
 test('the home folder is replaced with ~ everywhere, and an empty home changes nothing', () => {
   const text = 'log /Users/me/x.log and /Users/me/y; /Users/meow stays apart from its prefix';
-  expect(redactHome(text, '/Users/me')).toBe('log ~/x.log and ~/y; ~ow stays apart from its prefix');
+  expect(redactHome(text, '/Users/me')).toBe(
+    'log ~/x.log and ~/y; ~ow stays apart from its prefix',
+  );
   expect(redactHome(text, '')).toBe(text);
 });

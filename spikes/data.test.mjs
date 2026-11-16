@@ -48,9 +48,9 @@ test('the ten test shots are unique, the smoke set and references exist', () => 
   }
 });
 
-test('the MiniMax candidate keeps its warning to read the licence first', () => {
+test('the MiniMax candidate says either that the licence must be read first or that a human did', () => {
   const { candidates } = read('mac/candidates.json');
   expect(candidates.find((c) => c.id === 'minimax-h3-gguf').licenseCheck).toMatch(
-    /HUMAN MUST READ/,
+    /HUMAN MUST READ|Human read and approved/,
   );
 });

@@ -47,7 +47,10 @@ const MODELS = {
   'wan21-1.3b': {
     unet: {
       class_type: 'UNETLoader',
-      inputs: { unet_name: 'split_files/diffusion_models/wan2.1_t2v_1.3B_fp16.safetensors', weight_dtype: 'default' },
+      inputs: {
+        unet_name: 'split_files/diffusion_models/wan2.1_t2v_1.3B_fp16.safetensors',
+        weight_dtype: 'default',
+      },
     },
     vae: 'split_files/vae/wan_2.1_vae.safetensors',
     latent: 'EmptyHunyuanLatentVideo',
@@ -57,7 +60,10 @@ const MODELS = {
     frames: 65,
   },
   'wan22-fun-5b-control': {
-    unet: { class_type: 'UnetLoaderGGUF', inputs: { unet_name: 'Wan2.2-Fun-5B-Control-Q8_0.gguf' } },
+    unet: {
+      class_type: 'UnetLoaderGGUF',
+      inputs: { unet_name: 'Wan2.2-Fun-5B-Control-Q8_0.gguf' },
+    },
     vae: 'split_files/vae/wan2.2_vae.safetensors',
     latent: 'Wan22FunControlToVideo',
     steps: 20,
@@ -101,13 +107,19 @@ if (values.image && values.model !== 'wan22-5b') {
   process.exit(2);
 }
 if (funControl !== Boolean(values.control) || (values.ref && !funControl)) {
-  console.error('--model wan22-fun-5b-control needs --control; --control and --ref need that model.');
+  console.error(
+    '--model wan22-fun-5b-control needs --control; --control and --ref need that model.',
+  );
   process.exit(2);
 }
 
-const prompt = execFileSync('node', [new URL('./shot-prompt.mjs', import.meta.url).pathname, values.shot], {
-  encoding: 'utf8',
-}).trim();
+const prompt = execFileSync(
+  'node',
+  [new URL('./shot-prompt.mjs', import.meta.url).pathname, values.shot],
+  {
+    encoding: 'utf8',
+  },
+).trim();
 
 /**
  * Builds the ComfyUI API-format workflow for the chosen model: model loader, GGUF text encoder, VAE, text-to-video
@@ -120,7 +132,10 @@ const prompt = execFileSync('node', [new URL('./shot-prompt.mjs', import.meta.ur
 function workflow(uploaded) {
   const nodes = {
     unet: model.unet,
-    clip: { class_type: 'CLIPLoaderGGUF', inputs: { clip_name: 'umt5-xxl-encoder-Q8_0.gguf', type: 'wan' } },
+    clip: {
+      class_type: 'CLIPLoaderGGUF',
+      inputs: { clip_name: 'umt5-xxl-encoder-Q8_0.gguf', type: 'wan' },
+    },
     vae: { class_type: 'VAELoader', inputs: { vae_name: model.vae } },
     shift: { class_type: 'ModelSamplingSD3', inputs: { model: ['unet', 0], shift: 8 } },
     pos: { class_type: 'CLIPTextEncode', inputs: { clip: ['clip', 0], text: prompt } },
@@ -161,10 +176,21 @@ function workflow(uploaded) {
   if (funControl) {
     // The Fun Control node takes the text conditioning and returns it with the control attached, so the sampler
     // reads positive, negative and latent from it instead of from the text encoders.
-    Object.assign(nodes.latent.inputs, { positive: ['pos', 0], negative: ['neg', 0], vae: ['vae', 0] });
-    Object.assign(nodes.sample.inputs, { positive: ['latent', 0], negative: ['latent', 1], latent_image: ['latent', 2] });
+    Object.assign(nodes.latent.inputs, {
+      positive: ['pos', 0],
+      negative: ['neg', 0],
+      vae: ['vae', 0],
+    });
+    Object.assign(nodes.sample.inputs, {
+      positive: ['latent', 0],
+      negative: ['latent', 1],
+      latent_image: ['latent', 2],
+    });
     nodes.controlFile = { class_type: 'LoadVideo', inputs: { file: uploaded.control } };
-    nodes.controlFrames = { class_type: 'GetVideoComponents', inputs: { video: ['controlFile', 0] } };
+    nodes.controlFrames = {
+      class_type: 'GetVideoComponents',
+      inputs: { video: ['controlFile', 0] },
+    };
     nodes.latent.inputs.control_video = ['controlFrames', 0];
     if (uploaded.ref) {
       nodes.ref = { class_type: 'LoadImage', inputs: { image: uploaded.ref } };
@@ -200,7 +226,8 @@ async function waitForPrompt(id) {
     const history = await (await fetch(`http://127.0.0.1:${PORT}/history/${id}`)).json();
     const entry = history[id];
     if (entry?.status?.completed) return entry;
-    if (entry?.status?.status_str === 'error') throw new Error(JSON.stringify(entry.status.messages).slice(0, 2000));
+    if (entry?.status?.status_str === 'error')
+      throw new Error(JSON.stringify(entry.status.messages).slice(0, 2000));
     await new Promise((r) => setTimeout(r, 2000));
   }
 }
@@ -210,8 +237,20 @@ const output = join(work, 'output');
 const input = join(work, 'input');
 const server = spawn(
   '/usr/bin/time',
-  ['-l', join(COMFY, '.venv', 'bin', 'python'), 'main.py', '--listen', '127.0.0.1', '--port', String(PORT),
-    '--output-directory', output, '--input-directory', input, '--disable-auto-launch'],
+  [
+    '-l',
+    join(COMFY, '.venv', 'bin', 'python'),
+    'main.py',
+    '--listen',
+    '127.0.0.1',
+    '--port',
+    String(PORT),
+    '--output-directory',
+    output,
+    '--input-directory',
+    input,
+    '--disable-auto-launch',
+  ],
   // Same process group as this driver, so bench.mjs's time limit (SIGKILL to the group) also stops the server.
   { cwd: join(COMFY, 'src'), stdio: ['ignore', 'inherit', 'inherit'] },
 );
@@ -221,8 +260,11 @@ let failed = false;
 try {
   await waitForServer(300);
   const uploaded = {};
-  for (const [role, file, ext] of [['start', values.image, '.png'], ['control', values.control, '.mp4'],
-    ['ref', values.ref, '.png']]) {
+  for (const [role, file, ext] of [
+    ['start', values.image, '.png'],
+    ['control', values.control, '.mp4'],
+    ['ref', values.ref, '.png'],
+  ]) {
     if (!file) continue;
     execFileSync('mkdir', ['-p', input]);
     uploaded[role] = `${role}${ext}`;
@@ -234,12 +276,31 @@ try {
     body: JSON.stringify({ prompt: workflow(uploaded) }),
   });
   const body = await res.json();
-  if (!res.ok) throw new Error(`ComfyUI rejected the workflow: ${JSON.stringify(body).slice(0, 2000)}`);
+  if (!res.ok)
+    throw new Error(`ComfyUI rejected the workflow: ${JSON.stringify(body).slice(0, 2000)}`);
   await waitForPrompt(body.prompt_id);
-  const frames = readdirSync(output).filter((f) => f.startsWith('frame') && f.endsWith('.png')).sort();
+  const frames = readdirSync(output)
+    .filter((f) => f.startsWith('frame') && f.endsWith('.png'))
+    .sort();
   console.log(`frames: ${frames.length}`);
-  execFileSync('ffmpeg', ['-loglevel', 'error', '-y', '-framerate', String(model.fps), '-pattern_type', 'glob', '-i',
-    join(output, 'frame_*.png'), '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '18', resolve(values.out)]);
+  execFileSync('ffmpeg', [
+    '-loglevel',
+    'error',
+    '-y',
+    '-framerate',
+    String(model.fps),
+    '-pattern_type',
+    'glob',
+    '-i',
+    join(output, 'frame_*.png'),
+    '-c:v',
+    'libx264',
+    '-pix_fmt',
+    'yuv420p',
+    '-crf',
+    '18',
+    resolve(values.out),
+  ]);
 } catch (error) {
   console.error(String(error));
   failed = true;

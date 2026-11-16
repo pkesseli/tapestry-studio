@@ -7,10 +7,14 @@
  */
 import { readFileSync } from 'node:fs';
 
-const shots = JSON.parse(readFileSync(new URL('../../draft-final/shots.json', import.meta.url), 'utf8')).shots;
+const shots = JSON.parse(
+  readFileSync(new URL('../../draft-final/shots.json', import.meta.url), 'utf8'),
+).shots;
 const shot = shots.find((s) => s.id === process.argv[2]);
 if (!shot) {
-  console.error(`Unknown shot ${process.argv[2]}; expected one of ${shots.map((s) => s.id).join(', ')}.`);
+  console.error(
+    `Unknown shot ${process.argv[2]}; expected one of ${shots.map((s) => s.id).join(', ')}.`,
+  );
   process.exit(2);
 }
 console.log(`${shot.prompt} Direction: ${shot.direction}.`);

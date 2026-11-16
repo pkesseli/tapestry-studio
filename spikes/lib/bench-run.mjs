@@ -109,7 +109,9 @@ export async function runMeasured({
   return {
     outcome,
     seconds,
-    ...(timed ? parseTimeOutput(errorText) : { realSeconds: null, peakBytes: null, rssBytes: null }),
+    ...(timed
+      ? parseTimeOutput(errorText)
+      : { realSeconds: null, peakBytes: null, rssBytes: null }),
     exitCode,
     signal,
     outputBytes,
