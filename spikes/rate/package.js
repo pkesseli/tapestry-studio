@@ -6,6 +6,31 @@ const SAVE_DELAY_MS = 400;
 /** Words under the ends of the 1 to 5 scale. */
 const SCALE_ENDS = ['Poor', 'Excellent'];
 
+/**
+ * What to judge, per folder of a package. Plain words for the person rating; the names of the files say how each clip
+ * was made, so they are not hidden here.
+ */
+const GUIDE = {
+  minimax: [
+    'One score per clip: how good is it as a take of the shot described under the heading? Does it show what the prompt says, does it look good, is the sound usable (these clips have sound)? 1 = unusable, 3 = okay, 5 = I would use it.',
+    'The file name says how it was made: t2v = from the text only; r2v = also given the reference pictures of Maria, Tom and the ferry deck; turbo = fast (15 to 18 minutes), full = slow (about 50 minutes).',
+    'The point is to compare. With r2v, are the people recognisable as the reference pictures? Is full clearly better than turbo, enough to be worth three times the time? Put it in the notes when you see a difference.',
+  ],
+  music: [
+    'One score per piece: how well does it fit the brief under the heading? M1 to M4 are 30 second film cues, M5 is a 60 second song: does it sing the lyrics clearly?',
+    'The file name says how it was made: acestep or musicgen is the model. lm0.6B, lm1.7B, lm4B and lmnone are the size of its planning model (bigger = slower, maybe better). sft = slower 50-step version, xl-turbo = the large model (about three times the time), s2 = a second try of the same thing.',
+    'The point is to compare: is a bigger or slower one audibly better, and is it worth the extra time? Say so in the notes.',
+  ],
+};
+
+/** What each comparison sheet shows and what it is for, by file name; unknown sheets get no explanation. */
+const SHEET_HELP = {
+  'reference-vs-text-sheet.png':
+    'Stills side by side: the reference picture, the clip made from text only, and the clip made with the reference. A quick check: does the reference keep the people recognisable?',
+  'turbo-vs-full-sheet.png':
+    'Stills side by side: text only (turbo | full), then with reference (turbo | full). A quick check: is the slow full version clearly better than the fast turbo one?',
+};
+
 const app = document.getElementById('app');
 let pkg = null;
 let rows = [];
@@ -147,6 +172,11 @@ function render() {
       'details',
       {},
       h('summary', {}, `Comparison sheet: ${sheet.split('/').pop()}`),
+      h(
+        'p',
+        { class: 'muted' },
+        SHEET_HELP[sheet.split('/').pop()] ?? 'Stills from several clips side by side.',
+      ),
       h('img', { src: `/${pkg.dir}/${sheet}`, alt: sheet }),
     ),
   );
@@ -162,22 +192,34 @@ function render() {
     h(
       'p',
       { class: 'muted' },
-      'Give each clip 1 to 5 and, if you like, a note. Your scores are saved as you click.',
+      'Give each clip a score from 1 to 5 and, if you like, a note. Your scores are saved as you click; there is no file to send.',
     ),
     ...(pkg.howTo
       ? [
           h(
             'details',
             {},
-            h('summary', {}, 'What to look for (from the Mac session)'),
+            h(
+              'summary',
+              {},
+              'Original notes from the Mac session (ignore the file and CSV steps: this page saves for you)',
+            ),
             h('pre', {}, pkg.howToText),
           ),
         ]
       : []),
     ...sheets,
   ];
+  const guided = new Set();
   for (const group of groups()) {
     const info = titles[group.id];
+    if (GUIDE[group.folder] && !guided.has(group.folder)) {
+      guided.add(group.folder);
+      nodes.push(
+        h('h2', {}, `${group.folder}: what to judge`),
+        h('div', { class: 'card' }, ...GUIDE[group.folder].map((line) => h('p', {}, line))),
+      );
+    }
     nodes.push(h('h2', {}, `${group.folder} · ${info ? info.title : (group.id ?? 'other')}`));
     if (info?.text) nodes.push(h('p', { class: 'prompt muted' }, info.text));
     nodes.push(h('div', { class: 'cards' }, ...group.rows.map(card)));
