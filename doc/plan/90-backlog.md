@@ -38,12 +38,20 @@ Items marked (parity) exist in AI Movie Studio 2 — implement from the idea onl
     (its framing, motion and who is in it, plus reference images), so it keeps what was approved. Staged model to
     validate: stages with candidates, one accepted per stage, a final records its source draft, `n` finals can be made and
     one picked, a redone draft marks older finals "made from an older draft" (see plan 10b).
-  - **Confidence gate:** before committing a whole film to the expensive pass, finish two or three shots first and
-    compare them with their drafts. The app offers this as a "pilot" step with an estimate for the rest.
-  - **Whole film estimate:** the approved drafts fix the shot list and durations, so the cost of the HQ pass is known:
-    shot seconds times the provider's price per second times a retry factor (from how many finals are usually accepted).
-    Show "what finishing this film will cost" from an editable price table, flagged as an estimate. Creators could
-    use it to set a crowdfunding target ("if we reach $2000 we publish"). Also a way to estimate per scene or shot.
+  - **Finishing scope (selective HQ render):** the expensive pass runs on a *selection*, not necessarily the whole
+    film: any mix of shots, scenes or acts, picked from the scene list and shot panel (for example "all of Act Two",
+    "just the shots with faces", "everything except the rejected ones"). The same selection drives what is rendered,
+    what is estimated, and what the timeline uses (finished where present, draft elsewhere), so a film can be shown
+    half-finished.
+  - **Confidence gate (pilot):** a first-class, separate button built on the finishing scope: it preselects two or
+    three representative shots (one with people, one camera move, one static is a good default, user adjustable),
+    renders only those, and shows them next to their drafts with the estimate for the rest. The creator decides to
+    go on, change settings or stop with a small spend. It is also the natural thing to show backers before a campaign.
+  - **Estimate:** computed for any selection and always shown as three numbers: selected, remaining, whole film. The
+    approved drafts fix the shot list and durations, so the cost is known: shot seconds times the provider's price per
+    second times a retry factor (from how many finals are usually accepted, and from the pilot once it exists, which
+    makes the estimate for the rest better). From an editable price table, flagged as an estimate, with the spend cap
+    applying to the selection. Creators could use it to set a crowdfunding target ("if we reach $2000 we publish").
   - **Open questions (UNVERIFIED):** whether a cloud model can follow a local draft faithfully (some providers accept
     reference videos; whether they preserve content is unknown); whether finals are indistinguishable from a direct
     render at the same quality (plan 10b measures similarity to the draft, not quality against a direct render); the
