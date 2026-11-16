@@ -8,6 +8,7 @@ import {
 } from 'node:fs';
 import { createServer } from 'node:http';
 import { extname, join, resolve, sep } from 'node:path';
+import { listPackages, savePackageCsv } from './packages.mjs';
 
 /** Media types of the files the rating page loads. */
 const TYPES = {
@@ -110,6 +111,14 @@ export function createRatingServer(root) {
       if (!['localhost', '127.0.0.1'].includes(host))
         return sendJson(res, 403, { error: 'localhost only' });
       const url = new URL(req.url ?? '/', 'http://localhost');
+      if (url.pathname === '/api/packages' && req.method === 'GET') {
+        return sendJson(res, 200, listPackages(base));
+      }
+      if (url.pathname === '/api/package-csv' && req.method === 'POST') {
+        const { dir, csv } = JSON.parse(await readBody(req));
+        savePackageCsv(base, dir, csv);
+        return sendJson(res, 200, { ok: true });
+      }
       const rating = /^\/api\/ratings\/([^/]+)$/.exec(url.pathname);
       if (rating) {
         const rater = decodeURIComponent(rating[1]);

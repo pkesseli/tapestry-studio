@@ -19,3 +19,7 @@ spikes/**/.venv/
 *.safetensors
 *.gguf
 *.ckpt
+
+# Rating packages copied over from the Mac: large media, never committed
+spikes/incoming/
+/tapestry-rating-*.zip

@@ -103,3 +103,25 @@ test('bad names and bad bodies are refused and nothing is written', async () => 
   expect(existsSync(join(root, RATINGS_DIR, 'tom.json'))).toBe(false);
   expect((await fetch(`${base}/clip.mp4`, { method: 'POST', body: '' })).status).toBe(405);
 });
+
+test('rating packages are listed and their scores saved through the server', async () => {
+  const dir = join(root, 'incoming', 'pkg-9');
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(join(dir, 'ratings.csv'), 'file,score_1_to_5,notes\na.mp4,,\n');
+  const listed = await (await fetch(`${base}/api/packages`)).json();
+  expect(listed.map((p) => p.dir)).toEqual(['incoming/pkg-9']);
+  const csv = 'file,score_1_to_5,notes\na.mp4,4,good\n';
+  const saved = await fetch(`${base}/api/package-csv`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ dir: 'incoming/pkg-9', csv }),
+  });
+  expect(saved.status).toBe(200);
+  expect(readFileSync(join(dir, 'ratings.csv'), 'utf8')).toBe(csv);
+  const refused = await fetch(`${base}/api/package-csv`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ dir: '../x', csv }),
+  });
+  expect(refused.status).toBe(400);
+});
