@@ -101,7 +101,9 @@ function player(file) {
  * The card for one row: player, 1 to 5 buttons, notes.
  * @param {{ file: string, score: string, notes: string }} row The row.
  */
-function card(row) {
+function card(row, info) {
+  // Clips made with reference pictures show which pictures the model was given.
+  const refs = /-r2v-/.test(row.file) ? (info?.uses ?? []) : [];
   const buttons = [1, 2, 3, 4, 5].map((n) =>
     h(
       'button',
@@ -125,6 +127,23 @@ function card(row) {
     { class: 'card' },
     h('h3', {}, row.file.split('/').pop()),
     player(row.file),
+    ...(refs.length
+      ? [
+          h(
+            'div',
+            { class: 'refs' },
+            h('span', { class: 'muted' }, 'Reference pictures given:'),
+            ...refs.map((name) =>
+              h(
+                'figure',
+                {},
+                h('img', { src: `/draft-final/inputs/${name}.png`, alt: name }),
+                h('figcaption', {}, name),
+              ),
+            ),
+          ),
+        ]
+      : []),
     h('div', { class: 'scale', role: 'group', 'aria-label': `Score for ${row.file}` }, ...buttons),
     h('div', { class: 'ends' }, h('span', {}, SCALE_ENDS[0]), h('span', {}, SCALE_ENDS[1])),
     h(
@@ -222,7 +241,7 @@ function render() {
     }
     nodes.push(h('h2', {}, `${group.folder} · ${info ? info.title : (group.id ?? 'other')}`));
     if (info?.text) nodes.push(h('p', { class: 'prompt muted' }, info.text));
-    nodes.push(h('div', { class: 'cards' }, ...group.rows.map(card)));
+    nodes.push(h('div', { class: 'cards' }, ...group.rows.map((r) => card(r, info))));
   }
   app.replaceChildren(...nodes);
   showProgress();
@@ -244,7 +263,7 @@ if (packages.length === 0) {
   const cues = JSON.parse((await text('/music/cues.json')) || '{"cues":[]}');
   titles = {
     ...Object.fromEntries(
-      shots.shots.map((s) => [s.id, { title: `${s.id} ${s.title}`, text: s.prompt }]),
+      shots.shots.map((s) => [s.id, { title: `${s.id} ${s.title}`, text: s.prompt, uses: s.uses }]),
     ),
     ...Object.fromEntries(
       cues.cues.map((c) => [c.id, { title: `${c.id} ${c.name}`, text: c.caption }]),
