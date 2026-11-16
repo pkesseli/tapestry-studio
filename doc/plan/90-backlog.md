@@ -43,10 +43,18 @@ Items marked (parity) exist in AI Movie Studio 2 — implement from the idea onl
     "just the shots with faces", "everything except the rejected ones"). The same selection drives what is rendered,
     what is estimated, and what the timeline uses (finished where present, draft elsewhere), so a film can be shown
     half-finished.
-  - **Confidence gate (pilot):** a first-class, separate button built on the finishing scope: it preselects two or
-    three representative shots (one with people, one camera move, one static is a good default, user adjustable),
-    renders only those, and shows them next to their drafts with the estimate for the rest. The creator decides to
-    go on, change settings or stop with a small spend. It is also the natural thing to show backers before a campaign.
+  - **Preview (the pilot; a distinct feature, not a mode of the scope picker):** one obvious button with its own place
+    in the interface and its own wording, no selection needed. It lives on the film estimate: next to "finishing this
+    film will cost about $X" sits "Try it first: make a preview of 3 shots for about $Y". One click picks the shots
+    (default: one with people, one camera move, one static; adjustable but never required), renders only those, and
+    shows each beside its draft. The creator then goes on, changes settings or stops after a small spend. It is also the
+    natural thing to show backers before a campaign. Under the hood it is just a finishing scope with a preselected
+    set of shots; the user never has to know that.
+  - **Preview and estimate are linked both ways:** before a preview the whole-film estimate is shown as a range and
+    labelled "not tested yet"; after it, the estimate narrows and says "based on your preview" (using the measured price
+    and the share of previews that were acceptable). The estimate screen always offers the preview when none exists,
+    and re-offers a new one when settings, provider or drafts have changed since. Naming to settle with the UX
+    vocabulary (`ux.md`): "draft", "preview" and "pilot" must not collide with the existing job-state words.
   - **Estimate:** computed for any selection and always shown as three numbers: selected, remaining, whole film. The
     approved drafts fix the shot list and durations, so the cost is known: shot seconds times the provider's price per
     second times a retry factor (from how many finals are usually accepted, and from the pilot once it exists, which
