@@ -2,11 +2,11 @@
 export const FINAL_QUESTIONS = [
   {
     key: 'composition',
-    text: 'Does it frame the shot like the draft?',
+    text: 'Does it frame the shot like its draft?',
     low: 'Not at all',
     high: 'Exactly',
   },
-  { key: 'motion', text: 'Does it move like the draft?', low: 'Not at all', high: 'Exactly' },
+  { key: 'motion', text: 'Does it move like its draft?', low: 'Not at all', high: 'Exactly' },
   {
     key: 'identity',
     text: 'Do the people and things look like themselves?',

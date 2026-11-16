@@ -106,14 +106,25 @@ function scale(clip, question) {
  * The card for one clip: the video and its questions.
  * @param {Record<string, any>} clip The clip.
  * @param {number} index Position among the versions shown (the label never says how the clip was made).
+ * @param {Record<string, any>[]} drafts The drafts of this shot as shown, to say which draft a clip comes from.
  */
-function clipCard(clip, index) {
+function clipCard(clip, index, drafts) {
+  const from = clip.source ? drafts.findIndex((draft) => draft.id === clip.source) : -1;
   const answers = ratings.clips?.[clip.id] ?? {};
   const kind = clip.role === 'draft' ? 'Draft' : 'Version';
   const card = h(
     'section',
-    { class: 'card' },
+    { class: 'card', id: `clip-${clip.id}` },
     h('h2', {}, `${kind} ${index + 1}`),
+    from >= 0
+      ? h(
+          'p',
+          { class: 'muted', style: 'margin:0 0 8px' },
+          `${clip.role === 'final' ? 'Made from' : 'Simplified from'} `,
+          h('a', { href: `#clip-${clip.source}` }, `Draft ${from + 1}`),
+          clip.role === 'final' ? ': judge framing and movement against that one.' : '.',
+        )
+      : '',
     h('video', {
       src: `/${clip.file}`,
       controls: true,
@@ -231,9 +242,9 @@ function render() {
     h('h1', {}, info ? info.title : group.shot),
     info ? h('p', { class: 'prompt muted' }, info.prompt) : '',
     group.drafts.length ? h('h2', {}, 'Drafts') : '',
-    h('div', { class: 'cards' }, ...group.drafts.map(clipCard)),
+    h('div', { class: 'cards' }, ...group.drafts.map((c, i) => clipCard(c, i, group.drafts))),
     group.finals.length ? h('h2', { style: 'margin-top:24px' }, 'Finished versions') : '',
-    h('div', { class: 'cards' }, ...group.finals.map(clipCard)),
+    h('div', { class: 'cards' }, ...group.finals.map((c, i) => clipCard(c, i, group.drafts))),
     h(
       'div',
       { class: 'bar', style: 'margin-top:24px' },
