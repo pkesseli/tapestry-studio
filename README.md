@@ -4,7 +4,10 @@ Free and open source (Apache-2.0) studio for making films and music with AI. Wri
 places, voices and instruments as you go, queue generations on your own machine or a provider API, review them when
 they are ready, and assemble the result.
 
-**Status:** pre-alpha, planning stage. Nothing runs yet.
+> **Heads-up: this is a work in progress.** Tapestry Studio is young and still taking shape. You can already write a
+> screenplay in the app and see how scenes and shots fit together, but actually *making* videos and music isn't wired
+> up yet. If this sounds like your kind of thing, welcome! Come back in a few weeks, there should be a lot more to try
+> by then. In the meantime, feel free to star or watch the repo and watch it grow.
 
 - Contributors and AI agents: start with [AGENTS.md](AGENTS.md).
 - Mission and principles: [doc/readme/vision.md](doc/readme/vision.md).
