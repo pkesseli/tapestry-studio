@@ -19,6 +19,7 @@ const GUIDE = {
   music: [
     'One score per piece: how well does it fit the brief under the heading? M1 to M4 are 30 second film cues, M5 is a 60 second song: does it sing the lyrics clearly?',
     'The file name says how it was made: acestep or musicgen is the model. lm0.6B, lm1.7B, lm4B and lmnone are the size of its planning model (bigger = slower, maybe better). sft = slower 50-step version, xl-turbo = the large model (about three times the time), s2 = a second try of the same thing.',
+    'You do not need musical knowledge. Under each heading, "In plain words" explains the brief in everyday language. You are judging whether it sounds good, fits the mood, and (for the song) whether the words are clear.',
     'The point is to compare: is a bigger or slower one audibly better, and is it worth the extra time? Say so in the notes.',
   ],
 };
@@ -29,6 +30,18 @@ const SHEET_HELP = {
     'Stills side by side: the reference picture, the clip made from text only, and the clip made with the reference. A quick check: does the reference keep the people recognisable?',
   'turbo-vs-full-sheet.png':
     'Stills side by side: text only (turbo | full), then with reference (turbo | full). A quick check: is the slow full version clearly better than the fast turbo one?',
+};
+
+/**
+ * The music briefs in plain words, for someone who does not know musical terms, by cue id. The expert wording of the
+ * brief stays visible above it.
+ */
+const PLAIN = {
+  M1: 'Music for a tense moment at night. Low, deep string instruments (like cellos) play a short pattern over and over, which is what "ostinato" means. A deep electronic bass beats like a heartbeat. Now and then a few ringing metal sounds appear, like cymbals or bells being tapped, not constantly. "Minor key" is the kind of harmony that sounds dark, uneasy or sad (the opposite, "major", sounds bright and happy). It should start quiet and slowly grow bigger, with no singing. Ask yourself: does it make you feel uneasy, and does it build?',
+  M2: 'Calm and a little sad, like a quiet morning by the sea. One acoustic guitar plays gently, with a soft cello (a low, warm bowed string instrument) alongside, at a slow pace. No singing. Ask yourself: does it feel peaceful, warm and wistful?',
+  M3: 'Fast, urgent music for a chase. Big loud drums (taiko are large Japanese drums), short sharp bursts from violins and cellos ("staccato" means each note is short and detached), and brief blasts from trumpets and trombones. It should never relax, with no singing. Ask yourself: does it make your pulse go up?',
+  M4: 'Quiet background music that can sit under people talking without getting in the way. Slow, soft electronic "pads" (long, smooth chords that float and change slowly) plus a few faraway, gentle piano notes. No drums, calm and spacious. Ask yourself: would you forget it is there during a conversation, and does it still add a mood?',
+  M5: 'A slow, sad but warm song sung by a woman, with piano and soft drums (played with brushes, which sounds gentle and rustly). It should feel intimate, as if she is singing quietly just for you, and last 60 seconds. Ask yourself: can you understand the words (the lyrics are below), does the voice sound natural and human, and does it match the mood?',
 };
 
 const app = document.getElementById('app');
@@ -241,6 +254,12 @@ function render() {
     }
     nodes.push(h('h2', {}, `${group.folder} · ${info ? info.title : (group.id ?? 'other')}`));
     if (info?.text) nodes.push(h('p', { class: 'prompt muted' }, info.text));
+    if (PLAIN[group.id] && group.folder === 'music') {
+      nodes.push(h('p', {}, h('strong', {}, 'In plain words: '), PLAIN[group.id]));
+    }
+    if (info?.lyrics) {
+      nodes.push(h('details', {}, h('summary', {}, 'Lyrics'), h('pre', {}, info.lyrics)));
+    }
     nodes.push(h('div', { class: 'cards' }, ...group.rows.map((r) => card(r, info))));
   }
   app.replaceChildren(...nodes);
@@ -266,7 +285,10 @@ if (packages.length === 0) {
       shots.shots.map((s) => [s.id, { title: `${s.id} ${s.title}`, text: s.prompt, uses: s.uses }]),
     ),
     ...Object.fromEntries(
-      cues.cues.map((c) => [c.id, { title: `${c.id} ${c.name}`, text: c.caption }]),
+      cues.cues.map((c) => [
+        c.id,
+        { title: `${c.id} ${c.name}`, text: c.caption, lyrics: c.lyrics },
+      ]),
     ),
   };
   render();
