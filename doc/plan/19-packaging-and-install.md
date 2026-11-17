@@ -17,7 +17,7 @@ A non-technical person installs and opens the app in minutes.
    (Sintel is CC BY 3.0, with attribution shown in the app) and keep the installer small. Then offer the guided tutorial
    (backlog).
 4. First-run wizard: pick projects folder; choose "use a provider key" or "use local models" (explains what each means in
-   plain words, with the measured expectations from plan 10); guided ComfyUI install help or detection.
+   plain words, with the measured expectations in `providers.md`); guided ComfyUI install help or detection.
 5. Auto-update channel (electron-updater) with signed updates; opt-in.
 6. Crash/diagnostic export (local zip, no telemetry by default); issue template links to it.
 7. Third-party licence report generated in CI and shown in the app.

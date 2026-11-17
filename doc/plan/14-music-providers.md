@@ -8,7 +8,7 @@
 Real audio generation behind the provider interface: music, speech/voice cloning, sound effects.
 
 ## Steps
-1. Using plan 10 results, pick the local-first candidates (e.g. ACE-Step, MusicGen/AudioCraft — verify weights licenses
+1. Using the music measurements in `providers.md` (ACE-Step is the only commercially usable local candidate so far), pick the local-first candidates (e.g. ACE-Step, MusicGen/AudioCraft — verify weights licenses
    before shipping defaults; speech: open TTS/voice-clone models) and run them through ComfyUI workflow templates
    (plan 11) or a small sidecar if ComfyUI is unsuitable.
 2. Hosted: adapters for at least one speech provider and one music provider that publish an API and clear terms

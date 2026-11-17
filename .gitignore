@@ -23,3 +23,8 @@ spikes/**/.venv/
 # Rating packages copied over from the Mac: large media, never committed
 spikes/incoming/
 /tapestry-rating-*.zip
+
+# Personal ratings and anything derived from them that names people: never committed
+spikes/draft-final/results/ratings/
+spikes/draft-final/results/compare/
+spikes/draft-final/results/compare-summary.md

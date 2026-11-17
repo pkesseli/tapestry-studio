@@ -3,11 +3,11 @@
 This folder is for **measuring**, not for building the product. It answers two questions with data, so development can
 continue on another machine with online models and the numbers in hand:
 
-1. **Plan 10 — what runs locally, how fast?** `doc/plan/10-mac-local-model-spike.md`, procedure in `mac/README.md`.
-2. **Plan 10b — can a cheap draft be turned into a faithful final?** `doc/plan/10b-draft-final-spike.md`, procedure in
+1. **What runs locally, how fast?** (done, summarised in `doc/readme/providers.md`), procedure in `mac/README.md`.
+2. **Can a cheap draft be turned into a faithful final?** (done, same place), procedure in
    `draft-final/README.md`.
 
-Do plan 10 first. Plan 10b needs its results (which draft model is usable).
+These spikes are finished; the folder stays as the record and so a run can be repeated on another machine. Do the first before the second.
 
 ## For the agent running on the Mac
 

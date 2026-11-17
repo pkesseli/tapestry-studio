@@ -28,8 +28,8 @@ Items marked (parity) exist in AI Movie Studio 2 — implement from the idea onl
   in context, and accepting. Interactive steps with highlights, skippable, restartable from a Help menu. Wait until the
   interface has settled; the Write section and its acts, search and position memory are the first lessons.
 - **Two ways to make a shot: direct render, or draft then guided high-quality render.** The project format and queue
-  should support both per shot (and per film), whichever engine is local or in the cloud. Promote together once plan 10b
-  has a verdict (`spikes/draft-final/results/summary.md`), and after plans 09 and 17.
+  should support both per shot (and per film), whichever engine is local or in the cloud. Slice 1 (the engine) is
+  plan 09b; the rest waits for its review.
   - **Direct render:** one job per shot at the chosen quality, on this computer or a provider. The default and what
     plans 04 and 09 already describe.
   - **Draft, then guided HQ render:** make cheap local drafts of the whole film first and review and accept them like
@@ -60,10 +60,12 @@ Items marked (parity) exist in AI Movie Studio 2 — implement from the idea onl
     second times a retry factor (from how many finals are usually accepted, and from the pilot once it exists, which
     makes the estimate for the rest better). From an editable price table, flagged as an estimate, with the spend cap
     applying to the selection. Creators could use it to set a crowdfunding target ("if we reach $2000 we publish").
-  - **Open questions (UNVERIFIED):** whether a cloud model can follow a local draft faithfully (some providers accept
-    reference videos; whether they preserve content is unknown); whether finals are indistinguishable from a direct
-    render at the same quality (plan 10b measures similarity to the draft, not quality against a direct render); the
-    time saving depends on how many drafts are rejected, and cheaper drafts gave finals that follow the draft less
-    closely (measured on LTX 2.3 distilled, M4 Pro 48 GB); what "high quality" means for local use (about 832x448 at
-    24 fps from LTX distilled; 2x upscale to about 1664x896); crowdfunding platform rules on AI-made work and each
+  - **Measured so far (M4 Pro 48 GB, LTX 2.3 distilled, one rater; details in `providers.md`):** direct render is the
+    default. A draft previews framing and movement, not faces. Refining a draft with the same model changed faces and
+    hands (6 of 10 shots kept); structure-conditioned re-renders lost identity; a 2x enlargement of the draft lost to a
+    direct render (7 of 10 shots, 3 tied). So the draft is a preview, and the final is a fresh render at final quality
+    with the same seed and references (plan 09b), not a refinement of the draft.
+  - **Open questions (UNVERIFIED):** whether a cloud model can follow a local draft (some accept reference video; whether
+    they preserve content is unknown), to be discussed when choosing a cloud service; how many previews are accepted in
+    practice, which sets the retry factor of the estimate; crowdfunding platform rules on AI-made work and each
     provider's terms for commercial use of outputs (check before building anything for this).

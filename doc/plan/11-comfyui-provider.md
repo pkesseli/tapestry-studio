@@ -8,7 +8,7 @@ can add — without the user ever seeing a node graph.
 1. Adapter in `packages/providers/comfyui` using ComfyUI's HTTP + WebSocket API (`/prompt`, `/history`, `/view`, `/ws`).
    Written from the public API docs, not from AGPL tools.
 2. **Workflow templates**: JSON workflow files with declared parameter slots (prompt, seed, size, duration, reference
-   images, audio) described by a small manifest. Ship templates for the models chosen in plan 10 (image look,
+   images, audio) described by a small manifest. Ship templates for the models measured in `providers.md` (LTX 2.3, MiniMax H3, FLUX.2 klein) (image look,
    image-to-video, first/last-frame video, reference-to-video where available).
 3. Template import for advanced users: validate that required slots exist; detect missing models/custom nodes and tell
    the user in plain language what to install.

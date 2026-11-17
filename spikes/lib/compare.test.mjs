@@ -13,10 +13,10 @@ test('the order of the two versions is repeatable, and both versions are on both
 });
 
 test('a choice of side becomes the version that won, and "same" is a tie', () => {
-  const [a, b] = sidesFor('S03', 'pascal');
-  expect(winnerOf('S03', 'pascal', 'A')).toBe(a);
-  expect(winnerOf('S03', 'pascal', 'B')).toBe(b);
-  expect(winnerOf('S03', 'pascal', 'same')).toBe('tie');
+  const [a, b] = sidesFor('S03', 'rater-1');
+  expect(winnerOf('S03', 'rater-1', 'A')).toBe(a);
+  expect(winnerOf('S03', 'rater-1', 'B')).toBe(b);
+  expect(winnerOf('S03', 'rater-1', 'same')).toBe('tie');
 });
 
 /**

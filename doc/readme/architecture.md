@@ -41,7 +41,7 @@ without the UI.
 
 Local model execution is **out of process**: Tapestry Studio talks to ComfyUI (HTTP/WebSocket) or other local servers.
 If a bespoke local runner is needed for Apple Silicon, it is a separate sidecar process behind the same Provider
-interface (see plan 10).
+interface (see `providers.md`, "Measured on M4 Pro").
 
 ## Client boundary and future mobile client
 

@@ -20,17 +20,45 @@ adapters translate. Provider-specific escape hatches live in a namespaced `extra
   variants exist with ComfyUI-native workflows. Reference-to-video accepts up to 9 images, 3 videos, 3 audio clips (12
   files total). Open weights output 768p short edge by default; sources conflict on whether 2K ("Regenerate-2K") is
   local or hosted-only. Mac support: not documented.
-- **Local alternatives**: Wan 2.2 (5B variant light), LTX 2.3 (has audio, fast), HunyuanVideo 1.5. Apple Silicon support
-  for each is unknown; plan 10 measures it on the target MacBook.
-- **Local feasibility for the target machine (MacBook Pro M4)**: expect short, low-res drafts taking minutes per clip
-  and a hard dependence on unified memory (>=32 GB comfortable, 16 GB painful). Custom CUDA kernels may not run at all.
-  This is why remote providers are first-class.
-- **Draft vs final**: different models produce different films. Plan for *render once, enhance later* (upscale /
-  low-strength refine of the accepted clip), not *draft locally, re-render remotely*.
+- **Local feasibility**: see "Measured on M4 Pro" below, which replaces the earlier guesses. Memory is the hard limit
+  (about 15 to 30 GB per video model); custom CUDA kernels often do not run, and FP8 weights fail on Metal (use GGUF
+  or 4-bit). Remote providers stay first-class, above all for recurring characters.
+- **Draft vs final** (measured 2026-11, plan 10b, one rater): *direct render is the default.* A cheap draft is a
+  preview of framing and movement only. Refining a draft with the same model keeps both but changes faces and hands
+  (6 of 10 shots kept); structure-conditioned re-renders lose who is in the shot; a plain 2x enlargement of the draft
+  loses to a direct render (7 of 10 shots, the rest tied). Different models make different films, so a final from
+  another model cannot be trusted to match an approved draft. UNVERIFIED: whether a cloud model that accepts reference
+  video can follow a local draft; test before designing for it.
 - **Audio**: per-clip native audio will not keep a voice consistent across clips. Treat dialogue/music/SFX as separate
   tracks (speech and music providers) assembled on the timeline.
 - **Music**: open candidates to evaluate in plan 14 — ACE-Step, MusicGen/AudioCraft (note: check weights license),
   hosted APIs (Suno/Udio-style services typically restrict API access and impose terms; check before building).
+
+## Measured on M4 Pro (20-core GPU, 48 GB, macOS 15.7.2), 2026-11-12 to 2026-11-17
+
+Source: `spikes/mac/results/` (runs, logs, findings) and `spikes/draft-final/`. One 4 s clip at about 832x448 or 832x480
+and 24 fps unless noted. Quality was judged by the agent from frames and, for the plan 10b clips, by one person.
+
+| Model (runtime) | Time per clip | Peak memory | Notes |
+|---|---|---|---|
+| LTX 2.3 distilled int4 (ltx-2-mlx) | about 168 s | 15 to 18 GB | In-sync audio, good camera moves. Identity not controlled by text. Best choice for a local queue. |
+| MiniMax H3 Q8 GGUF, turbo LoRA (stable-diffusion.cpp) | 15 to 18 min | about 22 GB | Best pictures. With reference images (r2v) Maria and Tom stay recognisable across shots, two-person shots included. Audio unusable (random languages, static). Full 20 steps: 47 to 53 min, not clearly better. About 69 GB of weights. |
+| Wan 2.2 5B Q8 GGUF (ComfyUI, MPS) | about 21 min | about 30 GB | No audio; mostly ignores camera directions. |
+| Wan 2.1 1.3B fp16 (ComfyUI, MPS) | about 59 min | about 34 GB | Worst pictures; not worth it. |
+| FLUX.2 klein 4B 4-bit (mflux), image | 26 s per 1024 px image | 12.5 GB | Reference images and looks. |
+| Kokoro 82M (mlx-audio), speech | about 3 s per line | under 7 GB | Clean and accurate. |
+| F5-TTS (MLX), voice cloning | 17 to 26 s per line | about 2.6 GB | Recognisable, not identical; weights non-commercial. Needs mlx below 0.23. |
+| ACE-Step 1.5 (MIT), music | 34 to 46 s per 30 s piece (1.7B planner); xl 110 to 124 s | 46 to 48 GB footprint, mostly MLX's buffer cache (xl 58 GB); the cache can be limited | Rated 3.7 of 5 with the 1.7B planner, 2.6 without it; the slower sft and large xl variants were not clearly better. The tense cue often missed its mood. |
+| MusicGen small and medium, music | 82 s for 30 s | 5.9 GB | Rated 2.5 to 2.8, no vocals, non-commercial weights: not recommended. |
+| Real-ESRGAN 2x (MPS) | about 18 s | 2.6 GB | Sharpens only; visibly softer than a direct render. |
+
+- **Plan 10b numbers** (LTX 2.3 distilled): a half-resolution draft takes about 70 s (4 steps 42 s, 2 steps 28 s); the
+  refine stage about 107 s, so draft plus refine (about 177 s) is no faster than a direct render. 2-step drafts were
+  unreadable; edge-only drafts show framing but not acting; flat-colour blocks show nothing useful.
+- **Seeds matter**: the same shot at three seeds varied from 2 to 5 out of 5 on identity, so "make several, pick one" is
+  worth supporting. The same seed keeps the draft's framing and movement.
+- **Licences**: MiniMax H3 terms are disputed between sources (region limits); a human read and approved them for
+  testing only. Check again before shipping or recommending it. F5-TTS and MusicGen weights are non-commercial.
 
 ## Rules for adding a provider
 

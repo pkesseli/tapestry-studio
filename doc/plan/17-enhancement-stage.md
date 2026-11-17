@@ -1,5 +1,10 @@
 # 17 — Enhancement stage (upscale / refine accepted clips)
 
+## Findings that narrow this plan (plan 10b, see `providers.md`)
+Local refining of a draft changed faces and hands, and a plain 2x enlargement was visibly worse than a direct render, so
+"enhance" means: enlarge for delivery (for example 832x448 to 1664x896), loudness and denoise for audio. Do not offer it
+as a way to finish a draft; that is plan 09b (a fresh render at final quality with the same seed).
+
 ## Goal
 Raise the quality of accepted clips without changing their content — the "draft once, enhance later" path.
 
