@@ -62,6 +62,13 @@ Kind-specific:
   (`validateProject`: dangling ids, alias conflicts, timeline clips must reference *accepted* artifacts).
 - **I/O is behind `FsPort`.** `core` has an in-memory implementation; `@tapestry/fs-node` has the disk one (atomic
   temp-file-and-rename writes, refuses paths escaping the project folder).
+- **Drafts and finals (plan 09b).** `GenerationRequest.quality` is `draft` or `final` (absent means `final`, a direct
+  render) and `Job.sourceJobId` names the accepted draft a final follows. Both are optional, so old projects load
+  unchanged and the format stays at version 1 without a migration. The final is a *fresh render* with the draft's prompt,
+  references and seed (`finalRequestFromDraft`), never a refinement of the draft file: measurements showed refining
+  changes faces (see `providers.md`). `validateProject` reports a `sourceJobId` that is missing or points at itself.
+  Cost and time estimates for finishing a selection of shots (`estimateFinishing`) are pure functions in `core`; their
+  accepted-share assumptions are guesses until a preview has been made.
 - `GenerationRequest`, `Capability` and `JobState` are defined in `core` (not `providers`) because jobs persist them.
 - **Fixtures** in `fixtures/` are generated from `@tapestry/core/testing` builders. After changing a schema, run
   `UPDATE_FIXTURES=1 pnpm test` and review the diff; the normal test run fails if fixtures drift from the code.

@@ -5,6 +5,7 @@
 export * from './aliases';
 export * from './errors';
 export * from './factories';
+export * from './finishing';
 export * from './fs-port';
 export * from './hash';
 export * from './ids';

@@ -71,6 +71,9 @@ export function validateProject(data: ProjectData): ProjectIssue[] {
   for (const job of data.jobs) {
     for (const id of job.artifactIds)
       if (!artifactsById.has(id)) problem(job.id, `Unknown artifact ${id}`);
+    if (job.sourceJobId === job.id) problem(job.id, 'A job cannot follow itself');
+    else if (job.sourceJobId && !jobIds.has(job.sourceJobId))
+      problem(job.id, `Unknown source job ${job.sourceJobId}`);
   }
   for (const timeline of data.timelines) {
     for (const clip of timeline.tracks.flatMap((track) => track.clips)) {

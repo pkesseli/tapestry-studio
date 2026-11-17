@@ -22,6 +22,13 @@ export const JobStateSchema = z.enum([
   'cancelled',
 ]);
 
+/**
+ * How much a request should spend on its result. `draft` is a cheap preview of framing and movement (a local model uses
+ * fewer steps and a lower resolution); `final` is the quality that goes into the film. Absent means `final`, so jobs
+ * written before this field existed are direct renders.
+ */
+export const QualitySchema = z.enum(['draft', 'final']);
+
 /** A reference passed to the provider together with the role it plays. */
 export const RequestReferenceSchema = z.strictObject({
   path: RelativePathSchema,
@@ -44,6 +51,8 @@ export const GenerationRequestSchema = z.strictObject({
   audioInputs: z.array(RelativePathSchema),
   durationSeconds: z.number().positive().optional(),
   seed: z.int().optional(),
+  /** See {@link QualitySchema}. */
+  quality: QualitySchema.optional(),
   width: z.int().positive().optional(),
   height: z.int().positive().optional(),
   fps: z.number().positive().optional(),
@@ -74,6 +83,8 @@ export const JobSchema = z.strictObject({
   request: GenerationRequestSchema,
   /** Shot or section this job produces material for. */
   targetId: z.string().optional(),
+  /** On a final job: the accepted draft job it follows (same prompt, references and seed). */
+  sourceJobId: idSchema('job').optional(),
   estimate: EstimateSchema.optional(),
   /** Hard spending limit approved for this job. */
   budgetCap: z.number().nonnegative().optional(),
@@ -95,6 +106,7 @@ export const JobSchema = z.strictObject({
 });
 
 export type JobState = z.infer<typeof JobStateSchema>;
+export type Quality = z.infer<typeof QualitySchema>;
 export type GenerationRequest = z.infer<typeof GenerationRequestSchema>;
 export type Estimate = z.infer<typeof EstimateSchema>;
 export type Job = z.infer<typeof JobSchema>;
