@@ -8,6 +8,7 @@ const PORT = Number(process.env.PORT ?? 4173);
 
 const server = createRatingServer(join(dirname(fileURLToPath(import.meta.url)), '..'));
 server.listen(PORT, '127.0.0.1', () => {
+  console.log(`Direct vs upscaled: http://localhost:${PORT}/rate/compare.html`);
   console.log(`Plan 10b shots:    http://localhost:${PORT}/`);
   console.log(
     `Rating packages:   http://localhost:${PORT}/rate/package.html  (press Ctrl+C to stop)`,

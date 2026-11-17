@@ -34,6 +34,12 @@ const RATER = /^[a-z0-9][a-z0-9-]{0,30}$/;
 /** Where ratings are stored, relative to the served folder. */
 export const RATINGS_DIR = join('draft-final', 'results', 'ratings');
 
+/** Where blind comparison answers are stored, relative to the served folder. */
+const COMPARE_DIR = join('draft-final', 'results', 'compare');
+
+/** Folders for each kind of per-person answers, by the name used in the address. */
+const ANSWER_DIRS = { ratings: RATINGS_DIR, compare: COMPARE_DIR };
+
 /**
  * Sends a JSON answer.
  * @param {import('node:http').ServerResponse} res The response.
@@ -119,12 +125,13 @@ export function createRatingServer(root) {
         savePackageCsv(base, dir, csv);
         return sendJson(res, 200, { ok: true });
       }
-      const rating = /^\/api\/ratings\/([^/]+)$/.exec(url.pathname);
+      const rating = /^\/api\/(ratings|compare)\/([^/]+)$/.exec(url.pathname);
       if (rating) {
-        const rater = decodeURIComponent(rating[1]);
+        const folder = ANSWER_DIRS[rating[1]];
+        const rater = decodeURIComponent(rating[2]);
         if (!RATER.test(rater))
           return sendJson(res, 400, { error: 'use lower-case letters, digits and dashes' });
-        const file = join(base, RATINGS_DIR, `${rater}.json`);
+        const file = join(base, folder, `${rater}.json`);
         if (req.method === 'GET') {
           return sendJson(res, 200, existsSync(file) ? JSON.parse(readFileSync(file, 'utf8')) : {});
         }
@@ -132,7 +139,7 @@ export function createRatingServer(root) {
           const data = JSON.parse(await readBody(req));
           if (typeof data !== 'object' || data === null || Array.isArray(data))
             throw new Error('not an object');
-          mkdirSync(join(base, RATINGS_DIR), { recursive: true });
+          mkdirSync(join(base, folder), { recursive: true });
           writeFileSync(
             file,
             `${JSON.stringify({ ...data, rater, updatedAt: new Date().toISOString() }, null, 2)}\n`,

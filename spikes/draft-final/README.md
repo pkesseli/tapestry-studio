@@ -74,6 +74,16 @@ All commands are run from the repository root. Output videos go under `spikes/dr
 8. **Summary.** `node spikes/summarize.mjs` writes `results/summary.md` with the verdict by the proposed rule.
    Add two paragraphs of your own at the top: what surprised you, and what you would try next.
 
+## Blind comparison: direct render or enlarged draft?
+
+Plan 10b's ratings showed the plain 2x enlargement of the draft (variant `A1`) is usable, but nobody compared it with a
+direct render. `results/compare.json` pairs the two for the ten shots: the direct renders are the plan 10 clips (copy
+them to `results/out/direct-<shot>.mp4`; git ignores that folder) and the other is `F-<shot>-A1.mp4`. Both are
+832x448, 4.04 s, seed 1. Run `node spikes/rate/serve.mjs`, open <http://localhost:4173/rate/compare.html>, and
+for each shot pick the version that looks better (or "can't tell"). The order is mixed and unlabelled, sound is off.
+`node spikes/compare-summary.mjs` writes `results/compare-summary.md` and applies the proposed rule (the enlarged
+draft wins or ties in at least 7 of 10 shots).
+
 ## Notes on judging
 
 - Looking at the draft first, then the versions, is the natural way; the page does that.

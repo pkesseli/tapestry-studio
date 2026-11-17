@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "about": "Blind comparison for plan 10b: a direct render (LTX 2.3 distilled, full pipeline) against the normal draft enlarged 2x with Real-ESRGAN (variant A1). Both are 832x448, 4.04 s, seed 1. The direct renders are the plan 10 clips; copy them to results/out/direct-<shot>.mp4 (git ignores that folder).",
+  "pairs": [
+    {
+      "shot": "S01",
+      "direct": "draft-final/results/out/direct-S01.mp4",
+      "upscaled": "draft-final/results/out/F-S01-A1.mp4"
+    },
+    {
+      "shot": "S02",
+      "direct": "draft-final/results/out/direct-S02.mp4",
+      "upscaled": "draft-final/results/out/F-S02-A1.mp4"
+    },
+    {
+      "shot": "S03",
+      "direct": "draft-final/results/out/direct-S03.mp4",
+      "upscaled": "draft-final/results/out/F-S03-A1.mp4"
+    },
+    {
+      "shot": "S04",
+      "direct": "draft-final/results/out/direct-S04.mp4",
+      "upscaled": "draft-final/results/out/F-S04-A1.mp4"
+    },
+    {
+      "shot": "S05",
+      "direct": "draft-final/results/out/direct-S05.mp4",
+      "upscaled": "draft-final/results/out/F-S05-A1.mp4"
+    },
+    {
+      "shot": "S06",
+      "direct": "draft-final/results/out/direct-S06.mp4",
+      "upscaled": "draft-final/results/out/F-S06-A1.mp4"
+    },
+    {
+      "shot": "S07",
+      "direct": "draft-final/results/out/direct-S07.mp4",
+      "upscaled": "draft-final/results/out/F-S07-A1.mp4"
+    },
+    {
+      "shot": "S08",
+      "direct": "draft-final/results/out/direct-S08.mp4",
+      "upscaled": "draft-final/results/out/F-S08-A1.mp4"
+    },
+    {
+      "shot": "S09",
+      "direct": "draft-final/results/out/direct-S09.mp4",
+      "upscaled": "draft-final/results/out/F-S09-A1.mp4"
+    },
+    {
+      "shot": "S10",
+      "direct": "draft-final/results/out/direct-S10.mp4",
+      "upscaled": "draft-final/results/out/F-S10-A1.mp4"
+    }
+  ]
+}

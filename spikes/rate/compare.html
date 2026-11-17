@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Which looks better?</title>
+    <style>
+      :root {
+        --bg: #f6f4ef;
+        --card: #fff;
+        --ink: #1d2330;
+        --muted: #5b6475;
+        --line: #d9d5ca;
+        --accent: #1f7a8c;
+        --accent-ink: #fff;
+        --good: #2b7a4b;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #14171f;
+          --card: #1d2230;
+          --ink: #eef0f5;
+          --muted: #a4adbf;
+          --line: #343b4d;
+          --accent: #4fb3c4;
+          --accent-ink: #0d1a1e;
+          --good: #5cc488;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font:
+          17px/1.45 system-ui,
+          sans-serif;
+      }
+      main {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px 16px 80px;
+      }
+      h1 {
+        font-size: 26px;
+        margin: 0 0 4px;
+      }
+      h2 {
+        font-size: 20px;
+        margin: 0 0 6px;
+      }
+      .muted {
+        color: var(--muted);
+      }
+      .prompt {
+        font-style: italic;
+      }
+      .bar {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: wrap;
+        margin: 12px 0;
+      }
+      .grow {
+        flex: 1;
+      }
+      button,
+      textarea,
+      input {
+        font: inherit;
+        color: inherit;
+      }
+      button {
+        min-height: 48px;
+        padding: 6px 18px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: var(--card);
+        cursor: pointer;
+      }
+      button[aria-pressed='true'],
+      button.primary {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: var(--accent-ink);
+      }
+      button:focus-visible,
+      textarea:focus-visible,
+      input:focus-visible {
+        outline: 3px solid var(--accent);
+        outline-offset: 2px;
+      }
+      .pair {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+        gap: 16px;
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 14px;
+      }
+      video {
+        width: 100%;
+        border-radius: 10px;
+        background: #000;
+      }
+      .choices {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin: 16px 0 8px;
+      }
+      .choices button {
+        flex: 1;
+        min-width: 140px;
+      }
+      textarea,
+      input[type='text'] {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: var(--card);
+      }
+      .saved {
+        color: var(--good);
+      }
+    </style>
+  </head>
+  <body>
+    <main id="app">
+      <h1>Which looks better?</h1>
+      <p class="muted">Loading…</p>
+    </main>
+    <script type="module" src="./compare.js"></script>
+  </body>
+</html>

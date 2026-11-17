@@ -54,3 +54,13 @@ test('the MiniMax candidate says either that the licence must be read first or t
     /HUMAN MUST READ|Human read and approved/,
   );
 });
+
+test('the blind comparison covers every test shot with the two versions named per shot', () => {
+  const { pairs } = read('draft-final/results/compare.json');
+  const { shots } = read('draft-final/shots.json');
+  expect(pairs.map((p) => p.shot)).toEqual(shots.map((s) => s.id));
+  for (const pair of pairs) {
+    expect(pair.direct).toBe(`draft-final/results/out/direct-${pair.shot}.mp4`);
+    expect(pair.upscaled).toBe(`draft-final/results/out/F-${pair.shot}-A1.mp4`);
+  }
+});

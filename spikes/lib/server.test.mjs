@@ -125,3 +125,20 @@ test('rating packages are listed and their scores saved through the server', asy
   });
   expect(refused.status).toBe(400);
 });
+
+test('blind comparison answers are stored in their own folder, apart from the shot ratings', async () => {
+  const post = await fetch(`${base}/api/compare/maria`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ answers: { S01: { choice: 'A' } } }),
+  });
+  expect(post.status).toBe(200);
+  const file = join(root, 'draft-final', 'results', 'compare', 'maria.json');
+  expect(JSON.parse(readFileSync(file, 'utf8'))).toMatchObject({
+    answers: { S01: { choice: 'A' } },
+  });
+  expect(await (await fetch(`${base}/api/compare/maria`)).json()).toMatchObject({ rater: 'maria' });
+  expect((await fetch(`${base}/api/compare/BAD NAME`, { method: 'POST', body: '{}' })).status).toBe(
+    400,
+  );
+});
