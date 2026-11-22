@@ -276,3 +276,36 @@ test('paid providers are refused without a budget and respect caps and cancellat
   expect(queue.spend().remaining).toBe(4);
   await queue.approve(drafts[2]!.id);
 });
+
+test('a final records the draft it follows, a redone final keeps that link, and it survives a restart', async () => {
+  const h = createHarness();
+  const queue = await h.open();
+  const draft = await queue.createDraft({ ...request('video'), quality: 'draft', seed: 3 });
+  const final = await queue.createDraft(
+    { ...request('video'), quality: 'final', seed: 3 },
+    { sourceJobId: draft.id },
+  );
+  expect(final.sourceJobId).toBe(draft.id);
+  await queue.approve(final.id);
+  await queue.runUntilIdle();
+  const next = await queue.redo(final.id);
+  expect(next.sourceJobId).toBe(draft.id);
+  expect((await h.open()).get(next.id)?.sourceJobId).toBe(draft.id);
+});
+
+test('a draft-quality job on the mock provider needs fewer steps than a final', async () => {
+  const h = createHarness({ config: { pollsUntilDone: 3 } });
+  const queue = await h.open();
+  /** Steps of the scheduler until the job is rendered. */
+  const stepsFor = async (quality: 'draft' | 'final') => {
+    const job = await queue.createDraft({ ...request('video'), quality });
+    await queue.approve(job.id);
+    let steps = 0;
+    while (queue.get(job.id)?.state !== 'rendered' && steps < 20) {
+      await queue.tick();
+      steps++;
+    }
+    return steps;
+  };
+  expect(await stepsFor('draft')).toBeLessThan(await stepsFor('final'));
+});

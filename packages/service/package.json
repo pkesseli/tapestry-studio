@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "@tapestry/core": "workspace:*",
+    "@tapestry/providers": "workspace:*",
+    "@tapestry/queue": "workspace:*",
     "@tapestry/script": "workspace:*"
   }
 }

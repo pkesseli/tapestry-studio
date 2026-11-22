@@ -97,3 +97,28 @@ test('scenes load in script order, not in the order of their file names', async 
   await saveProject(fs, { ...film, scenes: [first, second] });
   expect((await loadProject(fs)).scenes.map((s) => s.number)).toEqual([1, 2]);
 });
+
+test('a save that leaves the queue files alone neither writes nor deletes jobs and artifacts', async () => {
+  const fs = new MemoryFs();
+  const film = buildSampleFilm();
+  await saveProject(fs, film);
+  const jobPath = Object.keys(fs.files()).find((p) => p.startsWith('jobs/')) ?? '';
+  const artifactPath = Object.keys(fs.files()).find((p) => p.endsWith('/artifact.json')) ?? '';
+  const [job] = film.jobs;
+  if (!job) throw new Error('sample data changed');
+
+  // The queue stores a newer version of the job; an older in-memory copy must not overwrite it.
+  const newer = JSON.stringify({ ...job, attempts: 9 });
+  await fs.writeText(jobPath, newer);
+  await saveProject(
+    fs,
+    { ...film, jobs: [], artifacts: [], timelines: [] },
+    { leaveQueueFiles: true },
+  );
+  expect(await fs.readText(jobPath)).toBe(newer);
+  expect(await fs.exists(artifactPath)).toBe(true);
+
+  // A normal save still removes files of items that no longer exist.
+  await saveProject(fs, { ...film, jobs: [], artifacts: [], timelines: [] });
+  expect(await fs.exists(jobPath)).toBe(false);
+});

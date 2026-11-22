@@ -30,7 +30,8 @@ providers   Provider interface + built-in adapters (mock, comfyui, fal, replicat
 media       ffmpeg wrapper (external binary), thumbnails, stitching, waveform. Depends on core.
 fs-node     Node.js FsPort implementation (atomic disk writes). Depends on core.
 service     application use cases over a project folder (open, edit script, add entities, ...). UI-free; the
-            single API the Electron main process, the CLI and a future remote client call. Depends on core, script.
+            single API the Electron main process, the CLI and a future remote client call. It owns the generation queue of
+            the open project (the queue is the only writer of job and artifact files). Depends on core, script, queue, providers.
 script      screenplay/lyrics parsing, entity detection. Depends on core.
 app         Electron main process (thin IPC over `service`) + React renderer. Depends on all of the above.
 ```

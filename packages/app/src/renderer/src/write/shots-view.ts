@@ -1,7 +1,7 @@
 import type { Entity, Scene } from '@tapestry/core';
 import { planShots, shotKey } from '@tapestry/script';
 import type { ParsedScene } from '@tapestry/script';
-import type { SceneClip } from '@tapestry/service';
+import type { SceneClip, ShotTake } from '@tapestry/service';
 
 /** The state of a shot as the margin marker and the panel show it. */
 export type ShotState = 'not-made' | 'to-review' | 'accepted';
@@ -25,6 +25,10 @@ export interface ShotView {
   people: string[];
   /** The video made for the shot, if any. */
   clip?: SceneClip;
+  /** Id of the saved shot this one matches, once the script has been saved far enough to have one. */
+  id?: string;
+  /** Every attempt at the shot, oldest first. */
+  takes: ShotTake[];
   state: ShotState;
 }
 
@@ -35,12 +39,14 @@ export interface ShotView {
  * @param saved The same scene as saved in the project (may lag a moment behind the text).
  * @param clips All videos of the project.
  * @param entities The project's cast.
+ * @param takes Every attempt at every shot (drafts and finals, finished or not).
  */
 export function shotViews(
   parsed: ParsedScene,
   saved: Scene | undefined,
   clips: readonly SceneClip[],
   entities: readonly Entity[],
+  takes: readonly ShotTake[] = [],
 ): ShotView[] {
   const byId = new Map(entities.map((entity) => [entity.id as string, entity.name]));
   return planShots(parsed).map((planned, index) => {
@@ -57,6 +63,8 @@ export function shotViews(
       blockEnd: Math.max(planned.range.end, planned.noteEnd ?? 0),
       people: (match?.referenceEntityIds ?? []).flatMap((id) => byId.get(id) ?? []),
       ...(clip && { clip }),
+      ...(match && { id: match.id }),
+      takes: match ? takes.filter((take) => take.shotId === match.id) : [],
       state: !clip ? 'not-made' : clip.accepted ? 'accepted' : 'to-review',
     };
   });

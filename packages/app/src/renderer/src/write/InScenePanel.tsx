@@ -3,6 +3,7 @@ import { KIND_LABEL, displayName } from './format';
 import { ShotPanel } from './ShotPanel';
 import type { ShotView } from './shots-view';
 import type { PresentEntity, SceneContents, SceneItem } from './scenes';
+import type { ShotActions } from './useStudio';
 
 /** Properties of {@link InScenePanel}. */
 interface InScenePanelProps {
@@ -43,6 +44,8 @@ interface InScenePanelProps {
    * @param name The name as written in the script.
    */
   onAdd(kind: EntityKind, name: string): void;
+  /** What to do with the takes of a shot. */
+  actions: ShotActions;
 }
 
 /**
@@ -84,6 +87,7 @@ export function InScenePanel({
   onShowShot,
   onAddLine,
   onAdd,
+  actions,
 }: InScenePanelProps) {
   return (
     <aside className="aside" aria-label="In this scene">
@@ -102,6 +106,7 @@ export function InScenePanel({
           onShowDirection={onShowDirection}
           onShowShot={onShowShot}
           onAddLine={onAddLine}
+          actions={actions}
         />
       )}
 

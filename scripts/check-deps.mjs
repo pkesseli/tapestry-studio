@@ -13,7 +13,7 @@ export const ALLOWED_INTERNAL = {
   providers: ['core'],
   media: ['core'],
   'fs-node': ['core'],
-  service: ['core', 'script'],
+  service: ['core', 'script', 'queue', 'providers'],
   cli: ['core', 'queue', 'providers', 'media', 'script', 'fs-node', 'service'],
   app: ['core', 'queue', 'providers', 'media', 'script', 'fs-node', 'service'],
 };

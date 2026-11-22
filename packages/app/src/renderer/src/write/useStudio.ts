@@ -1,4 +1,4 @@
-import type { NewEntityInput, Workspace } from '@tapestry/core';
+import type { NewEntityInput, Quality, Workspace } from '@tapestry/core';
 import type { StudioState } from '@tapestry/service';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -34,6 +34,33 @@ export interface Studio {
    * @param update Fields to change.
    */
   saveWorkspace(update: Partial<Workspace>): void;
+  /** Things to do with takes of a shot. Each starts work in the background; the state follows when it changes. */
+  actions: ShotActions;
+}
+
+/** What a person can do with the takes of a shot. */
+export interface ShotActions {
+  /**
+   * Starts making a shot.
+   * @param shotId Id of the shot.
+   * @param quality `draft` (the default) or `final`.
+   */
+  make(shotId: string, quality?: Quality): void;
+  /**
+   * Starts the final of an accepted draft.
+   * @param jobId Id of the draft take.
+   */
+  makeFinal(jobId: string): void;
+  /**
+   * Accepts a finished take.
+   * @param jobId Id of the take.
+   */
+  accept(jobId: string): void;
+  /**
+   * Rejects a take and starts another attempt.
+   * @param jobId Id of the take.
+   */
+  another(jobId: string): void;
 }
 
 /**
@@ -56,6 +83,7 @@ export function useStudio(initial: StudioState): Studio {
       entities: next.entities,
       scenes: next.scenes,
       clips: next.clips,
+      takes: next.takes,
     }));
   }, []);
 
@@ -94,6 +122,31 @@ export function useStudio(initial: StudioState): Studio {
     [adopt],
   );
 
+  /** Runs a take action, shows what it returns, and reports a refusal in plain words. */
+  const act = useCallback(
+    (work: () => Promise<StudioState>) => {
+      setError(null);
+      work().then(adopt, (cause: Error) => setError(cause.message));
+    },
+    [adopt],
+  );
+
+  const actions: ShotActions = {
+    make: (shotId, quality) => act(() => window.tapestry.makeShot(shotId, quality)),
+    makeFinal: (jobId) => act(() => window.tapestry.makeFinal(jobId)),
+    accept: (jobId) => act(() => window.tapestry.acceptTake(jobId)),
+    another: (jobId) => act(() => window.tapestry.anotherTake(jobId)),
+  };
+
+  // Background work (a take finishing) changes the project without the interface asking.
+  useEffect(
+    () =>
+      window.tapestry.onChange(() => {
+        window.tapestry.getState().then(adopt, () => undefined);
+      }),
+    [adopt],
+  );
+
   const saveWorkspace = useCallback((update: Partial<Workspace>) => {
     setWorkspace((current) => ({ ...current, ...update }));
     window.tapestry.saveWorkspace(update).catch(() => undefined);
@@ -109,5 +162,5 @@ export function useStudio(initial: StudioState): Studio {
     [initial.scriptPath],
   );
 
-  return { state, text, saveStatus, error, edit, addEntity, workspace, saveWorkspace };
+  return { state, text, saveStatus, error, edit, addEntity, workspace, saveWorkspace, actions };
 }

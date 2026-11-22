@@ -338,6 +338,12 @@ importers:
       '@tapestry/core':
         specifier: workspace:*
         version: link:../core
+      '@tapestry/providers':
+        specifier: workspace:*
+        version: link:../providers
+      '@tapestry/queue':
+        specifier: workspace:*
+        version: link:../queue
       '@tapestry/script':
         specifier: workspace:*
         version: link:../script

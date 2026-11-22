@@ -1,5 +1,5 @@
 import { hashJson, newId, sha256Hex } from '@tapestry/core';
-import type { Artifact, Job, ProjectData } from '@tapestry/core';
+import type { Artifact, Job, JobState, ProjectData, Quality } from '@tapestry/core';
 
 /** Providers whose output is placeholder footage, not the user's film. Their clips always carry a "Sample" tag. */
 export const SAMPLE_PROVIDER_IDS: readonly string[] = ['mock', 'demo'];
@@ -17,6 +17,27 @@ export interface SceneClip {
   accepted: boolean;
   /** True for practice-mode and demo footage. */
   sample: boolean;
+  /** The tier the shown take was made at. */
+  quality: Quality;
+}
+
+/** One attempt at a shot (a job), as the shot panel lists it. */
+export interface ShotTake {
+  jobId: string;
+  shotId: string;
+  quality: Quality;
+  state: JobState;
+  /** True once the take has been accepted (frozen). */
+  accepted: boolean;
+  sample: boolean;
+  /** Project-relative path of the video, once there is one. */
+  path?: string;
+  seed?: number;
+  /** On a final: the draft job it follows. */
+  sourceJobId?: string;
+  /** Why a failed take failed. */
+  error?: string;
+  createdAt: string;
 }
 
 /** A video file offered as sample footage. */
@@ -41,16 +62,54 @@ const WATCHABLE = ['rendered', 'accepted', 'enhanced'];
 const SHOTS_PER_SCENE = 3;
 
 /**
- * Finds the video that belongs to each shot of each scene (the newest watchable take).
+ * The tier a job was made at; jobs from before tiers existed are direct renders.
+ * @param job The job.
+ */
+const qualityOf = (job: Job): Quality => job.request.quality ?? 'final';
+
+/**
+ * Lists every attempt at every shot, oldest first: queued, running, failed and finished ones alike.
+ * @param data The project.
+ */
+export function takesOf(data: ProjectData): ShotTake[] {
+  const shotIds = new Set(
+    data.scenes.flatMap((scene) => scene.shots.map((shot) => shot.id as string)),
+  );
+  return data.jobs
+    .filter((job) => job.targetId !== undefined && shotIds.has(job.targetId))
+    .map((job) => {
+      const artifact = data.artifacts.find((a) => job.artifactIds.includes(a.id));
+      // Rejected takes keep their files, so they stay watchable for comparing with the take that replaced them.
+      const file = artifact?.files.find((f) => f.mediaType === 'video');
+      return {
+        jobId: job.id,
+        shotId: job.targetId as string,
+        quality: qualityOf(job),
+        state: job.state,
+        accepted: job.state === 'accepted' || job.state === 'enhanced',
+        sample: SAMPLE_PROVIDER_IDS.includes(job.request.provider.providerId),
+        ...(file && { path: file.path }),
+        ...(job.request.seed !== undefined && { seed: job.request.seed }),
+        ...(job.sourceJobId !== undefined && { sourceJobId: job.sourceJobId }),
+        ...(job.error && { error: job.error.message }),
+        createdAt: job.createdAt,
+      };
+    });
+}
+
+/**
+ * Finds the video that belongs to each shot of each scene: the newest watchable final if there is one, otherwise the
+ * newest watchable draft.
  * @param data The project.
  */
 export function clipsOf(data: ProjectData): SceneClip[] {
   const clips: SceneClip[] = [];
   for (const scene of data.scenes) {
     scene.shots.forEach((shot, index) => {
-      const job = data.jobs
-        .filter((j) => j.targetId === shot.id && WATCHABLE.includes(j.state))
-        .at(-1);
+      const watchable = data.jobs.filter(
+        (j) => j.targetId === shot.id && WATCHABLE.includes(j.state),
+      );
+      const job = watchable.filter((j) => qualityOf(j) === 'final').at(-1) ?? watchable.at(-1);
       const artifact = data.artifacts.find((a) => job?.artifactIds.includes(a.id));
       const file = artifact?.files.find((f) => f.mediaType === 'video');
       if (!job || !artifact || !file) return;
@@ -62,6 +121,7 @@ export function clipsOf(data: ProjectData): SceneClip[] {
         path: file.path,
         accepted: job.state === 'accepted' || job.state === 'enhanced',
         sample: SAMPLE_PROVIDER_IDS.includes(artifact.provenance.providerId),
+        quality: qualityOf(job),
       });
     });
   }

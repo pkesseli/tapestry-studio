@@ -43,6 +43,8 @@ export interface DraftOptions {
   targetId?: string;
   /** Higher runs first. */
   priority?: number;
+  /** On a final: the accepted draft job it follows (plan 09b). */
+  sourceJobId?: Id<'job'>;
 }
 
 /** Persistent, restart-safe generation queue. See doc/readme/architecture.md for the lifecycle. */
@@ -122,6 +124,7 @@ export class JobQueue {
       updatedAt: at,
       ...(draft.targetId !== undefined && { targetId: draft.targetId }),
       ...(draft.priority !== undefined && { priority: draft.priority }),
+      ...(draft.sourceJobId !== undefined && { sourceJobId: draft.sourceJobId }),
     });
   }
 
@@ -204,6 +207,8 @@ export class JobQueue {
       {
         ...(job.targetId !== undefined && { targetId: job.targetId }),
         ...(job.priority !== undefined && { priority: job.priority }),
+        // A redone final still follows the same draft.
+        ...(job.sourceJobId !== undefined && { sourceJobId: job.sourceJobId }),
       },
     );
     await this.store.move(job, 'redone', 'user', `Replaced by ${next.id}`);

@@ -27,6 +27,7 @@ function setup() {
 
 /** Builds a clip for a shot id. */
 const clip = (shotId: string, accepted: boolean): SceneClip => ({
+  quality: 'final',
   sceneId: 'scn_x',
   shotId,
   shotNumber: 1,

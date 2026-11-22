@@ -224,17 +224,41 @@ export function serializeProject(data: ProjectData): Record<string, string> {
   return files;
 }
 
+/** Options for {@link saveProject}. */
+export interface SaveOptions {
+  /**
+   * Neither write nor remove the job and artifact files. The generation queue owns them while the app runs and writes
+   * each change itself, so a save from older in-memory data must not overwrite or delete what the queue has just stored.
+   * The data is still validated as a whole.
+   */
+  leaveQueueFiles?: boolean;
+}
+
+/** Whether a managed file is one the queue owns (a job or an artifact record). */
+const isQueueFile = (path: string): boolean =>
+  path.startsWith(`${JOBS_DIR}/`) || path.startsWith(`${ARTIFACTS_DIR}/`);
+
 /**
  * Saves a project. All values are validated before anything is written. Managed JSON files of items that no longer
  * exist in `data` are removed; media files and scripts are never deleted.
  * @param fs File system rooted at the project folder.
  * @param data Complete project state.
+ * @param options See {@link SaveOptions}.
  * @throws {ProjectFormatError} When validation fails (nothing is written in that case).
  */
-export async function saveProject(fs: FsPort, data: ProjectData): Promise<void> {
-  const files = serializeProject(data);
+export async function saveProject(
+  fs: FsPort,
+  data: ProjectData,
+  options: SaveOptions = {},
+): Promise<void> {
+  const all = serializeProject(data);
+  const files = options.leaveQueueFiles
+    ? Object.fromEntries(Object.entries(all).filter(([path]) => !isQueueFile(path)))
+    : all;
   await Promise.all(Object.entries(files).map(([path, text]) => fs.writeText(path, text)));
   await Promise.all(Object.entries(data.scripts).map(([path, text]) => fs.writeText(path, text)));
-  const stale = (await discoverManagedFiles(fs)).filter((path) => !(path in files));
+  const stale = (await discoverManagedFiles(fs)).filter(
+    (path) => !(path in all) && !(options.leaveQueueFiles && isQueueFile(path)),
+  );
   await Promise.all(stale.map((path) => fs.remove(path)));
 }

@@ -1,6 +1,8 @@
 import { useRef, useState } from 'react';
 import { mediaUrl } from '../../../shared/media-url';
+import { TakesList } from './TakesList';
 import type { ShotState, ShotView } from './shots-view';
+import type { ShotActions } from './useStudio';
 
 /** Properties of {@link ShotPanel}. */
 interface ShotPanelProps {
@@ -33,6 +35,8 @@ interface ShotPanelProps {
    * @param kind A line of dialogue or a paragraph of action.
    */
   onAddLine(kind: 'dialogue' | 'action'): void;
+  /** What to do with the takes of this shot. */
+  actions: ShotActions;
 }
 
 /** How each state is worded for the user (doc/readme/ux.md). */
@@ -55,6 +59,7 @@ export function ShotPanel({
   onShowDirection,
   onShowShot,
   onAddLine,
+  actions,
 }: ShotPanelProps) {
   const [continuous, setContinuous] = useState(false);
   const video = useRef<HTMLVideoElement>(null);
@@ -117,6 +122,9 @@ export function ShotPanel({
           </div>
         )}
         {shot.clip?.sample && <span className="sample-tag">SAMPLE</span>}
+        {shot.clip && (
+          <span className="quality-tag">{shot.clip.quality === 'final' ? 'FINAL' : 'DRAFT'}</span>
+        )}
       </div>
 
       <div className="row" style={{ gap: 6 }}>
@@ -166,6 +174,8 @@ export function ShotPanel({
           Play whole scene
         </button>
       </div>
+
+      <TakesList shotId={shot.id} takes={shot.takes} actions={actions} />
 
       <blockquote className="shot-quote">
         <button

@@ -35,10 +35,22 @@ UI slices follow, one section at a time, each reviewed by the human (see `ux.md`
 Acceptance: unit tests for each function, including that a draft without a seed or not accepted is refused, that old
 project files without the new fields still load and validate, and that the estimate range narrows after a preview.
 
+## Slice 2: service and a first shot panel (done, needs the human's review)
+- `composeShot` (service, pure): prompt from the shot's action, direction, camera hint, setting and who is in it;
+  references chosen within the provider's limits, most important role first; names without a look are reported.
+- `ProjectService` owns the project's `JobQueue` (service now depends on queue and providers, see `architecture.md`).
+  `makeShot`, `makeFinal`, `acceptTake` (at most one accepted take per shot and quality) and `anotherTake` run
+  through the queue; work continues in the background and `onChange` tells the interface. The queue is the only writer
+  of job and artifact files; the service saves with `leaveQueueFiles` so a script save can never delete them.
+- `takesOf` lists every attempt per shot; the footage shown is the newest final, else the newest draft. The mock
+  provider makes a draft after one poll instead of the full wait.
+- Shot panel (practice mode, mock provider): a **Takes** list with "Make a draft", Accept, "Try again", "Make the final",
+  a DRAFT or FINAL tag on the clip, and the plain-language state words from `ux.md`.
+- **Not done:** paid providers (a job for a paid provider stays "Needs your approval"; the approval sheet is plan 09),
+  takes side by side, un-accepting from the panel, cost lines, the estimate view and the preview.
+
 ## Next slices (each needs the one before; UI slices are built and reviewed one section at a time)
-2. Service: "Make this shot" and "Make final" through the queue with the mock provider (small and fast for `draft`),
-   after plan 08's composer.
-3. Shot panel: draft and final strip, takes side by side, accept per stage.
+3. Shot panel polish after review: takes side by side, replace an accepted take, cost and time lines, failed takes.
 4. Film estimate view with the finishing scope picker and the Preview button, linked both ways.
 5. A local provider for LTX (plan 11) and a cloud provider (see Needs human).
 

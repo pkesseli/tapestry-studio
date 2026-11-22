@@ -1,4 +1,4 @@
-import type { NewEntityInput, Workspace } from '@tapestry/core';
+import type { NewEntityInput, Quality, Workspace } from '@tapestry/core';
 import type { StudioState } from '@tapestry/service';
 
 /** Names of the IPC channels between the renderer and the main process. One per use case. */
@@ -8,6 +8,12 @@ export const IPC_CHANNELS = {
   createEntity: 'studio:create-entity',
   saveWorkspace: 'studio:save-workspace',
   exportScript: 'studio:export-script',
+  makeShot: 'studio:make-shot',
+  makeFinal: 'studio:make-final',
+  acceptTake: 'studio:accept-take',
+  anotherTake: 'studio:another-take',
+  /** Sent by the main process (not invoked by the renderer) when background work changed something. */
+  changed: 'studio:changed',
 } as const;
 
 /**
@@ -42,4 +48,31 @@ export interface TapestryApi {
    * @returns Whether a file was written (false when the user cancelled) and where.
    */
   exportScript(keepDirections: boolean): Promise<{ saved: boolean; path?: string }>;
+  /**
+   * Starts making a shot (a draft, the cheap preview, unless told otherwise). It runs in the background.
+   * @param shotId Id of the shot from the state.
+   * @param quality `draft` or `final`.
+   */
+  makeShot(shotId: string, quality?: Quality): Promise<StudioState>;
+  /**
+   * Starts the final of an accepted draft take (same prompt, references and seed).
+   * @param draftJobId Id of the accepted draft take.
+   */
+  makeFinal(draftJobId: string): Promise<StudioState>;
+  /**
+   * Accepts a finished take: it is kept exactly as it is.
+   * @param jobId Id of the take.
+   */
+  acceptTake(jobId: string): Promise<StudioState>;
+  /**
+   * Rejects a finished take and starts another attempt at the same shot.
+   * @param jobId Id of the take to replace.
+   */
+  anotherTake(jobId: string): Promise<StudioState>;
+  /**
+   * Listens for changes made by background work (a take finished or failed).
+   * @param listener Called with no arguments; ask for the state again.
+   * @returns A function that stops listening.
+   */
+  onChange(listener: () => void): () => void;
 }

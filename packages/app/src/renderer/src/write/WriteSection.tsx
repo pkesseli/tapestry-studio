@@ -85,9 +85,15 @@ export function WriteSection({ initial }: { initial: StudioState }) {
   const shotsByScene = useMemo(
     () =>
       (analysis.fountain?.scenes ?? []).map((parsed, index) =>
-        shotViews(parsed, savedScenes[index], studio.state.clips, studio.state.entities),
+        shotViews(
+          parsed,
+          savedScenes[index],
+          studio.state.clips,
+          studio.state.entities,
+          studio.state.takes,
+        ),
       ),
-    [analysis, savedScenes, studio.state.clips, studio.state.entities],
+    [analysis, savedScenes, studio.state.clips, studio.state.entities, studio.state.takes],
   );
   const insertContext = { text: studio.text, analysis, scenes, shotsByScene };
   const sceneShots = shotsByScene[activeIndex] ?? [];
@@ -360,6 +366,7 @@ export function WriteSection({ initial }: { initial: StudioState }) {
         onShowShot={(index) => withShot(index, (s) => editor.current?.focusAt(s.start))}
         onAddLine={addLine}
         onAdd={(kind, name) => add(kind, name)}
+        actions={studio.actions}
       />
 
       {popup && (

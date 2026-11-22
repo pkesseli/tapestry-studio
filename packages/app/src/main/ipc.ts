@@ -3,7 +3,7 @@ import type { EntityKind, Workspace } from '@tapestry/core';
 import type { ProjectService } from '@tapestry/service';
 import { writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { app, dialog, ipcMain } from 'electron';
+import { BrowserWindow, app, dialog, ipcMain } from 'electron';
 import { IPC_CHANNELS } from '../shared/api';
 
 /**
@@ -28,7 +28,27 @@ function isEntityInput(
  * @param service The open project.
  */
 export function registerIpc(service: ProjectService): void {
+  service.onChange(() => {
+    for (const window of BrowserWindow.getAllWindows())
+      window.webContents.send(IPC_CHANNELS.changed);
+  });
   ipcMain.handle(IPC_CHANNELS.getState, () => service.state());
+  ipcMain.handle(IPC_CHANNELS.makeShot, (_event, shotId: unknown, quality: unknown) => {
+    if (typeof shotId !== 'string') throw new Error('Invalid shot');
+    if (quality !== undefined && quality !== 'draft' && quality !== 'final')
+      throw new Error('Invalid quality');
+    return service.makeShot(shotId, quality);
+  });
+  for (const [channel, action] of [
+    [IPC_CHANNELS.makeFinal, (id: string) => service.makeFinal(id)],
+    [IPC_CHANNELS.acceptTake, (id: string) => service.acceptTake(id)],
+    [IPC_CHANNELS.anotherTake, (id: string) => service.anotherTake(id)],
+  ] as const) {
+    ipcMain.handle(channel, (_event, id: unknown) => {
+      if (typeof id !== 'string') throw new Error('Invalid take');
+      return action(id);
+    });
+  }
   ipcMain.handle(IPC_CHANNELS.saveScript, (_event, path: unknown, text: unknown) => {
     if (typeof path !== 'string' || typeof text !== 'string') throw new Error('Invalid script');
     return service.saveScript(path, text);

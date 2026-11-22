@@ -102,7 +102,11 @@ export function createMockProvider(
       if (reason) return { ok: false, reason };
       return {
         ok: true,
-        estimate: { cost: 0, seconds: pollsUntilDone, notes: 'Mock provider: placeholder media' },
+        estimate: {
+          cost: 0,
+          seconds: request.quality === 'draft' ? Math.min(1, pollsUntilDone) : pollsUntilDone,
+          notes: 'Mock provider: placeholder media',
+        },
       };
     },
     submit(request, context) {
@@ -115,7 +119,8 @@ export function createMockProvider(
         request,
         polls: 0,
         cancelled: false,
-        pollsUntilDone,
+        // A draft is the cheap preview tier: it finishes after a single poll.
+        pollsUntilDone: request.quality === 'draft' ? Math.min(1, pollsUntilDone) : pollsUntilDone,
         outcome,
       });
       return Promise.resolve(ref);

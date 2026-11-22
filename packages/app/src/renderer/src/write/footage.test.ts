@@ -12,6 +12,7 @@ const scene = (id: string, shots: number) =>
 
 /** Builds a clip. */
 const clip = (sceneId: string, shotNumber: number, accepted: boolean): SceneClip => ({
+  quality: 'final',
   sceneId,
   shotId: `${sceneId}-${shotNumber}`,
   shotNumber,

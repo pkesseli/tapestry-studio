@@ -69,6 +69,9 @@ Kind-specific:
   changes faces (see `providers.md`). `validateProject` reports a `sourceJobId` that is missing or points at itself.
   Cost and time estimates for finishing a selection of shots (`estimateFinishing`) are pure functions in `core`; their
   accepted-share assumptions are guesses until a preview has been made.
+- **The queue owns job and artifact files while the app runs.** `saveProject(fs, data, { leaveQueueFiles: true })` neither
+  writes nor deletes them (it still validates everything), so a save from older in-memory data cannot overwrite or
+  remove what the queue has just stored. The service merges the queue's state into memory instead.
 - `GenerationRequest`, `Capability` and `JobState` are defined in `core` (not `providers`) because jobs persist them.
 - **Fixtures** in `fixtures/` are generated from `@tapestry/core/testing` builders. After changing a schema, run
   `UPDATE_FIXTURES=1 pnpm test` and review the diff; the normal test run fails if fixtures drift from the code.
