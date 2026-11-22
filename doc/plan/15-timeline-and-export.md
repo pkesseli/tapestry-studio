@@ -16,6 +16,7 @@ Assemble accepted clips and audio into a finished film; reliable ffmpeg integrat
 5. Render export: mp4 (H.264/AAC) with presets (YouTube 1080p, vertical, preview), progress via the job event stream.
 6. Frame-extraction helper (last/first frame of a clip) exposed for plan 16 chaining; render accepted music sections into a single audio track (assembly list from plan 13).
 7. OTIO and FCPXML export of the timeline for DaVinci/Premiere/Final Cut.
+8. See the backlog item "Sound overlays" (imported audio, a score that spans scenes): it shapes this timeline model.
 
 ## Acceptance
 - A sample project with the mock provider exports a playable mp4 with video, dialogue, and music tracks in sync.

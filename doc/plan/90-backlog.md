@@ -69,3 +69,16 @@ Items marked (parity) exist in AI Movie Studio 2 — implement from the idea onl
     they preserve content is unknown), to be discussed when choosing a cloud service; how many previews are accepted in
     practice, which sets the retry factor of the estimate; crowdfunding platform rules on AI-made work and each
     provider's terms for commercial use of outputs (check before building anything for this).
+- **Sound overlays and scene-spanning music (manual audio).** A creator can place their own sound: import a recorded line
+  (their own voice), a music track or a sound effect, and put it on the timeline; and make one music track run under
+  several scenes ("the same ominous score through Act Two"), looping or trimmed to fit, with fades and ducking under
+  dialogue. Generated music (ACE-Step and others) is placed the same way. What exists: the timeline schema already has
+  `dialogue`, `music` and `sfx` tracks and clips with volume and fades. What is missing:
+  - **Imported artifacts:** an accepted, frozen artifact with no generating job (a source of `imported`, a content
+    hash, a licence note field), because `Artifact.jobId` and the provenance provider are required today.
+  - **Cues that follow the script:** a music or sound clip anchored to a range of scenes instead of absolute seconds,
+    so it moves when scenes are reordered or a shot is replaced; plus loop, trim to the range, crossfade between cues.
+  - **Mix:** per-track and per-clip volume and fades exist; add ducking under dialogue and loudness matching (the
+    MiniMax and music tests showed very uneven loudness, and the clip audio from video models is not usable as dialogue).
+  - **Interface:** a Sound section or lanes under the film, one-click "use this music across these scenes", with the
+    waveform. Related: plan 13 (music), plan 15 (timeline and export, ffmpeg mixing).
